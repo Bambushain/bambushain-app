@@ -1,0 +1,61 @@
+.build-base:
+  image:
+    name: harbor.ulbricht.casa/base-images/android-native-app:latest
+    pull_policy: always
+  before_script:
+    - chmod +x ./gradlew
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - .gradle
+
+stages:
+  - lint
+  - build
+
+lint-test-app:
+  stage: lint
+  extends:
+    - .build-base
+  script:
+    - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+  artifacts:
+    paths:
+      - app/lint/reports/lint-results-debug.html
+    expose_as: "lint-report"
+    when: always
+
+build-test-app:
+  stage: build
+  extends:
+    - .build-base
+  script:
+    - ./gradlew assembleDebug
+
+lint-release-app:
+  stage: lint
+  extends:
+    - .build-base
+  script:
+    - ./gradlew -Pci --console=plain :app:lintRelease -PbuildDir=lint
+  artifacts:
+    paths:
+      - app/lint/reports/lint-results-release.html
+    expose_as: "lint-report"
+    when: always
+  rules:
+    - if: $CI_COMMIT_TAG
+
+build-release-app:
+  stage: build
+  extends:
+    - .build-base
+  script:
+    - ./gradlew assembleRelease
+  after_script:
+    - cp app/build/outputs/apk/release/app-release-unsigned.apk bambushain.apk
+  artifacts:
+    paths:
+      - bambushain.apk
+  rules:
+    - if: $CI_COMMIT_TAG
