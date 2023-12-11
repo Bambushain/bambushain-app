@@ -13,12 +13,12 @@ stages:
   - lint
   - build
 
-lint-test-app:
+lint-debug-app:
   stage: lint
   extends:
     - .build-base
   script:
-    - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+    - ./gradlew -Pci --console=plain lintDebug -PbuildDir=lint
   artifacts:
     paths:
       - app/lint/reports/lint-results-debug.html
@@ -30,7 +30,7 @@ lint-release-app:
   extends:
     - .build-base
   script:
-    - ./gradlew -Pci --console=plain :app:lintRelease -PbuildDir=lint
+    - ./gradlew -Pci --console=plain lintRelease -PbuildDir=lint
   artifacts:
     paths:
       - app/lint/reports/lint-results-release.html
