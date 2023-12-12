@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'app.bambushain'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "app.bambushain"
