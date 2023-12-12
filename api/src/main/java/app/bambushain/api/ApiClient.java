@@ -1,7 +1,6 @@
 package app.bambushain.api;
 
 import android.content.Context;
-import androidx.preference.PreferenceManager;
 import app.bambushain.api.authentication.PandaAuthenticator;
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import lombok.NonNull;
@@ -17,8 +16,7 @@ public class ApiClient {
     }
 
     private static Retrofit createAdapter(@NonNull Context ctx) {
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-        val instance = sharedPrefs.getString(ctx.getString(R.string.bambooInstance), "pandas");
+        val instance = ctx.getString(R.string.bambooInstance);
         val baseUrl = "https://" + instance + ".bambushain.app/";
         val pandaAuthentication = new PandaAuthenticator(ctx);
 
@@ -33,11 +31,7 @@ public class ApiClient {
         return builder.build();
     }
 
-    public static LoginApi getLoginApi(@NonNull Context ctx) {
-        return createAdapter(ctx).create(LoginApi.class);
-    }
-
-    public static HainApi getBambushainApi(@NonNull Context ctx) {
-        return createAdapter(ctx).create(HainApi.class);
+    public static BambooApi getBambushainApi(@NonNull Context ctx) {
+        return createAdapter(ctx).create(BambooApi.class);
     }
 }

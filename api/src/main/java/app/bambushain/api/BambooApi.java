@@ -9,7 +9,22 @@ import retrofit2.http.*;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface HainApi {
+public interface BambooApi {
+    /**
+     * Performs a login or requests the two factor code
+     * Performs the login
+     *
+     * @param loginRequest (required)
+     * @return Observable&lt;LoginResponse&gt;
+     */
+    @Headers({
+            "Content-Type:application/json"
+    })
+    @POST("api/login")
+    Observable<LoginResponse> login(
+            @retrofit2.http.Body LoginRequest loginRequest
+    );
+
     /**
      * Performs a logout
      * Performs a logout and deletes the api token from the server
