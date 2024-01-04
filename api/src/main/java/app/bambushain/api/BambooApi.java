@@ -1,7 +1,7 @@
 package app.bambushain.api;
 
-import app.bambushain.models.*;
 import app.bambushain.models.Character;
+import app.bambushain.models.*;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.*;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface BambooApi {
     /**
-     * Performs a login or requests the two factor code
+     * Performs a login
      * Performs the login
      *
      * @param loginRequest (required)
@@ -23,6 +23,20 @@ public interface BambooApi {
     @POST("api/login")
     Observable<LoginResponse> login(
             @retrofit2.http.Body LoginRequest loginRequest
+    );
+
+    /**
+     * Requests the two factor code
+     *
+     * @param twoFactorRequest (required)
+     * @return Observable&lt;LoginResponse&gt;
+     */
+    @Headers({
+            "Content-Type:application/json"
+    })
+    @POST("api/login")
+    Completable requestTwoFactorCode(
+            @retrofit2.http.Body TwoFactorRequest twoFactorRequest
     );
 
     /**
@@ -42,6 +56,15 @@ public interface BambooApi {
      */
     @HEAD("api/login")
     Completable validateToken();
+
+    /**
+     * Forgot password
+     * Sends an email to all mods requesting a password change
+     *
+     * @return Completable
+     */
+    @POST("api/forgot-password")
+    Completable forgotPassword(@retrofit2.http.Body ForgotPasswordRequest forgotPasswordRequest);
 
     /**
      * Creates a new event
@@ -540,7 +563,7 @@ public interface BambooApi {
      * Changes the password for the given user
      * Changes the password for the given user. Cannot be used to changes the current users password
      *
-     * @param id                    The id of the user (required)
+     * @param id The id of the user (required)
      * @return Completable
      */
     @Headers({
