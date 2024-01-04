@@ -1,7 +1,7 @@
 package app.bambushain.api;
 
-import app.bambushain.models.Character;
 import app.bambushain.models.*;
+import app.bambushain.models.Character;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.*;
@@ -105,8 +105,8 @@ public interface BambooApi {
             "Content-Type:application/json"
     })
     @POST("api/final-fantasy/character")
-    Observable<app.bambushain.models.Character> createCharacter(
-            @retrofit2.http.Body app.bambushain.models.Character character
+    Observable<Character> createCharacter(
+            @retrofit2.http.Body Character character
     );
 
     /**
@@ -199,7 +199,7 @@ public interface BambooApi {
      * @return Observable&lt;Character&gt;
      */
     @GET("api/final-fantasy/character/{id}")
-    Observable<app.bambushain.models.Character> getCharacterById(
+    Observable<Character> getCharacterById(
             @retrofit2.http.Path("id") long id
     );
 
@@ -209,7 +209,7 @@ public interface BambooApi {
      * @return Observable&lt;List&lt;Character&gt;&gt;
      */
     @GET("api/final-fantasy/character")
-    Observable<List<app.bambushain.models.Character>> getCharacters();
+    Observable<List<Character>> getCharacters();
 
     /**
      * Gets the custom field with the given
@@ -541,7 +541,6 @@ public interface BambooApi {
      * Changes the password for the given user. Cannot be used to changes the current users password
      *
      * @param id                    The id of the user (required)
-     * @param changePasswordRequest The new password (required)
      * @return Completable
      */
     @Headers({
@@ -549,7 +548,7 @@ public interface BambooApi {
     })
     @PUT("api/user/{id}/password")
     Completable changePassword(
-            @retrofit2.http.Path("id") long id, @retrofit2.http.Body ChangePasswordRequest changePasswordRequest
+            @retrofit2.http.Path("id") long id
     );
 
     /**
