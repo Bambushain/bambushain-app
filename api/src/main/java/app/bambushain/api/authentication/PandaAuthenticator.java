@@ -3,22 +3,28 @@ package app.bambushain.api.authentication;
 import android.content.Context;
 import androidx.preference.PreferenceManager;
 import app.bambushain.api.R;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import lombok.*;
 import okhttp3.Authenticator;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 @EqualsAndHashCode
 @ToString
 @Setter
 @Getter
+@Singleton
 public class PandaAuthenticator implements Authenticator {
-    @NonNull
-    private Context ctx;
+    @Inject
+    @ApplicationContext
+    Context ctx;
 
-    public PandaAuthenticator(@NonNull Context ctx) {
-        this.ctx = ctx;
+    @Inject
+    public PandaAuthenticator() {
     }
 
     @Override
