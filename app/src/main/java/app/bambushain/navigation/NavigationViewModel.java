@@ -27,6 +27,5 @@ public class NavigationViewModel extends ViewModel {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
         profile.setValue(null);
-
     }
 }

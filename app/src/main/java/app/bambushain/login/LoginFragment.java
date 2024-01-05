@@ -41,6 +41,7 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
         super.onViewCreated(view, savedInstanceState);
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         sharedPrefs.edit().remove(getString(app.bambushain.api.R.string.bambooAuthenticationToken)).apply();
+
         val navigator = NavHostFragment.findNavController(this);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         binding.setViewModel(viewModel);

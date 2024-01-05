@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class BindingFragment<T extends ViewBinding> extends Fragment {
     protected T binding;
@@ -16,9 +15,8 @@ public abstract class BindingFragment<T extends ViewBinding> extends Fragment {
     protected abstract T getViewBinding();
 
     @Nullable
-    @org.jetbrains.annotations.Nullable
     @Override
-    public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = getViewBinding();
 
         return binding.getRoot();

@@ -88,17 +88,12 @@ public class MainActivity extends AppCompatActivity {
             var showAppBar = true;
             if (destination.getId() != R.id.fragment_login) {
                 loadProfile();
-            } else {
-                binding.drawerLayout.closeDrawers();
-            }
-            if (arguments != null) {
-                showAppBar = arguments.getBoolean("ShowAppBar", true);
-            }
-            if (showAppBar) {
                 binding.toolbar.setVisibility(View.VISIBLE);
             } else {
+                binding.drawerLayout.closeDrawers();
                 binding.toolbar.setVisibility(View.GONE);
             }
+
             binding.navView.setCheckedItem(destination.getId());
         });
         headerViewModel.profile.observe(this, user -> {
