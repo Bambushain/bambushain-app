@@ -13,4 +13,5 @@ import lombok.NoArgsConstructor;
 public class UpdateMyProfile {
     private String email;
     private String displayName;
+    private String discordName;
 }

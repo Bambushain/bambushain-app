@@ -39,10 +39,6 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        sharedPrefs.edit().remove(getString(app.bambushain.api.R.string.bambooAuthenticationToken)).apply();
-
-        val navigator = NavHostFragment.findNavController(this);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
@@ -53,7 +49,11 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
         });
         viewModel.apiToken.observe(getViewLifecycleOwner(), value -> {
             if (value != null && !value.isEmpty()) {
-                sharedPrefs.edit().putString(getString(app.bambushain.api.R.string.bambooAuthenticationToken), value).apply();
+                val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                sharedPrefs
+                        .edit()
+                        .putString(getString(app.bambushain.api.R.string.bambooAuthenticationToken), value)
+                        .apply();
                 navigator.navigate(R.id.action_fragment_login_to_fragment_event_calendar);
             }
         });

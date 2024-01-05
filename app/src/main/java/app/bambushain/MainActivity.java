@@ -27,28 +27,27 @@ import javax.inject.Inject;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
 
-    ActivityMainBinding binding;
+    public ActivityMainBinding binding;
     NavController navigator;
 
-    NavigationViewModel headerViewModel;
+    public NavigationViewModel headerViewModel;
+
+    boolean preDrawTriggered = false;
 
     @Inject
     BambooApi bambooApi;
 
-    Observable<User> loadProfile() {
-        val apiCall = bambooApi
+    public void updateHeader() {
+        bambooApi
                 .getMyProfile()
                 .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread());
-        apiCall
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(profile -> {
                     headerViewModel.profile.setValue(profile);
                 }, ex -> {
-                    Log.e(TAG, "onCreate: Failed to load profile", ex);
+                    Log.e(TAG, "loadProfile: Failed to load profile", ex);
                     navigator.navigate(R.id.action_global_fragment_login);
                 });
-
-        return apiCall;
     }
 
     @Override
@@ -61,48 +60,48 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
         val navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(binding.navHostFragment.getId());
         navigator = navHostFragment.getNavController();
-        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+
+        val preDrawListener = new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                loadProfile()
-                        .subscribe(profile -> {
-                            view.getViewTreeObserver().removeOnPreDrawListener(this);
-                        }, ex -> {
-                            view.getViewTreeObserver().removeOnPreDrawListener(this);
-                        });
+                if (!preDrawTriggered) {
+                    bambooApi
+                            .getMyProfile()
+                            .subscribeOn(Schedulers.newThread())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(profile -> {
+                                headerViewModel.profile.setValue(profile);
+                                view.getViewTreeObserver().removeOnPreDrawListener(this);
+                            }, ex -> {
+                                Log.e(TAG, "loadProfile: Failed to load profile", ex);
+                                navigator.navigate(R.id.action_global_fragment_login);
+                            });
+                    preDrawTriggered = true;
+                }
 
                 return false;
             }
-        });
+        };
+        view.getViewTreeObserver().addOnPreDrawListener(preDrawListener);
 
         val headerBinding = HeaderNavigationDrawerBinding.bind(binding.navView.getHeaderView(0));
         headerViewModel = new ViewModelProvider(this).get(NavigationViewModel.class);
         headerBinding.setViewModel(headerViewModel);
         headerBinding.setLifecycleOwner(this);
 
-        val appBarConfiguration = new AppBarConfiguration.Builder(R.id.fragment_login, R.id.fragment_event_calendar, R.id.fragment_pandas, R.id.fragment_profile)
-                .setDrawerLayout(binding.drawerLayout)
-                .build();
-
         navigator.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            var showAppBar = true;
-            if (destination.getId() != R.id.fragment_login) {
-                loadProfile();
-                binding.toolbar.setVisibility(View.VISIBLE);
-            } else {
-                binding.drawerLayout.closeDrawers();
-                binding.toolbar.setVisibility(View.GONE);
-            }
-
             binding.navView.setCheckedItem(destination.getId());
+            if (destination.getId() == R.id.fragment_login) {
+                view.getViewTreeObserver().removeOnPreDrawListener(preDrawListener);
+            }
         });
-        headerViewModel.profile.observe(this, user -> {
-            if (user == null) {
-                navigator.navigate(R.id.action_global_fragment_login);
+        headerViewModel.profile.observe(this, profile -> {
+            if (profile == null) {
+                updateHeader();
+                binding.drawerLayout.closeDrawers();
             }
         });
 
-        NavigationUI.setupWithNavController(binding.toolbar, navigator, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navigator);
     }
 }

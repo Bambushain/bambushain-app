@@ -18,6 +18,7 @@
                 <com.google.android.material.appbar.MaterialToolbar
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
+                        android:id="@+id/toolbar"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -67,7 +68,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin"
-                        android:visibility="@{viewModel.twoFactorRequested ? com.google.android.material.textfield.TextInputLayout.VISIBLE : com.google.android.material.textfield.TextInputLayout.GONE}">
+                        android:visibility="@{viewModel.twoFactorRequested ? android.view.View.VISIBLE : android.view.View.GONE}">
                     <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -100,7 +101,7 @@
                             android:id="@+id/loginForgotPassword"
                             android:enabled="@{!viewModel.email.empty}"
                             android:onClick="@{() -> viewModel.onForgotPassword()}"
-                            android:visibility="@{!viewModel.twoFactorRequested ? android.widget.Button.VISIBLE : android.widget.Button.GONE}"
+                            android:visibility="@{!viewModel.twoFactorRequested ? android.view.View.VISIBLE : android.view.View.GONE}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             style="@style/Widget.Material3.Button.TonalButton"/>

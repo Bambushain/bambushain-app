@@ -1,12 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <FrameLayout
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="viewModel" type="app.bambushain.my.ProfileViewModel"/>
+    </data>
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <TextView
+        <com.google.android.material.appbar.AppBarLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <com.google.android.material.appbar.MaterialToolbar
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:id="@+id/toolbar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+                </com.google.android.material.appbar.MaterialToolbar>
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progress_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:indeterminate="true"
+                        android:visibility="@{viewModel.isLoading ? android.view.View.VISIBLE : android.view.View.GONE}"
+                        app:hideAnimationBehavior="inward"
+                        app:showAnimationBehavior="outward" />
+            </FrameLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+        <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Profil"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:inputType="textEmailAddress"
+                android:text="@={viewModel.profile.email}"
+                android:ems="10"
+                android:id="@+id/profileEmail"
+                android:visibility="visible"
+                android:singleLine="true" android:hint="@string/profile_email"/>
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:inputType="text"
+                android:text="@={viewModel.profile.displayName}"
+                android:ems="10"
+                android:id="@+id/profileDisplayName"
+                android:visibility="visible"
+                android:singleLine="true" android:hint="@string/profile_name"/>
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:inputType="text"
+                android:text="@={viewModel.profile.discordName}"
+                android:ems="10"
+                android:id="@+id/profileDiscordName"
+                android:visibility="visible"
+                android:singleLine="true" android:hint="@string/profile_discord_name"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    </FrameLayout>
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:id="@+id/updateButton"
+                    android:visibility="visible"
+                    android:onClick="@{() -> viewModel.onUpdateMyProfile()}"
+                    android:text="@string/action_update"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>
