@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/nav_graph" app:startDestination="@id/fragment_event_calendar">
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph" app:startDestination="@id/fragment_event_calendar">
     <fragment android:id="@+id/fragment_login" android:name="app.bambushain.login.LoginFragment"
               android:label="@string/label_login">
         <argument android:name="ShowAppBar" android:defaultValue="false"/>
@@ -17,7 +17,12 @@
               android:label="@string/label_pandas"/>
     <action android:id="@+id/action_global_fragment_pandas" app:destination="@id/fragment_pandas"/>
     <fragment android:id="@+id/fragment_profile" android:name="app.bambushain.my.ProfileFragment"
-              android:label="@string/label_my_profile"/>
+              android:label="@string/label_my_profile">
+        <action android:id="@+id/action_fragment_profile_to_editProfileFragment"
+                app:destination="@id/fragment_edit_profile" app:popUpTo="@id/fragment_profile"/>
+    </fragment>
     <action android:id="@+id/action_global_fragment_profile" app:destination="@id/fragment_profile"/>
     <action android:id="@+id/action_global_fragment_event_calendar" app:destination="@id/fragment_event_calendar"/>
+    <fragment android:id="@+id/fragment_edit_profile" android:name="app.bambushain.my.EditProfileFragment"
+              android:label="@string/label_edit_my_profile" tools:layout="@layout/fragment_edit_profile"/>
 </navigation>

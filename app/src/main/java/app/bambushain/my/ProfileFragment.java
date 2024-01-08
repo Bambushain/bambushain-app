@@ -1,9 +1,8 @@
 package app.bambushain.my;
 
 import android.os.Bundle;
-import android.util.Patterns;
+import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -49,55 +48,10 @@ public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {
                 viewModel.errorMessage.setValue(0);
             }
         });
-        viewModel.successMessage.observe(getViewLifecycleOwner(), value -> {
-            if (value != 0) {
-                Toast
-                        .makeText(getContext(), value, Toast.LENGTH_LONG)
-                        .show();
-                activity.updateHeader();
-                viewModel.successMessage.setValue(0);
-                if (snackbar != null && snackbar.isShown()) {
-                    snackbar.dismiss();
-                }
-            }
-        });
-        viewModel.email.observe(getViewLifecycleOwner(), value -> {
-            if (snackbar != null && snackbar.isShown()) {
-                snackbar.dismiss();
-            }
-            if (value == null || value.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(value).matches()) {
-                binding.profileEmail.setError(getString(R.string.error_profile_email_invalid));
-                viewModel.isEmailValid.setValue(false);
-            } else {
-                binding.profileEmail.setError(null);
-                viewModel.isEmailValid.setValue(true);
-            }
-        });
-        viewModel.discordName.observe(getViewLifecycleOwner(), value -> {
-            if (snackbar != null && snackbar.isShown()) {
-                snackbar.dismiss();
-            }
-            if (value != null && !value.isEmpty() && value.length() < 3) {
-                binding.profileDiscordName.setError(getString(R.string.error_profile_discord_too_short));
-                viewModel.isDiscordNameValid.setValue(false);
-            } else if (value != null && !value.isEmpty() && value.length() > 32) {
-                binding.profileDiscordName.setError(getString(R.string.error_profile_discord_too_long));
-                viewModel.isDiscordNameValid.setValue(false);
-            } else {
-                binding.profileDiscordName.setError(null);
-                viewModel.isDiscordNameValid.setValue(true);
-            }
-        });
-        viewModel.displayName.observe(getViewLifecycleOwner(), value -> {
-            if (snackbar != null && snackbar.isShown()) {
-                snackbar.dismiss();
-            }
-            if (value == null || value.isEmpty()) {
-                binding.profileDisplayName.setError(getString(R.string.error_profile_name_required));
-                viewModel.isDisplayNameValid.setValue(false);
-            } else {
-                binding.profileDisplayName.setError(null);
-                viewModel.isDisplayNameValid.setValue(true);
+        viewModel.isEditMode.observe(getViewLifecycleOwner(), value -> {
+            if (value) {
+                navigator.navigate(R.id.action_fragment_profile_to_editProfileFragment);
+                viewModel.isEditMode.setValue(false);
             }
         });
         viewModel.loadProfile();

@@ -46,7 +46,7 @@
                     android:id="@+id/profileEmail"
                     app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
                     app:errorEnabled="true">
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
@@ -62,7 +62,7 @@
                     android:id="@+id/profileDisplayName"
                     app:layout_constraintTop_toBottomOf="@id/profileEmail"
                     app:errorEnabled="true">
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -78,7 +78,7 @@
                     android:id="@+id/profileDiscordName"
                     app:layout_constraintTop_toBottomOf="@id/profileDisplayName"
                     app:errorEnabled="true">
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -87,16 +87,17 @@
                         android:singleLine="true"
                         android:hint="@string/profile_discord_name"/>
             </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:id="@+id/updateButton"
+                    android:visibility="visible"
+                    android:onClick="@{() -> viewModel.onUpdateMyProfile()}"
+                    android:text="@string/action_save_my_profile"
+                    android:enabled="@{viewModel.isEmailValid &amp;&amp; viewModel.isDisplayNameValid &amp;&amp; viewModel.isDiscordNameValid}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profileDiscordName"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:onClick="@{() -> viewModel.onEnterEditMode()}"
-                android:id="@+id/floatingActionButton"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="8dp"
-                android:tooltipText="@string/action_edit_my_profile"
-                app:srcCompat="@drawable/ic_pencil"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

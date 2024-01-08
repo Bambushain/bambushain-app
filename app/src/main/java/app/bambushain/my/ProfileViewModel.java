@@ -25,6 +25,7 @@ public class ProfileViewModel extends ViewModel {
     public MutableLiveData<Boolean> isEmailValid = new MutableLiveData<>(true);
     public MutableLiveData<Boolean> isDiscordNameValid = new MutableLiveData<>(true);
     public MutableLiveData<Boolean> isDisplayNameValid = new MutableLiveData<>(true);
+    public MutableLiveData<Boolean> isEditMode = new MutableLiveData<>(false);
 
     @Inject
     BambooApi bambooApi;
@@ -71,5 +72,10 @@ public class ProfileViewModel extends ViewModel {
                     }
                     isLoading.setValue(false);
                 });
+    }
+
+    public void onEnterEditMode() {
+        Log.d(TAG, "onEnterEditMode: open EditProfileFragment");
+        isEditMode.setValue(true);
     }
 }

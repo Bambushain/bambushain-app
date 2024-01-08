@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_update">Profil speichern</string>
+    <string name="action_save_my_profile">Profil speichern</string>
+    <string name="action_edit_my_profile">Profil bearbeiten</string>
     <string name="profile_name">Name</string>
     <string name="profile_email">Email</string>
     <string name="profile_discord_name">Discord Name (optional)</string>
