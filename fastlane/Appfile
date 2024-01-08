@@ -1,0 +1,2 @@
+json_key_file("/opt/secure/bambushain-internal.json")
+package_name("app.bambushain") # e.g. com.krausefx.app
