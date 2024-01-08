@@ -26,7 +26,8 @@
                             android:id="@+id/toolbar"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent">
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:menu="@menu/my_profile_menu">
                     </com.google.android.material.appbar.MaterialToolbar>
                     <com.google.android.material.progressindicator.LinearProgressIndicator
                             android:id="@+id/progress_indicator"
@@ -39,64 +40,78 @@
                             app:showAnimationBehavior="outward"/>
                 </FrameLayout>
             </com.google.android.material.appbar.AppBarLayout>
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin"
-                    android:id="@+id/profileEmail"
-                    app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
-                    app:errorEnabled="true">
-                <com.google.android.material.textview.MaterialTextView
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/toolbarLayout">
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:text="@={viewModel.email}"
-                        android:ems="10"
-                        android:singleLine="true"
-                        android:hint="@string/profile_email"/>
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin"
-                    android:id="@+id/profileDisplayName"
-                    app:layout_constraintTop_toBottomOf="@id/profileEmail"
-                    app:errorEnabled="true">
-                <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:text="@={viewModel.displayName}"
-                        android:ems="10"
-                        android:singleLine="true"
-                        android:hint="@string/profile_name"/>
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin"
-                    android:id="@+id/profileDiscordName"
-                    app:layout_constraintTop_toBottomOf="@id/profileDisplayName"
-                    app:errorEnabled="true">
-                <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:text="@={viewModel.discordName}"
-                        android:ems="10"
-                        android:singleLine="true"
-                        android:hint="@string/profile_discord_name"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                        android:orientation="vertical">
+                    <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="194dp"
+                            android:id="@+id/bambooGroveImage"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@string/bambooGroveImage"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/bamboo_grove"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"
+                            android:id="@+id/profileDisplayName"
+                            android:text="@={viewModel.displayName}"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            app:layout_constraintStart_toStartOf="@id/bambooGroveImage"
+                            app:layout_constraintTop_toBottomOf="@id/bambooGroveImage"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:id="@+id/profileEmail"
+                            android:text="@={viewModel.email}"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?android:attr/textColorSecondary"
+                            app:layout_constraintStart_toStartOf="@id/profileDisplayName"
+                            app:layout_constraintTop_toBottomOf="@id/profileDisplayName"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:id="@+id/profileDiscordNameLabel"
+                            android:text="@string/label_profile_discord_name"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:visibility="@{viewModel.discordName.empty ? android.view.View.GONE : android.view.View.VISIBLE}"
+                            app:layout_constraintStart_toStartOf="@id/profileEmail"
+                            app:layout_constraintTop_toBottomOf="@id/profileEmail"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:id="@+id/profileDiscordName"
+                            android:text="@={viewModel.discordName}"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:visibility="@{viewModel.discordName.empty ? android.view.View.GONE : android.view.View.VISIBLE}"
+                            app:layout_constraintStart_toEndOf="@id/profileDiscordNameLabel"
+                            app:layout_constraintTop_toTopOf="@id/profileDiscordNameLabel"/>
+                    <com.google.android.material.button.MaterialButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"
+                            android:id="@+id/editProfile"
+                            android:text="@string/action_edit_my_profile"
+                            android:onClick="@{() -> viewModel.onEnterEditMode()}"
+                            app:layout_constraintTop_toBottomOf="@id/profileDiscordName"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:onClick="@{() -> viewModel.onEnterEditMode()}"
-                android:id="@+id/floatingActionButton"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="8dp"
-                android:tooltipText="@string/action_edit_my_profile"
-                app:srcCompat="@drawable/ic_pencil"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
