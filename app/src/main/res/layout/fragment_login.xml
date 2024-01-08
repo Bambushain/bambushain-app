@@ -89,7 +89,6 @@
                     android:layout_margin="@dimen/margin"
                     android:text="@string/action_login"
                     android:id="@+id/loginButton"
-                    android:onClick="@{() -> viewModel.onLogin()}"
                     android:enabled="@{viewModel.twoFactorRequested ? (viewModel.email.length() > 3 &amp;&amp; viewModel.password.length() > 3 &amp;&amp; viewModel.twoFactorCode.length() == 6) : (viewModel.email.length() > 3 &amp;&amp; viewModel.password.length() > 3)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/loginTwoFactorCode"/>
@@ -100,7 +99,6 @@
                     android:text="@string/action_forgot_password"
                     android:id="@+id/loginForgotPassword"
                     android:enabled="@{!viewModel.email.empty}"
-                    android:onClick="@{() -> viewModel.onForgotPassword()}"
                     android:visibility="@{!viewModel.twoFactorRequested ? android.view.View.VISIBLE : android.view.View.GONE}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/loginTwoFactorCode"

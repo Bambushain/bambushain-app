@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph" app:startDestination="@id/fragment_event_calendar">
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
+            app:startDestination="@id/fragment_event_calendar">
     <fragment android:id="@+id/fragment_login" android:name="app.bambushain.login.LoginFragment"
               android:label="@string/label_login">
         <action android:id="@+id/action_fragment_login_to_fragment_event_calendar"
                 app:destination="@id/fragment_event_calendar" app:popUpTo="@id/fragment_event_calendar"
                 app:popUpToInclusive="true"/>
     </fragment>
-    <fragment android:id="@+id/fragment_event_calendar" android:name="app.bambushain.bamboo.calendar.EventCalendarFragment"
-              android:label="@string/label_event_calendar" />
+    <fragment android:id="@+id/fragment_event_calendar"
+              android:name="app.bambushain.bamboo.calendar.EventCalendarFragment"
+              android:label="@string/label_event_calendar"/>
     <action android:id="@+id/action_global_fragment_login" app:destination="@id/fragment_login"/>
     <fragment android:id="@+id/fragment_pandas" android:name="app.bambushain.bamboo.pandas.PandasFragment"
               android:label="@string/label_pandas"/>
@@ -20,13 +22,21 @@
         <fragment android:id="@+id/fragment_profile" android:name="app.bambushain.my.ProfileFragment"
                   android:label="@string/label_my_profile">
             <action android:id="@+id/action_fragment_profile_to_edit_profile_fragment"
-                    app:destination="@id/fragment_edit_profile" app:popUpTo="@id/fragment_profile"/>
+                    app:destination="@id/fragment_edit_profile" app:popUpTo="@id/fragment_profile">
+                <argument android:name="email" app:argType="string"/>
+                <argument android:name="displayName" app:argType="string"/>
+                <argument android:name="discordName" app:argType="string" app:nullable="true"/>
+            </action>
             <action android:id="@+id/action_fragment_profile_to_change_my_password_fragment"
                     app:destination="@id/fragment_change_password" app:popUpTo="@id/fragment_profile"/>
         </fragment>
-        <dialog android:id="@+id/fragment_change_password" android:name="app.bambushain.my.ChangePasswordFragment"
+        <dialog android:id="@+id/fragment_change_password" android:name="app.bambushain.my.ChangePasswordDialog"
                 android:label="@string/label_change_my_password"/>
-        <fragment android:id="@+id/fragment_edit_profile" android:name="app.bambushain.my.EditProfileFragment"
-                  android:label="@string/label_edit_my_profile" tools:layout="@layout/fragment_edit_profile"/>
+        <dialog android:id="@+id/fragment_edit_profile" android:name="app.bambushain.my.EditProfileDialog"
+                android:label="@string/label_edit_my_profile" tools:layout="@layout/fragment_edit_my_profile">
+            <argument android:name="email" app:argType="string"/>
+            <argument android:name="displayName" app:argType="string"/>
+            <argument android:name="discordName" app:argType="string" app:nullable="true"/>
+        </dialog>
     </navigation>
 </navigation>

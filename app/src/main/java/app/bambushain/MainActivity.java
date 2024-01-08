@@ -8,12 +8,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
 import app.bambushain.api.BambooApi;
 import app.bambushain.databinding.ActivityMainBinding;
 import app.bambushain.databinding.HeaderNavigationDrawerBinding;
 import app.bambushain.navigation.NavigationViewModel;
 import dagger.hilt.android.AndroidEntryPoint;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import lombok.val;
 
 import javax.inject.Inject;
@@ -23,25 +23,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
 
     public ActivityMainBinding binding;
-    NavController navigator;
-
     public NavigationViewModel headerViewModel;
-
-    boolean preDrawTriggered = false;
-
+    NavController navigator;
     @Inject
     BambooApi bambooApi;
-
-    public void updateHeader() {
-        bambooApi
-                .getMyProfile()
-                .subscribe(profile -> {
-                    headerViewModel.profile.setValue(profile);
-                }, ex -> {
-                    Log.e(TAG, "loadProfile: Failed to load profile", ex);
-                    navigator.navigate(R.id.action_global_fragment_login);
-                });
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,20 +55,29 @@ public class MainActivity extends AppCompatActivity {
         navigator.addOnDestinationChangedListener((controller, destination, arguments) -> {
             binding.navView.setCheckedItem(destination.getId());
         });
-        headerViewModel.profile.observe(this, profile -> {
-            if (profile == null) {
-                updateHeader();
-                binding.drawerLayout.closeDrawers();
-            }
+        headerBinding.actionLogout.setOnClickListener(v -> {
+            bambooApi.logout();
+
+            val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+            sharedPrefs
+                    .edit()
+                    .remove(getString(app.bambushain.api.R.string.bambooAuthenticationToken))
+                    .apply();
+
+            navigator.navigate(R.id.action_global_fragment_login);
         });
+
         bambooApi
                 .getMyProfile()
                 .subscribe(profile -> {
-                    headerViewModel.profile.setValue(profile);
+                    headerViewModel.email.setValue(profile.getEmail());
+                    headerViewModel.displayName.setValue(profile.getDisplayName());
+                    headerViewModel.discordName.setValue(profile.getDiscordName());
                     view.getViewTreeObserver().removeOnPreDrawListener(preDrawListener);
-                }, ex -> {
-                    Log.e(TAG, "loadProfile: Failed to load profile", ex);
+                }, throwable -> {
+                    Log.e(TAG, "loadProfile: Failed to load profile", throwable);
                     navigator.navigate(R.id.action_global_fragment_login);
+
                     view.getViewTreeObserver().removeOnPreDrawListener(preDrawListener);
                 });
 
