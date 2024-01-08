@@ -4,8 +4,6 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph" app:startDestination="@id/fragment_event_calendar">
     <fragment android:id="@+id/fragment_login" android:name="app.bambushain.login.LoginFragment"
               android:label="@string/label_login">
-        <argument android:name="ShowAppBar" android:defaultValue="false"/>
-        <argument android:name="ReloadProfile" app:argType="boolean" android:defaultValue="true"/>
         <action android:id="@+id/action_fragment_login_to_fragment_event_calendar"
                 app:destination="@id/fragment_event_calendar" app:popUpTo="@id/fragment_event_calendar"
                 app:popUpToInclusive="true"/>
