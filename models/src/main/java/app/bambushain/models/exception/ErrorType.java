@@ -1,37 +1,30 @@
-package app.bambushain.models;
+package app.bambushain.models.exception;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import lombok.Getter;
+import lombok.val;
 
 import java.io.IOException;
 
 @Getter
 @JsonAdapter(ErrorType.Adapter.class)
 public enum ErrorType {
-    NOTFOUND("NotFound"),
-
-    EXISTSALREADY("ExistsAlready"),
-
-    INVALIDDATA("InvalidData"),
-
-    IO("Io"),
-
-    DB("Db"),
-
-    SERIALIZATION("Serialization"),
-
-    VALIDATION("Validation"),
-
-    INSUFFICIENTRIGHTS("InsufficientRights"),
-
-    UNAUTHORIZED("Unauthorized"),
-
-    UNKNOWN("Unknown"),
-
-    CRYPTO("Crypto");
+    Crypto("crypto"),
+    Database("database"),
+    ExistsAlready("existsAlready"),
+    InsufficientRights("insufficientRights"),
+    InvalidData("invalidData"),
+    Io("Io"),
+    Mailing("mailing"),
+    Network("network"),
+    NotFound("notFound"),
+    Serialization("serialization"),
+    Unauthorized("unauthorized"),
+    Unknown("unknown"),
+    Validation("validation");
 
     private final String value;
 
@@ -62,7 +55,7 @@ public enum ErrorType {
 
         @Override
         public ErrorType read(final JsonReader jsonReader) throws IOException {
-            String value = jsonReader.nextString();
+            val value = jsonReader.nextString();
 
             return ErrorType.fromValue(value);
         }

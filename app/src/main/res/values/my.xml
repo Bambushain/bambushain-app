@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_update">Profil speichern</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_discord_name">Discord Name (optional)</string>
+    <string name="success_profile_update">Dein Profil wurde gespeichert</string>
+    <string name="error_profile_update_exists">Der Name oder die Email ist schon vergeben</string>
+    <string name="error_profile_update_failed">Dein Profil konnte nicht gespeichert werden</string>
+    <string name="error_profile_update_loading_failed">Dein Profil konnte leider nicht geladen werden</string>
+    <string name="error_profile_email_invalid">Die Email ist ungültig</string>
+    <string name="error_profile_discord_invalid">Die Discordname ist ungültig</string>
+    <string name="error_profile_discord_too_short">Der Name muss mindestens 3 Zeichen lang sein</string>
+    <string name="error_profile_discord_too_long">Der Name darf nicht länger als 32 Zeichen sein</string>
+    <string name="error_profile_name_required">Der Name ist erforderlich</string>
+</resources>

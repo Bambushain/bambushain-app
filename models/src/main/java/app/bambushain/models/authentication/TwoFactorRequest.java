@@ -1,16 +1,16 @@
-package app.bambushain.models;
+package app.bambushain.models.authentication;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * ValidateTotpRequest
+ * TwoFactorRequest
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValidateTotpRequest {
-    private String code;
+public class TwoFactorRequest {
+    private String email;
     private String password;
 }

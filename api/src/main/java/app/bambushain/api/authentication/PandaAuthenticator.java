@@ -30,10 +30,6 @@ public class PandaAuthenticator implements Authenticator {
     @Override
     public Request authenticate(Route route, Response response) {
         val request = response.request();
-        if (request.header("Authorization") != null) {
-            return null;
-        }
-
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         val authenticationToken = sharedPrefs.getString(ctx.getString(R.string.bambooAuthenticationToken), "");
 

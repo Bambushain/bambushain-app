@@ -1,4 +1,4 @@
-package app.bambushain.models;
+package app.bambushain.models.my;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

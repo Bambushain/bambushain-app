@@ -1,16 +1,16 @@
-package app.bambushain.models;
+package app.bambushain.models.finalfantasy;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * TwoFactorRequest
+ * FreeCompany
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TwoFactorRequest {
-    private String email;
-    private String password;
+public class FreeCompany {
+    private Integer id;
+    private String name;
 }

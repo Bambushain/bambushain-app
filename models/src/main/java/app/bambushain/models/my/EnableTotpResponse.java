@@ -1,16 +1,16 @@
-package app.bambushain.models;
+package app.bambushain.models.my;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * LoginResponse
+ * EnableTotpResponse
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse {
-    private User user;
-    private String token;
+public class EnableTotpResponse {
+    private String qrCode;
+    private String secret;
 }

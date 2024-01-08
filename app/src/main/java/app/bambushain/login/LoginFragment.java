@@ -3,15 +3,14 @@ package app.bambushain.login;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.preference.PreferenceManager;
 import app.bambushain.R;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentLoginBinding;
+import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import dagger.hilt.android.qualifiers.ActivityContext;
 import lombok.val;
@@ -42,9 +41,14 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        viewModel.toastMessage.observe(getViewLifecycleOwner(), value -> {
+        viewModel.errorMessage.observe(getViewLifecycleOwner(), value -> {
             if (value != 0) {
-                Toast.makeText(getActivity(), value, Toast.LENGTH_LONG).show();
+                Snackbar
+                        .make(binding.layout, value, Snackbar.LENGTH_LONG)
+                        .setBackgroundTint(getColor(R.color.md_theme_error))
+                        .setActionTextColor(getColor(R.color.md_theme_onError))
+                        .show();
+                viewModel.errorMessage.setValue(0);
             }
         });
         viewModel.apiToken.observe(getViewLifecycleOwner(), value -> {

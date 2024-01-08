@@ -1,7 +1,17 @@
 package app.bambushain.api;
 
-import app.bambushain.models.Character;
-import app.bambushain.models.*;
+import app.bambushain.models.authentication.ForgotPasswordRequest;
+import app.bambushain.models.authentication.LoginRequest;
+import app.bambushain.models.authentication.LoginResponse;
+import app.bambushain.models.authentication.TwoFactorRequest;
+import app.bambushain.models.bamboo.Event;
+import app.bambushain.models.bamboo.User;
+import app.bambushain.models.finalfantasy.*;
+import app.bambushain.models.finalfantasy.Character;
+import app.bambushain.models.my.ChangeMyPassword;
+import app.bambushain.models.my.EnableTotpResponse;
+import app.bambushain.models.my.UpdateMyProfile;
+import app.bambushain.models.my.ValidateTotpRequest;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.*;
@@ -70,13 +80,13 @@ public interface BambooApi {
      * Creates a new event
      *
      * @param event (optional)
-     * @return Observable&lt;ErrorDetails&gt;
+     * @return Observable&lt;Event&gt;
      */
     @Headers({
             "Content-Type:application/json"
     })
     @POST("api/bamboo-grove/event")
-    Observable<ErrorDetails> createEvent(
+    Observable<Event> createEvent(
             @retrofit2.http.Body Event event
     );
 
@@ -235,13 +245,13 @@ public interface BambooApi {
     Observable<List<Character>> getCharacters();
 
     /**
-     * Gets the custom field with the given
+     * Gets the custom field with the given id
      *
      * @param id The id of the custom field (required)
-     * @return Observable&lt;ErrorDetails&gt;
+     * @return Observable&lt;CustomCharacterField&gt;
      */
     @GET("api/final-fantasy/character/custom-field/{id}")
-    Observable<ErrorDetails> getCustomFieldById(
+    Observable<CustomCharacterField> getCustomFieldById(
             @retrofit2.http.Path("id") long id
     );
 

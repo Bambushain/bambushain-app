@@ -1,22 +1,17 @@
 package app.bambushain.my;
 
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 import app.bambushain.R;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentProfileBinding;
-import app.bambushain.login.LoginViewModel;
+import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
-import lombok.val;
-import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -24,6 +19,7 @@ import javax.inject.Inject;
 public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {
 
     ProfileViewModel viewModel;
+    Snackbar snackbar;
 
     @Inject
     public ProfileFragment() {
@@ -35,17 +31,73 @@ public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {
     }
 
     @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        viewModel.toastMessage.observe(getViewLifecycleOwner(), value -> {
+        viewModel.errorMessage.observe(getViewLifecycleOwner(), value -> {
             if (value != 0) {
-                Toast.makeText(activity, value, Toast.LENGTH_LONG).show();
+                if (snackbar == null) {
+                    snackbar = Snackbar.make(binding.layout, value, Snackbar.LENGTH_INDEFINITE);
+                }
+                snackbar
+                        .setText(value)
+                        .setBackgroundTint(getColor(R.color.md_theme_error))
+                        .setActionTextColor(getColor(R.color.md_theme_onError))
+                        .show();
+                viewModel.errorMessage.setValue(0);
             }
-            if (value == R.string.success_profile_update) {
-
+        });
+        viewModel.successMessage.observe(getViewLifecycleOwner(), value -> {
+            if (value != 0) {
+                Toast
+                        .makeText(getContext(), value, Toast.LENGTH_LONG)
+                        .show();
+                activity.updateHeader();
+                viewModel.successMessage.setValue(0);
+                if (snackbar != null && snackbar.isShown()) {
+                    snackbar.dismiss();
+                }
+            }
+        });
+        viewModel.email.observe(getViewLifecycleOwner(), value -> {
+            if (snackbar != null && snackbar.isShown()) {
+                snackbar.dismiss();
+            }
+            if (value == null || value.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(value).matches()) {
+                binding.profileEmail.setError(getString(R.string.error_profile_email_invalid));
+                viewModel.isEmailValid.setValue(false);
+            } else {
+                binding.profileEmail.setError(null);
+                viewModel.isEmailValid.setValue(true);
+            }
+        });
+        viewModel.discordName.observe(getViewLifecycleOwner(), value -> {
+            if (snackbar != null && snackbar.isShown()) {
+                snackbar.dismiss();
+            }
+            if (value != null && !value.isEmpty() && value.length() < 3) {
+                binding.profileDiscordName.setError(getString(R.string.error_profile_discord_too_short));
+                viewModel.isDiscordNameValid.setValue(false);
+            } else if (value != null && !value.isEmpty() && value.length() > 32) {
+                binding.profileDiscordName.setError(getString(R.string.error_profile_discord_too_long));
+                viewModel.isDiscordNameValid.setValue(false);
+            } else {
+                binding.profileDiscordName.setError(null);
+                viewModel.isDiscordNameValid.setValue(true);
+            }
+        });
+        viewModel.name.observe(getViewLifecycleOwner(), value -> {
+            if (snackbar != null && snackbar.isShown()) {
+                snackbar.dismiss();
+            }
+            if (value == null || value.isEmpty()) {
+                binding.profileDisplayName.setError(getString(R.string.error_profile_name_required));
+                viewModel.isDisplayNameValid.setValue(false);
+            } else {
+                binding.profileDisplayName.setError(null);
+                viewModel.isDisplayNameValid.setValue(true);
             }
         });
         viewModel.loadProfile();

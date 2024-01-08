@@ -1,4 +1,4 @@
-package app.bambushain.models;
+package app.bambushain.models.finalfantasy;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;

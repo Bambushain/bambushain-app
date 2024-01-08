@@ -1,4 +1,4 @@
-package app.bambushain.models;
+package app.bambushain.models.finalfantasy;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,13 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ModifyCustomCharacterFieldRequest
+ * CustomCharacterField
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ModifyCustomCharacterFieldRequest {
-    private List<String> values = new ArrayList<>();
+public class CustomCharacterField {
+    private Integer id;
     private String label;
     private Integer position;
+    private List<CustomCharacterFieldOption> options = new ArrayList<>();
 }
+

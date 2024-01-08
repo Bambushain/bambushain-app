@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.preference.PreferenceManager;
 import app.bambushain.api.BambooApi;
-import app.bambushain.models.User;
+import app.bambushain.models.bamboo.User;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -30,10 +30,7 @@ public class NavigationViewModel extends ViewModel {
     }
 
     public void onLogout() {
-        bambooApi
-                .logout()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread());
+        bambooApi.logout();
 
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs

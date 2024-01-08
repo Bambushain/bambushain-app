@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -45,5 +47,9 @@ public abstract class BindingFragment<T extends ViewBinding> extends Fragment {
         }
 
         return root;
+    }
+
+    protected @ColorInt int getColor(@ColorRes int id) {
+        return getResources().getColor(id, null);
     }
 }

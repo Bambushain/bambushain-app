@@ -1,13 +1,12 @@
 package app.bambushain.api;
 
 import android.content.Context;
-import app.bambushain.api.authentication.PandaAuthenticator;
+import androidx.preference.PreferenceManager;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
-import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import lombok.val;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -15,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 import javax.inject.Singleton;
+import java.util.concurrent.TimeUnit;
 
 @Module
 @InstallIn(SingletonComponent.class)
@@ -22,25 +22,35 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkhttpClient(PandaAuthenticator authenticator) {
-        OkHttpClient.Builder client = new OkHttpClient.Builder();
-        client.authenticator(authenticator);
-
-        return client.build();
-    }
-
-    @Provides
-    @Singleton
-    Retrofit provideRetrofit(@ApplicationContext Context context, OkHttpClient okHttpClient) {
+    Retrofit provideRetrofit(@ApplicationContext Context context, BambooCallAdapterFactory callAdapterFactory) {
         val instance = context.getString(R.string.bambooInstance);
         val baseUrl = "https://" + instance + ".bambushain.app/";
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        val client = new OkHttpClient.Builder()
+                .addNetworkInterceptor(chain -> {
+                    val authenticationToken = sharedPrefs.getString(context.getString(R.string.bambooAuthenticationToken), "");
+
+                    return chain
+                            .proceed(chain
+                                    .request()
+                                    .newBuilder()
+                                    .header("Authorization", "Panda " + authenticationToken)
+                                    .build());
+                })
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .callTimeout(60, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(false)
+                .build();
 
         return new Retrofit.Builder()
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .addCallAdapterFactory(callAdapterFactory)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(baseUrl)
-                .client(okHttpClient)
+                .client(client)
                 .build();
     }
 
