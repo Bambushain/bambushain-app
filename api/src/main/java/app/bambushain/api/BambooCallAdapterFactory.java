@@ -31,7 +31,7 @@ import java.lang.reflect.Type;
 public class BambooCallAdapterFactory extends CallAdapter.Factory {
     RxJava3CallAdapterFactory original;
 
-    private BambooCallAdapterFactory() {
+    public BambooCallAdapterFactory() {
         original = RxJava3CallAdapterFactory.create();
     }
 
