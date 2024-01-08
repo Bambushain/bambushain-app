@@ -1,0 +1,96 @@
+package app.bambushain.api;
+
+import app.bambushain.models.exception.BambooException;
+import app.bambushain.models.exception.ErrorType;
+import com.google.gson.Gson;
+import dagger.Module;
+import dagger.Provides;
+import dagger.hilt.InstallIn;
+import dagger.hilt.components.SingletonComponent;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import lombok.AllArgsConstructor;
+import lombok.val;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import retrofit2.Call;
+import retrofit2.CallAdapter;
+import retrofit2.HttpException;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
+
+import javax.inject.Singleton;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+
+@Module
+@InstallIn(SingletonComponent.class)
+public class BambooCallAdapterFactory extends CallAdapter.Factory {
+    RxJava3CallAdapterFactory original;
+
+    public BambooCallAdapterFactory() {
+        original = RxJava3CallAdapterFactory.create();
+    }
+
+    @Nullable
+    @Override
+    public CallAdapter<?, ?> get(@NotNull Type returnType, @NotNull Annotation[] annotations, @NotNull Retrofit retrofit) {
+        return new RxCallAdapterWrapper(original.get(returnType, annotations, retrofit));
+    }
+
+    static BambooCallAdapterFactory create() {
+        return new BambooCallAdapterFactory();
+    }
+
+    @Provides
+    @Singleton
+    public BambooCallAdapterFactory provideBambooErrorHandlingCallAdapterFactory() {
+        return BambooCallAdapterFactory.create();
+    }
+
+    @AllArgsConstructor
+    private static final class RxCallAdapterWrapper<R> implements CallAdapter<R, Object> {
+        private CallAdapter<R, Object> wrapped;
+
+        @NotNull
+        @Override
+        public Type responseType() {
+            return wrapped.responseType();
+        }
+
+        @NotNull
+        @Override
+        public Object adapt(Call<R> call) {
+            val wrappedResult = wrapped.adapt(call);
+            if (wrappedResult instanceof Completable) {
+                return ((Completable) wrappedResult)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.newThread())
+                        .onErrorResumeNext(throwable -> Completable.error(asBambooException(throwable)));
+            } else if (wrappedResult instanceof Observable<?>) {
+                return ((Observable<?>) wrappedResult)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.newThread())
+                        .onErrorResumeNext(throwable -> Observable.error(asBambooException(throwable)));
+            }
+
+            return wrappedResult;
+        }
+
+        private BambooException asBambooException(Throwable throwable) {
+            if (throwable instanceof HttpException) {
+                val httpException = (HttpException) throwable;
+                val response = httpException.response();
+                return new Gson().fromJson(response.errorBody().charStream(), BambooException.class);
+            }
+            if (throwable instanceof IOException) {
+                return new BambooException(ErrorType.Network, "", throwable.getMessage());
+            }
+
+            return new BambooException(throwable);
+        }
+    }
+}

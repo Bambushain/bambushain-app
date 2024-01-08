@@ -9,7 +9,8 @@ import javax.inject.Inject;
 @AndroidEntryPoint
 public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
     @Inject
-    public PandasFragment() {}
+    public PandasFragment() {
+    }
 
     @Override
     protected FragmentPandasBinding getViewBinding() {
