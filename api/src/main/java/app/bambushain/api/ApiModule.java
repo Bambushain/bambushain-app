@@ -22,12 +22,10 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    Retrofit provideRetrofit(@ApplicationContext Context context, BambooCallAdapterFactory callAdapterFactory) {
-        val instance = context.getString(R.string.bambooInstance);
-        val baseUrl = "https://" + instance + ".bambushain.app/";
+    OkHttpClient provideOkHttpBuilder(@ApplicationContext Context context) {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-        val client = new OkHttpClient.Builder()
+        return new OkHttpClient.Builder()
                 .addNetworkInterceptor(chain -> {
                     val authenticationToken = sharedPrefs.getString(context.getString(R.string.bambooAuthenticationToken), "");
 
@@ -44,6 +42,13 @@ public class ApiModule {
                 .callTimeout(60, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(false)
                 .build();
+    }
+
+    @Provides
+    @Singleton
+    Retrofit provideRetrofit(@ApplicationContext Context context, OkHttpClient client, BambooCallAdapterFactory callAdapterFactory) {
+        val instance = context.getString(R.string.bambooInstance);
+        val baseUrl = "https://" + instance + ".bambushain.app/";
 
         return new Retrofit.Builder()
                 .addCallAdapterFactory(callAdapterFactory)

@@ -9,17 +9,15 @@ import app.bambushain.models.exception.BambooException;
 import app.bambushain.models.exception.ErrorType;
 import app.bambushain.models.my.UpdateMyProfile;
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import lombok.val;
 
 import javax.inject.Inject;
-import java.net.HttpCookie;
 
 @HiltViewModel
 public class ProfileViewModel extends ViewModel {
     private static final String TAG = ProfileViewModel.class.getName();
     public MutableLiveData<String> email = new MutableLiveData<>("");
-    public MutableLiveData<String> name = new MutableLiveData<>("");
+    public MutableLiveData<String> displayName = new MutableLiveData<>("");
     public MutableLiveData<String> discordName = new MutableLiveData<>("");
     public MutableLiveData<Boolean> isLoading = new MutableLiveData<>(true);
     public MutableLiveData<Integer> errorMessage = new MutableLiveData<>(0);
@@ -42,7 +40,7 @@ public class ProfileViewModel extends ViewModel {
                 .subscribe(profile -> {
                     Log.d(TAG, "loadProfile: Loaded profile successfully");
                     email.setValue(profile.getEmail());
-                    name.setValue(profile.getDisplayName());
+                    displayName.setValue(profile.getDisplayName());
                     discordName.setValue(profile.getDiscordName());
                     isLoading.setValue(false);
                 }, ex -> {
@@ -54,7 +52,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void onUpdateMyProfile() {
-        val profile = new UpdateMyProfile(email.getValue(), name.getValue(), discordName.getValue());
+        val profile = new UpdateMyProfile(email.getValue(), displayName.getValue(), discordName.getValue());
         Log.d(TAG, "updateMyProfile: Perform profile update " + profile);
         isLoading.setValue(true);
         bambooApi

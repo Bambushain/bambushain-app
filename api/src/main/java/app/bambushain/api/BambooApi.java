@@ -9,9 +9,7 @@ import app.bambushain.models.bamboo.User;
 import app.bambushain.models.finalfantasy.*;
 import app.bambushain.models.finalfantasy.Character;
 import app.bambushain.models.my.ChangeMyPassword;
-import app.bambushain.models.my.EnableTotpResponse;
 import app.bambushain.models.my.UpdateMyProfile;
-import app.bambushain.models.my.ValidateTotpRequest;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.*;
@@ -524,14 +522,6 @@ public interface BambooApi {
     );
 
     /**
-     * Enables TOTP for the current user
-     *
-     * @return Observable&lt;EnableTotpResponse&gt;
-     */
-    @POST("api/my/totp")
-    Observable<EnableTotpResponse> enableTotp();
-
-    /**
      * Gets the current user
      * Gets the current users profile
      *
@@ -553,20 +543,6 @@ public interface BambooApi {
     @PUT("api/my/profile")
     Completable updateMyProfile(
             @retrofit2.http.Body UpdateMyProfile updateMyProfile
-    );
-
-    /**
-     * Validates the given code and marks the TOTP status as enabled
-     *
-     * @param validateTotpRequest (optional)
-     * @return Completable
-     */
-    @Headers({
-            "Content-Type:application/json"
-    })
-    @PUT("api/my/totp/validate")
-    Completable validateTotp(
-            @retrofit2.http.Body ValidateTotpRequest validateTotpRequest
     );
 
     /**

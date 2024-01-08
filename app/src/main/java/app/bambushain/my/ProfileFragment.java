@@ -44,7 +44,7 @@ public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {
                 snackbar
                         .setText(value)
                         .setBackgroundTint(getColor(R.color.md_theme_error))
-                        .setActionTextColor(getColor(R.color.md_theme_onError))
+                        .setTextColor(getColor(R.color.md_theme_onError))
                         .show();
                 viewModel.errorMessage.setValue(0);
             }
@@ -88,7 +88,7 @@ public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {
                 viewModel.isDiscordNameValid.setValue(true);
             }
         });
-        viewModel.name.observe(getViewLifecycleOwner(), value -> {
+        viewModel.displayName.observe(getViewLifecycleOwner(), value -> {
             if (snackbar != null && snackbar.isShown()) {
                 snackbar.dismiss();
             }

@@ -46,7 +46,7 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
                 Snackbar
                         .make(binding.layout, value, Snackbar.LENGTH_LONG)
                         .setBackgroundTint(getColor(R.color.md_theme_error))
-                        .setActionTextColor(getColor(R.color.md_theme_onError))
+                        .setTextColor(getColor(R.color.md_theme_onError))
                         .show();
                 viewModel.errorMessage.setValue(0);
             }

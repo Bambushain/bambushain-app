@@ -31,7 +31,7 @@ import java.lang.reflect.Type;
 public class BambooCallAdapterFactory extends CallAdapter.Factory {
     RxJava3CallAdapterFactory original;
 
-    public BambooCallAdapterFactory() {
+    private BambooCallAdapterFactory() {
         original = RxJava3CallAdapterFactory.create();
     }
 
@@ -64,20 +64,20 @@ public class BambooCallAdapterFactory extends CallAdapter.Factory {
         @NotNull
         @Override
         public Object adapt(Call<R> call) {
-            val wrapper = wrapped.adapt(call);
-            if (wrapper instanceof Completable) {
-                return ((Completable) wrapper)
+            val wrappedResult = wrapped.adapt(call);
+            if (wrappedResult instanceof Completable) {
+                return ((Completable) wrappedResult)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.newThread())
                         .onErrorResumeNext(throwable -> Completable.error(asBambooException(throwable)));
-            } else if (wrapper instanceof Observable<?>) {
-                return ((Observable<?>) wrapper)
+            } else if (wrappedResult instanceof Observable<?>) {
+                return ((Observable<?>) wrappedResult)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.newThread())
                         .onErrorResumeNext(throwable -> Observable.error(asBambooException(throwable)));
             }
 
-            return wrapper;
+            return wrappedResult;
         }
 
         private BambooException asBambooException(Throwable throwable) {
