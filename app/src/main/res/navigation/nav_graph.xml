@@ -14,13 +14,19 @@
     <fragment android:id="@+id/fragment_pandas" android:name="app.bambushain.bamboo.pandas.PandasFragment"
               android:label="@string/label_pandas"/>
     <action android:id="@+id/action_global_fragment_pandas" app:destination="@id/fragment_pandas"/>
-    <fragment android:id="@+id/fragment_profile" android:name="app.bambushain.my.ProfileFragment"
-              android:label="@string/label_my_profile">
-        <action android:id="@+id/action_fragment_profile_to_editProfileFragment"
-                app:destination="@id/fragment_edit_profile" app:popUpTo="@id/fragment_profile"/>
-    </fragment>
-    <action android:id="@+id/action_global_fragment_profile" app:destination="@id/fragment_profile"/>
+    <action android:id="@+id/action_global_fragment_profile" app:destination="@id/my_profile_navigation"/>
     <action android:id="@+id/action_global_fragment_event_calendar" app:destination="@id/fragment_event_calendar"/>
-    <fragment android:id="@+id/fragment_edit_profile" android:name="app.bambushain.my.EditProfileFragment"
-              android:label="@string/label_edit_my_profile" tools:layout="@layout/fragment_edit_profile"/>
+    <navigation android:id="@+id/my_profile_navigation" app:startDestination="@id/fragment_profile">
+        <fragment android:id="@+id/fragment_profile" android:name="app.bambushain.my.ProfileFragment"
+                  android:label="@string/label_my_profile">
+            <action android:id="@+id/action_fragment_profile_to_edit_profile_fragment"
+                    app:destination="@id/fragment_edit_profile" app:popUpTo="@id/fragment_profile"/>
+            <action android:id="@+id/action_fragment_profile_to_change_my_password_fragment"
+                    app:destination="@id/fragment_change_password" app:popUpTo="@id/fragment_profile"/>
+        </fragment>
+        <dialog android:id="@+id/fragment_change_password" android:name="app.bambushain.my.ChangePasswordFragment"
+                android:label="@string/label_change_my_password"/>
+        <fragment android:id="@+id/fragment_edit_profile" android:name="app.bambushain.my.EditProfileFragment"
+                  android:label="@string/label_edit_my_profile" tools:layout="@layout/fragment_edit_profile"/>
+    </navigation>
 </navigation>

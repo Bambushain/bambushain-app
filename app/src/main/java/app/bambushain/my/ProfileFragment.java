@@ -1,7 +1,6 @@
 package app.bambushain.my;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,10 +49,17 @@ public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {
         });
         viewModel.isEditMode.observe(getViewLifecycleOwner(), value -> {
             if (value) {
-                navigator.navigate(R.id.action_fragment_profile_to_editProfileFragment);
+                navigator.navigate(R.id.action_fragment_profile_to_edit_profile_fragment);
                 viewModel.isEditMode.setValue(false);
             }
         });
         viewModel.loadProfile();
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_change_my_password) {
+                navigator.navigate(R.id.action_fragment_profile_to_change_my_password_fragment);
+            }
+
+            return true;
+        });
     }
 }
