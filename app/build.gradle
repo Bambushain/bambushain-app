@@ -3,6 +3,18 @@ plugins {
     id 'com.google.dagger.hilt.android'
 }
 
+def computeVersionCode() {
+    def bambooReleaseVersion = (System.env.CI_PIPELINE_IID ?: '1') as Integer
+    def bambooMajorVersion = bambooMajorVersion as Integer
+    def bambooMinorVersion = bambooMinorVersion as Integer
+    def versionCode = (bambooMajorVersion * 100000) + (bambooMinorVersion * 10000) + bambooReleaseVersion
+
+    println "Versionname is $bambooMajorVersion.$bambooMinorVersion.$bambooReleaseVersion"
+    println "Versioncode is $versionCode"
+
+    return versionCode as Integer
+}
+
 android {
     namespace 'app.bambushain'
     compileSdk 34
@@ -11,16 +23,31 @@ android {
         applicationId "app.bambushain"
         minSdk 31
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        versionCode computeVersionCode()
+        versionName "$bambooMajorVersion.$bambooMinorVersion"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file(System.getenv('ANDROID_KEY_STOREFILE') ?: '/opt/secure/signing-key.jks')
+            storePassword System.getenv('ANDROID_KEYSTORE_PASSWORD')
+            keyAlias System.getenv('ANDROID_KEY_ALIAS')
+            keyPassword System.getenv('ANDROID_KEYSTORE_PASSWORD')
+        }
+    }
+
     buildTypes {
+        debug {
+            minifyEnabled false
+            debuggable true
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
-            signingConfig signingConfigs.debug
+            debuggable false
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {

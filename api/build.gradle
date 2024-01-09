@@ -9,10 +9,13 @@ android {
 
     defaultConfig {
         minSdk 29
-        targetSdk 33
+        targetSdk 34
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+        }
         release {
             minifyEnabled false
         }
