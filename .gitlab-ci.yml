@@ -54,8 +54,6 @@ build-release-app:
 
 deploy-internal-test-app:
   stage: deploy
-  variables:
-    SECURE_FILES_DOWNLOAD_PATH: '/opt/secure'
   extends:
     - .build-base
   before_script:
