@@ -5,7 +5,7 @@
   before_script:
     - chmod +x ./gradlew
   cache:
-    key: $CI_COMMIT_REF_SLUG
+    key: $CI_PROJECT_NAME
     paths:
       - .gradle
 
@@ -46,8 +46,8 @@ build-release-app:
   extends:
     - .build-base
   script:
-    - mkdir -p /opt/secure
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
+    - ls -sah .secure-files
     - ./gradlew -Pci --console=plain bundle -PbuildDir=build
   rules:
     - if: $CI_COMMIT_TAG
