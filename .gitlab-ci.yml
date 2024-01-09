@@ -47,7 +47,6 @@ build-release-app:
     - .build-base
   script:
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
-    - ls -sah .secure-files
     - ./gradlew -Pci --console=plain bundle -PbuildDir=build
   rules:
     - if: $CI_COMMIT_TAG
