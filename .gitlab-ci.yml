@@ -2,8 +2,12 @@
   image:
     name: registry.ulbricht.casa/docker-images/android-native-app:latest
     pull_policy: always
+  variables:
+    SECURE_FILES_DOWNLOAD_PATH: /opt/secure/
   before_script:
     - chmod +x ./gradlew
+    - mkdir -p /opt/secure
+  script:
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
   cache:
     key: $CI_COMMIT_REF_SLUG
@@ -62,3 +66,17 @@ deploy-internal-test-app:
     - bundle exec fastlane android internal
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_TAG
+      when: never
+
+deploy-tagged-test-app:
+  stage: deploy
+  extends:
+    - .build-base
+  before_script:
+    - bundle update
+  script:
+    - bundle exec fastlane android internal
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
