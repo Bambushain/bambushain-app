@@ -1,15 +1,13 @@
-update_fastlane
-
 default_platform(:android)
 
 platform :android do
   desc "Deploy a new version to the Google Play"
   lane :internal do
-    gradle(task: "clean assemble")
-    upload_to_play_store(track: "internal", build_type: "Debug")
+    gradle(task: "clean bundle", build_type: "release")
+    upload_to_play_store(track: "internal", release_status: "draft")
   end
   lane :deploy do
-    gradle(task: "clean assembleRelease")
+    gradle(task: "clean bundle", build_type: "release")
     upload_to_play_store
   end
 end
