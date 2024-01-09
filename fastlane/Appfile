@@ -1,2 +1,2 @@
-json_key_file(".secure_files/bambushain-app-13594b76a220.json")
+json_key_file("/opt/secure/bambushain-app-13594b76a220.json")
 package_name("app.bambushain")
