@@ -93,7 +93,17 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
                                 .edit()
                                 .putString(getString(app.bambushain.api.R.string.bambooAuthenticationToken), response.getToken())
                                 .apply();
-                        navigator.navigate(R.id.action_fragment_login_to_fragment_event_calendar);
+                        bambooApi
+                                .getMyProfile()
+                                .subscribe(profile -> {
+                                    activity.headerViewModel.email.setValue(profile.getEmail());
+                                    activity.headerViewModel.displayName.setValue(profile.getDisplayName());
+                                    activity.headerViewModel.discordName.setValue(profile.getDiscordName());
+                                    navigator.navigate(R.id.action_fragment_login_to_fragment_event_calendar);
+                                }, throwable -> {
+                                    Log.e(TAG, "loadProfile: Failed to load profile", throwable);
+                                    navigator.navigate(R.id.action_global_fragment_login);
+                                });
                     }, ex -> {
                         Log.e(TAG, "onLogin: Login failed", ex);
                         showErrorSnackbar(R.string.error_login_failed_login);
