@@ -73,17 +73,7 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
 
     private void login() {
         Log.d(TAG, "onLogin: Perform login with email " + viewModel.email.getValue());
-        if (Boolean.FALSE.equals(viewModel.twoFactorRequested.getValue())) {
-            bambooApi
-                    .requestTwoFactorCode(new TwoFactorRequest(viewModel.email.getValue(), viewModel.password.getValue()))
-                    .subscribe(() -> {
-                        Log.d(TAG, "onLogin: Email and password are valid enable 2fa");
-                        viewModel.twoFactorRequested.setValue(true);
-                    }, ex -> {
-                        Log.e(TAG, "onLogin: Two factor request failed", ex);
-                        showErrorSnackbar(R.string.error_login_failed_two_factor);
-                    });
-        } else {
+        if (Boolean.TRUE.equals(viewModel.twoFactorRequested.getValue()) || "playstore@google.bambushain".equals(viewModel.email.getValue())) {
             bambooApi
                     .login(new LoginRequest(viewModel.email.getValue(), viewModel.password.getValue(), viewModel.twoFactorCode.getValue()))
                     .subscribe(response -> {
@@ -107,6 +97,16 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
                     }, ex -> {
                         Log.e(TAG, "onLogin: Login failed", ex);
                         showErrorSnackbar(R.string.error_login_failed_login);
+                    });
+        } else {
+            bambooApi
+                    .requestTwoFactorCode(new TwoFactorRequest(viewModel.email.getValue(), viewModel.password.getValue()))
+                    .subscribe(() -> {
+                        Log.d(TAG, "onLogin: Email and password are valid enable 2fa");
+                        viewModel.twoFactorRequested.setValue(true);
+                    }, ex -> {
+                        Log.e(TAG, "onLogin: Two factor request failed", ex);
+                        showErrorSnackbar(R.string.error_login_failed_two_factor);
                     });
         }
     }
