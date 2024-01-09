@@ -1,2 +1,3 @@
-json_key_file(File.join(ENV["CI_PROJECT_DIR"], "/.secure_files//bambushain-app-13594b76a220.json"))
+#json_key_file(File.join(ENV["CI_PROJECT_DIR"], "/.secure_files//bambushain-app-13594b76a220.json"))
+json_key_file(ENV["PLAY_ACCESS_FILE"])
 package_name("app.bambushain")
