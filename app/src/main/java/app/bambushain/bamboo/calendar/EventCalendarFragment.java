@@ -43,7 +43,7 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         val view = super.onCreateView(inflater, container, savedInstanceState);
-        binding.eventList.setAdapter(new CalendarViewAdapter(new ArrayList<>(), LocalDate.now().getMonth(), LocalDate.now().getYear(), new ViewModelProvider(this), getViewLifecycleOwner()));
+        binding.eventList.setAdapter(new CalendarViewAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), new ArrayList<>(), LocalDate.now().getMonth(), LocalDate.now().getYear()));
         binding.eventList.setLayoutManager(new LinearLayoutManager(getContext()));
         val dividerItemDecoration = new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL);
         binding.eventList.addItemDecoration(dividerItemDecoration);
@@ -62,7 +62,7 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
                 .getEvents(firstDayOfMonth, lastDayOfMonth)
                 .subscribe(events -> {
                     binding.getViewModel().isLoading.setValue(false);
-                    binding.eventList.setAdapter(new CalendarViewAdapter(events, today.getMonth(), today.getYear(), new ViewModelProvider(this), getViewLifecycleOwner()));
+                    binding.eventList.setAdapter(new CalendarViewAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), events, today.getMonth(), today.getYear()));
                 }, throwable -> {
                     Log.e(TAG, "onViewCreated: Failed to load the events", throwable);
                     Snackbar

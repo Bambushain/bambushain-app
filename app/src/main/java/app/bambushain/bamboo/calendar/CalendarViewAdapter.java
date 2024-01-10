@@ -34,7 +34,7 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         val binding = CalendarDayBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
         binding.setLifecycleOwner(lifecycleOwner);
-        binding.events.setAdapter(new CalendarEventViewAdapter(new ArrayList<>(), viewModelProvider, lifecycleOwner));
+        binding.events.setAdapter(new CalendarEventViewAdapter(viewModelProvider, lifecycleOwner, new ArrayList<>()));
         binding.events.setLayoutManager(new LinearLayoutManager(viewGroup.getContext()));
 
         return new ViewHolder(binding);
@@ -63,7 +63,7 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
 
         public void setData(LocalDate day, List<Event> events) {
             binding.getViewModel().date.setValue(day);
-            binding.events.setAdapter(new CalendarEventViewAdapter(events, viewModelProvider, binding.getLifecycleOwner()));
+            binding.events.setAdapter(new CalendarEventViewAdapter(viewModelProvider, binding.getLifecycleOwner(), events));
         }
     }
 }
