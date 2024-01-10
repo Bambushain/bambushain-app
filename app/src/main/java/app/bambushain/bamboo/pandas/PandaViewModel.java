@@ -14,6 +14,7 @@ public class PandaViewModel extends ViewModel {
     public MutableLiveData<String> discordName = new MutableLiveData<>("");
     public MutableLiveData<Boolean> isMod = new MutableLiveData<>(false);
     public MutableLiveData<Boolean> appTotpEnabled = new MutableLiveData<>(false);
+    public MutableLiveData<Boolean> canEdit = new MutableLiveData<>(false);
 
     @Inject
     PandaViewModel() {

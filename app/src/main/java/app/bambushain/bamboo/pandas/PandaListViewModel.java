@@ -9,6 +9,7 @@ import javax.inject.Inject;
 @HiltViewModel
 public class PandaListViewModel extends ViewModel {
     public MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+    public MutableLiveData<Boolean> canCreate = new MutableLiveData<>(false);
 
     @Inject
     PandaListViewModel() {
