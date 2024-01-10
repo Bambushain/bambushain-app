@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_add_calendar_event">Event hinzufügen</string>
+    <string name="error_calendar_loading_failed">Der Eventkalender konnte leider nicht geladen werden</string>
+    <color name="color_yiq_light">#EFF1EE</color>
+    <color name="color_yiq_dark">#191C1B</color>
+</resources>
