@@ -17,9 +17,9 @@
         <item name="colorErrorContainer">@color/md_theme_errorContainer</item>
         <item name="colorOnError">@color/md_theme_onError</item>
         <item name="colorOnErrorContainer">@color/md_theme_onErrorContainer</item>
-        <item name="android:colorBackground">@color/md_theme_background</item>
         <item name="colorOnBackground">@color/md_theme_onBackground</item>
         <item name="colorSurface">@color/md_theme_surface</item>
+        <item name="colorSurfaceContainer">@color/md_theme_surfaceVariant</item>
         <item name="colorOnSurface">@color/md_theme_onSurface</item>
         <item name="colorSurfaceVariant">@color/md_theme_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/md_theme_onSurfaceVariant</item>
@@ -29,6 +29,8 @@
         <item name="colorPrimaryInverse">@color/md_theme_inversePrimary</item>
         <item name="android:windowSplashScreenBackground">@color/seed</item>
         <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+        <item name="android:colorBackground">@color/md_theme_background</item>
+        <item name="android:statusBarColor">@color/seed</item>
     </style>
 
     <style name="Theme.Bambushain" parent="Base.Theme.Bambushain"/>

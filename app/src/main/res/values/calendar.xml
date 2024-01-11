@@ -2,6 +2,9 @@
 <resources>
     <string name="action_add_calendar_event">Event hinzufügen</string>
     <string name="error_calendar_loading_failed">Der Eventkalender konnte leider nicht geladen werden</string>
+    <string name="action_previous_month">Vorheriger Monat</string>
+    <string name="action_today">Heute</string>
+    <string name="action_next_month">Nächster Monat</string>
     <color name="color_yiq_light">#EFF1EE</color>
     <color name="color_yiq_dark">#191C1B</color>
 </resources>

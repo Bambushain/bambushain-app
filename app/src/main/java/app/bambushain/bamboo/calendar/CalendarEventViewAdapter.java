@@ -58,6 +58,7 @@ public class CalendarEventViewAdapter extends RecyclerView.Adapter<CalendarEvent
             binding.getViewModel().color.setValue(event.getColor());
             binding.getViewModel().description.setValue(event.getDescription());
             binding.getViewModel().title.setValue(event.getTitle());
+            binding.getViewModel().isPrivate.setValue(event.getIsPrivate());
             binding.moreButton.setIconTintResource(binding.getViewModel().colorYiqRes(event.getColor()));
         }
     }

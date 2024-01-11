@@ -1,6 +1,7 @@
 package app.bambushain.bamboo.calendar;
 
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.lifecycle.LifecycleOwner;
@@ -51,6 +52,14 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
     @Override
     public int getItemCount() {
         return month.length(Year.isLeap(year));
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setData(List<Event> events, Month month, int year) {
+        this.year = year;
+        this.month = month;
+        this.events = events;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
