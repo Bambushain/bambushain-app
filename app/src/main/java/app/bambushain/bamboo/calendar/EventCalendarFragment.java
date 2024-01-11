@@ -15,13 +15,13 @@ import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentEventCalendarBinding;
+import app.bambushain.utils.SwipeDetector;
 import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 @AndroidEntryPoint
@@ -71,19 +71,37 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
                         binding
                                 .getViewModel()
                                 .currentMonth
-                                .getValue().minusMonths(1)
+                                .getValue()
+                                .minusMonths(1)
                 );
             } else if (menuItem.getItemId() == R.id.actionNextMonth) {
                 loadData(
                         binding
                                 .getViewModel()
                                 .currentMonth
-                                .getValue().plusMonths(1)
+                                .getValue()
+                                .plusMonths(1)
                 );
             }
 
             return true;
         });
+        val swipeListener = new SwipeDetector();
+        swipeListener.setOnSwipeLeftListener(() -> loadData(
+                binding
+                        .getViewModel()
+                        .currentMonth
+                        .getValue()
+                        .plusMonths(1)
+        ));
+        swipeListener.setOnSwipeRightListener(() -> loadData(
+                binding
+                        .getViewModel()
+                        .currentMonth
+                        .getValue()
+                        .minusMonths(1)
+        ));
+        binding.eventList.setOnTouchListener(swipeListener);
         loadData(date);
     }
 
