@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="label_profile_is_mod">" ist ein Mod"</string>
-    <string name="action_change_mod_status">Modrechte ändern</string>
+    <string name="action_give_mod_status">Zum Mod machen</string>
+    <string name="action_revoke_mod_status">Modrechte entziehen</string>
     <string name="action_edit_panda">Panda bearbeiten</string>
     <string name="action_reset_two_factor">Zwei Faktor deaktivieren</string>
     <string name="action_delete_panda">Panda löschen</string>
+    <string name="action_cancel">Abbrechen</string>
 </resources>

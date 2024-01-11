@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:id="@+id/action_change_mod_status"
-            android:title="@string/action_change_mod_status"/>
-    <item
             android:id="@+id/action_edit_panda"
             android:title="@string/action_edit_panda"/>
+    <item
+            android:id="@+id/action_change_mod_status"
+            android:title="@string/action_give_mod_status"/>
     <item
             android:id="@+id/action_reset_two_factor"
             android:title="@string/action_reset_two_factor"/>

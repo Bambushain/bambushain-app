@@ -37,11 +37,56 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         val view = super.onCreateView(inflater, container, savedInstanceState);
-        val adapter = new PandasAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), false, 0, new ArrayList<>());
+        val isMod = activity.headerViewModel.isMod.getValue();
+        val myId = activity.headerViewModel.id.getValue();
+        val adapter = new PandasAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), isMod, myId, new ArrayList<>());
+        adapter.setOnMakeModListener((position, user) -> {
+            bambooApi.makeUserMod(user.getId()).subscribe(() -> {
+                user.setIsMod(true);
+                adapter.notifyItemChanged(position, user);
+            }, throwable -> {
+                Log.e(TAG, "makeUserMod: make user mod failed", throwable);
+            });
+        });
+        adapter.setOnRevokeModListener((position, user) -> {
+            bambooApi.makeUserMod(user.getId()).subscribe(() -> {
+                user.setIsMod(false);
+                adapter.notifyItemChanged(position, user);
+            }, throwable -> {
+                Log.e(TAG, "makeUserMod: revoke user modstatus failed", throwable);
+            });
+        });
+        adapter.setOnResetTotpListener((position, user) -> {
+            bambooApi.resetUserTotp(user.getId()).subscribe(() -> {
+                adapter.notifyItemChanged(position, user);
+            }, throwable -> {
+                Log.e(TAG, "resetUserTotp: resetting two factor code for user failed", throwable);
+            });
+        });
+        adapter.setOnDeleteUserListener((position, user) -> {
+            bambooApi.deleteUser(user.getId()).subscribe(() -> {
+                adapter.notifyItemRemoved(position);
+            }, throwable -> {
+                Log.e(TAG, "deleteUser: deleting user failed", throwable);
+            });
+        });
         binding.pandaList.setAdapter(adapter);
         binding.pandaList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return view;
+    }
+
+    void loadData() {
+        bambooApi
+                .getUsers()
+                .subscribe(users -> {
+                    val adapter = (PandasAdapter) binding.pandaList.getAdapter();
+                    adapter.setPandas(users);
+                    adapter.notifyDataSetChanged();
+                    binding.getViewModel().isLoading.setValue(false);
+                }, throwable -> {
+                    Log.e(TAG, "onViewCreated: Failed to load users", throwable);
+                });
     }
 
     @Override
@@ -52,17 +97,7 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         viewModel.isLoading.setValue(true);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
+        loadData();
 
-        bambooApi
-                .getUsers()
-                .subscribe(users -> {
-                    val isMod = activity.headerViewModel.isMod.getValue();
-                    val myId = activity.headerViewModel.id.getValue();
-                    val adapter = new PandasAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), isMod, myId, users);
-                    binding.pandaList.setAdapter(adapter);
-                    viewModel.isLoading.setValue(false);
-                }, throwable -> {
-                    Log.e(TAG, "onViewCreated: Failed to load users", throwable);
-                });
     }
 }

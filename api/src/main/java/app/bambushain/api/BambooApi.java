@@ -6,8 +6,8 @@ import app.bambushain.models.authentication.LoginResponse;
 import app.bambushain.models.authentication.TwoFactorRequest;
 import app.bambushain.models.bamboo.Event;
 import app.bambushain.models.bamboo.User;
-import app.bambushain.models.finalfantasy.*;
 import app.bambushain.models.finalfantasy.Character;
+import app.bambushain.models.finalfantasy.*;
 import app.bambushain.models.my.ChangeMyPassword;
 import app.bambushain.models.my.UpdateMyProfile;
 import io.reactivex.rxjava3.core.Completable;
@@ -629,6 +629,18 @@ public interface BambooApi {
      */
     @DELETE("api/user/{id}/mod")
     Completable revokeUserModRights(
+            @retrofit2.http.Path("id") long id
+    );
+
+    /**
+     * Reset two factor code of the user
+     * Reset two factor code of the user
+     *
+     * @param id The id of the user (required)
+     * @return Completable
+     */
+    @DELETE("api/user/{id}/totp")
+    Completable resetUserTotp(
             @retrofit2.http.Path("id") long id
     );
 

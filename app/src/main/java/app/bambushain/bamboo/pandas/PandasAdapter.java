@@ -2,12 +2,14 @@ package app.bambushain.bamboo.pandas;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+import app.bambushain.R;
 import app.bambushain.databinding.PandasCardBinding;
 import app.bambushain.models.bamboo.User;
-import lombok.AllArgsConstructor;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
@@ -15,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@AllArgsConstructor
 public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder> {
     private final ViewModelProvider viewModelProvider;
     private final LifecycleOwner lifecycleOwner;
@@ -23,6 +24,22 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
     private final int myId;
     @Setter
     private List<User> pandas;
+    @Setter
+    private OnMakeModListener onMakeModListener;
+    @Setter
+    private OnRevokeModListener onRevokeModListener;
+    @Setter
+    private OnResetTotpListener onResetTotpListener;
+    @Setter
+    private OnDeleteUserListener onDeleteUserListener;
+
+    public PandasAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner, boolean iAmMod, int myId, List<User> pandas) {
+        this.viewModelProvider = viewModelProvider;
+        this.lifecycleOwner = lifecycleOwner;
+        this.iAmMod = iAmMod;
+        this.myId = myId;
+        this.pandas = pandas;
+    }
 
     @NotNull
     @Override
@@ -40,11 +57,85 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
         viewModel.canEdit.setValue(iAmMod && panda.getId() != myId);
         viewHolder.binding.setViewModel(viewModel);
         viewHolder.setPanda(panda);
+        viewHolder.binding.actionMore.setOnClickListener(v -> {
+                    val dialogBuilder = new MaterialAlertDialogBuilder(v.getContext());
+                    val popupMenu = new PopupMenu(v.getContext(), v);
+                    popupMenu.inflate(R.menu.pandas_card_menu);
+                    popupMenu.getMenu().getItem(1).setTitle(
+                            panda.getIsMod() ? R.string.action_revoke_mod_status : R.string.action_give_mod_status);
+                    popupMenu.getMenu().getItem(2).setVisible(panda.getIsMod());
+                    popupMenu.setOnMenuItemClickListener(item -> {
+                        if (item.getItemId() == R.id.action_edit_panda) {
+                        } else if (item.getItemId() == R.id.action_change_mod_status) {
+                            dialogBuilder
+                                    .setTitle(panda.getIsMod() ? R.string.action_revoke_mod_status : R.string.action_give_mod_status)
+                                    .setMessage(panda.getIsMod() ? R.string.action_revoke_mod_status : R.string.action_give_mod_status)
+                                    .setPositiveButton(panda.getIsMod() ? R.string.action_revoke_mod_status : R.string.action_give_mod_status, (dialog, which) -> {
+                                        if (panda.getIsMod()) {
+                                            if (onRevokeModListener != null) {
+                                                onRevokeModListener.onRevokeMod(position, panda);
+                                            }
+                                        } else {
+                                            if (onMakeModListener != null) {
+                                                onMakeModListener.onMakeMod(position, panda);
+                                            }
+                                        }
+                                    })
+                                    .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel());
+                            val dialog = dialogBuilder.create();
+                            dialog.show();
+                        } else if (item.getItemId() == R.id.action_reset_two_factor) {
+                            dialogBuilder
+                                    .setTitle(R.string.action_reset_two_factor)
+                                    .setMessage(R.string.action_reset_two_factor)
+                                    .setPositiveButton(R.string.action_reset_two_factor, (dialog, which) -> {
+                                        if (onResetTotpListener != null) {
+                                            onResetTotpListener.onResetTotp(position, panda);
+                                        }
+                                    })
+                                    .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel());
+                            val dialog = dialogBuilder.create();
+                            dialog.show();
+                        } else if (item.getItemId() == R.id.action_delete_panda) {
+                            dialogBuilder
+                                    .setTitle(R.string.action_reset_two_factor)
+                                    .setMessage(R.string.action_reset_two_factor)
+                                    .setPositiveButton(R.string.action_reset_two_factor, (dialog, which) -> {
+                                        if (onDeleteUserListener != null) {
+                                            onDeleteUserListener.onDeleteUser(position, panda);
+                                        }
+                                    })
+                                    .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel());
+                            val dialog = dialogBuilder.create();
+                            dialog.show();
+                        }
+
+                        return true;
+                    });
+                    popupMenu.show();
+                }
+        );
     }
 
     @Override
     public int getItemCount() {
         return pandas.size();
+    }
+
+    public interface OnMakeModListener {
+        void onMakeMod(int position, User user);
+    }
+
+    public interface OnRevokeModListener {
+        void onRevokeMod(int position, User user);
+    }
+
+    public interface OnResetTotpListener {
+        void onResetTotp(int position, User user);
+    }
+
+    public interface OnDeleteUserListener {
+        void onDeleteUser(int position, User user);
     }
 
     @Getter
@@ -64,5 +155,7 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
             binding.getViewModel().isMod.setValue(panda.getIsMod());
             binding.getViewModel().appTotpEnabled.setValue(panda.getAppTotpEnabled());
         }
+
+
     }
 }
