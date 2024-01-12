@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentPandasBinding;
@@ -40,6 +41,14 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         val isMod = activity.headerViewModel.isMod.getValue();
         val myId = activity.headerViewModel.id.getValue();
         val adapter = new PandasAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), isMod, myId, new ArrayList<>());
+        adapter.setOnEditUserListener((position, user) -> {
+            val bundle = new Bundle();
+            bundle.putInt("id", user.getId());
+            bundle.putString("email", user.getEmail());
+            bundle.putString("displayName", user.getDisplayName());
+            bundle.putString("discordName", user.getDiscordName());
+            navigator.navigate(R.id.action_fragment_pandas_to_editPandaDialog, bundle);
+        });
         adapter.setOnMakeModListener((position, user) -> {
             bambooApi.makeUserMod(user.getId()).subscribe(() -> {
                 user.setIsMod(true);

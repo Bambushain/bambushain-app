@@ -14,7 +14,10 @@
               android:label="@string/label_event_calendar"/>
     <action android:id="@+id/action_global_fragment_login" app:destination="@id/fragment_login"/>
     <fragment android:id="@+id/fragment_pandas" android:name="app.bambushain.bamboo.pandas.PandasFragment"
-              android:label="@string/label_pandas"/>
+              android:label="@string/label_pandas">
+        <action android:id="@+id/action_fragment_pandas_to_editPandaDialog" app:destination="@id/fragment_edit_panda"
+                app:popUpTo="@id/fragment_pandas"/>
+    </fragment>
     <action android:id="@+id/action_global_fragment_pandas" app:destination="@id/fragment_pandas"/>
     <action android:id="@+id/action_global_fragment_profile" app:destination="@id/my_profile_navigation"/>
     <action android:id="@+id/action_global_fragment_event_calendar" app:destination="@id/fragment_event_calendar"/>
@@ -39,4 +42,6 @@
             <argument android:name="discordName" app:argType="string" app:nullable="true"/>
         </dialog>
     </navigation>
+    <dialog android:id="@+id/fragment_edit_panda" android:name="app.bambushain.bamboo.pandas.EditPandaDialog"
+            android:label="@string/lable_edit_panda"/>
 </navigation>

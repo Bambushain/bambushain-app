@@ -13,4 +13,9 @@
         werden?
     </string>
     <string name="action_delete_panda_message">Soll dieser Panda aus dem Hain geworfen werden?</string>
+    <string name="lable_edit_panda">Panda bearbeiten</string>
+    <string name="label_edit_user_profile">Panda bearbeiten</string>
+    <string name="pandas_is_mod">Panda ist Mod</string>
+    <string name="pandas_set_totp">Zwei Faktor setzen</string>
+    <string name="label_add_user_profile">Panda hinzufügen</string>
 </resources>

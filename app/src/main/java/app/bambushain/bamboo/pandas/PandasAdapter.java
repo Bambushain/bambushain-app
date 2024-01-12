@@ -32,6 +32,8 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
     private OnResetTotpListener onResetTotpListener;
     @Setter
     private OnDeleteUserListener onDeleteUserListener;
+    @Setter
+    private OnEditUserListener onEditUserListener;
 
     public PandasAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner, boolean iAmMod, int myId, List<User> pandas) {
         this.viewModelProvider = viewModelProvider;
@@ -66,6 +68,9 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
                     popupMenu.getMenu().getItem(2).setVisible(panda.getIsMod());
                     popupMenu.setOnMenuItemClickListener(item -> {
                         if (item.getItemId() == R.id.action_edit_panda) {
+                            if (onEditUserListener != null) {
+                                onEditUserListener.onEditUser(position, panda);
+                            }
                         } else if (item.getItemId() == R.id.action_change_mod_status) {
                             dialogBuilder
                                     .setTitle(panda.getIsMod() ? R.string.action_revoke_mod_status : R.string.action_give_mod_status)
@@ -136,6 +141,10 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
 
     public interface OnDeleteUserListener {
         void onDeleteUser(int position, User user);
+    }
+
+    public interface OnEditUserListener {
+        void onEditUser(int position, User user);
     }
 
     @Getter
