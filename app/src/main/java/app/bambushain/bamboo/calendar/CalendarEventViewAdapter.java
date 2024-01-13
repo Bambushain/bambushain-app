@@ -4,23 +4,32 @@ package app.bambushain.bamboo.calendar;
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+import app.bambushain.R;
 import app.bambushain.databinding.CalendarEventBinding;
 import app.bambushain.models.bamboo.Event;
-import lombok.AllArgsConstructor;
+import lombok.Setter;
 import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@AllArgsConstructor
 public class CalendarEventViewAdapter extends RecyclerView.Adapter<CalendarEventViewAdapter.ViewHolder> {
 
     private final ViewModelProvider viewModelProvider;
     private final LifecycleOwner lifecycleOwner;
     private List<Event> events;
+    @Setter
+    private OnEventDeleteListener onEventDeleteListener;
+
+    public CalendarEventViewAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner, List<Event> events) {
+        this.viewModelProvider = viewModelProvider;
+        this.lifecycleOwner = lifecycleOwner;
+        this.events = events;
+    }
 
     @NotNull
     @Override
@@ -38,11 +47,29 @@ public class CalendarEventViewAdapter extends RecyclerView.Adapter<CalendarEvent
         val viewModel = viewModelProvider.get(event.getId().toString(), CalendarEventViewModel.class);
         viewHolder.binding.setViewModel(viewModel);
         viewHolder.setData(event);
+        viewHolder.binding.moreButton.setOnClickListener(v -> {
+            val popup = new PopupMenu(v.getContext(), v);
+            popup.inflate(R.menu.calendar_event_more_menu);
+            popup.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.actionDeleteEvent && onEventDeleteListener != null) {
+                    onEventDeleteListener.onEventDelete(event);
+                }
+
+                return true;
+            });
+            popup.show();
+        });
     }
 
     @Override
     public int getItemCount() {
         return events.size();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setEvents(List<Event> events) {
+        this.events = events;
+        this.notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

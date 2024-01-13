@@ -16,6 +16,7 @@ import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentEventCalendarBinding;
 import app.bambushain.utils.SwipeDetector;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
@@ -45,7 +46,29 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         val view = super.onCreateView(inflater, container, savedInstanceState);
-        binding.eventList.setAdapter(new CalendarViewAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), new ArrayList<>(), LocalDate.now().getMonth(), LocalDate.now().getYear()));
+        val adapter = new CalendarViewAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), new ArrayList<>(), LocalDate.now().getMonth(), LocalDate.now().getYear());
+        adapter.setOnEventDeleteListener(event -> {
+            new MaterialAlertDialogBuilder(activity)
+                    .setPositiveButton(R.string.action_delete_calendar_event_confirm, (dialog, which) -> {
+                        bambooApi.deleteEvent(event.getId()).subscribe(() -> {
+                            adapter.removeEvent(event);
+                        }, throwable -> {
+                            Snackbar
+                                    .make(view, R.string.error_calendar_delete_failed, Snackbar.LENGTH_LONG)
+                                    .setTextColor(getColor(R.color.md_theme_onError))
+                                    .setBackgroundTint(getColor(R.color.md_theme_error))
+                                    .show();
+                        });
+                    })
+                    .setNegativeButton(R.string.action_delete_calendar_event_decline, (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .setTitle(R.string.calendar_delete_event_title)
+                    .setMessage(R.string.calendar_delete_event_message)
+                    .create()
+                    .show();
+        });
+        binding.eventList.setAdapter(adapter);
         binding.eventList.setLayoutManager(new LinearLayoutManager(getContext()));
         val dividerItemDecoration = new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL);
         binding.eventList.addItemDecoration(dividerItemDecoration);
