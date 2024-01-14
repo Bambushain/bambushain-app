@@ -18,4 +18,9 @@
     <string name="pandas_is_mod">Panda ist Mod</string>
     <string name="pandas_set_totp">Zwei Faktor setzen</string>
     <string name="label_add_user_profile">Panda hinzufügen</string>
+    <string name="action_save_panda">Panda speichern</string>
+    <string name="action_add_panda">Panda hinzufügen</string>
+    <string name="success_edit_panda">Der Panda wurde erfolgreich gespeichert</string>
+    <string name="error_panda_update_failed">Der Panda konnte nicht gespeichert werden</string>
+    <string name="error_panda_update_exists">Der Name oder die Email sind schon vergeben</string>
 </resources>

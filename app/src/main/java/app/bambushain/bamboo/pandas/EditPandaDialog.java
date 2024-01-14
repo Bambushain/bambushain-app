@@ -48,7 +48,7 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
                 .subscribe(() -> {
                     Log.d(TAG, "saveProfile: Update successful");
                     Toast
-                            .makeText(getContext(), R.string.success_profile_update, Toast.LENGTH_LONG)
+                            .makeText(getContext(), R.string.success_edit_panda, Toast.LENGTH_LONG)
                             .show();
                     val stateHandle = navigator.getPreviousBackStackEntry().getSavedStateHandle();
                     stateHandle.set("email", profile.getEmail());
@@ -60,9 +60,9 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
                     val bambooEx = (BambooException) ex;
                     var message = 0;
                     if (bambooEx.getErrorType() == ErrorType.ExistsAlready) {
-                        message = R.string.error_profile_update_exists;
+                        message = R.string.error_panda_update_exists;
                     } else {
-                        message = R.string.error_profile_update_failed;
+                        message = R.string.error_panda_update_failed;
                     }
                     if (snackbar == null) {
                         snackbar = Snackbar.make(binding.layout, message, Snackbar.LENGTH_INDEFINITE);
@@ -86,12 +86,10 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
         viewModel.discordName.setValue(getArguments().getString("discordName"));
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.action_save_my_profile && viewModel.isDiscordNameValid.getValue() && viewModel.isDisplayNameValid.getValue() && viewModel.isEmailValid.getValue()) {
+        binding.actionSavePanda.setOnClickListener(v -> {
+            if (viewModel.isDiscordNameValid.getValue() && viewModel.isDisplayNameValid.getValue() && viewModel.isEmailValid.getValue()) {
                 saveProfile();
             }
-
-            return true;
         });
 
         setObservers();
