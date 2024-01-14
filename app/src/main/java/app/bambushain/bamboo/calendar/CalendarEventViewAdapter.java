@@ -24,6 +24,8 @@ public class CalendarEventViewAdapter extends RecyclerView.Adapter<CalendarEvent
     private final LifecycleOwner lifecycleOwner;
     private final List<Event> events;
     @Setter
+    private OnEventUpdateListener onEventUpdateListener;
+    @Setter
     private OnEventDeleteListener onEventDeleteListener;
 
     public CalendarEventViewAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner, List<Event> events) {
@@ -54,6 +56,8 @@ public class CalendarEventViewAdapter extends RecyclerView.Adapter<CalendarEvent
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == R.id.actionDeleteEvent && onEventDeleteListener != null) {
                     onEventDeleteListener.onEventDelete(event);
+                } else if (item.getItemId() == R.id.actionEditEvent && onEventUpdateListener != null) {
+                    onEventUpdateListener.onEventUpdate(event);
                 }
 
                 return true;

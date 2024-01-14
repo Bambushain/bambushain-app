@@ -22,6 +22,8 @@
     <string name="choose_event_color">Farbe wählen</string>
     <string name="error_add_event_title_empty">Der Titel ist erforderlich</string>
     <string name="error_add_event_unknown">Leider konnte das Event nicht erstellt werden</string>
+    <string name="action_update_calendar_event">Event speichern</string>
+    <string name="error_edit_event_unknown">Leider konnte das Event nicht gespeichert werden</string>
     <color name="color_yiq_light">#EFF1EE</color>
     <color name="color_yiq_dark">#191C1B</color>
 </resources>

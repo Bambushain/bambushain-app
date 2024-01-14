@@ -2,25 +2,19 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
-            app:startDestination="@id/fragment_event_calendar">
+            app:startDestination="@id/calendar_navigation">
     <fragment android:id="@+id/fragment_login" android:name="app.bambushain.login.LoginFragment"
               android:label="@string/label_login">
         <action android:id="@+id/action_fragment_login_to_fragment_event_calendar"
-                app:destination="@id/fragment_event_calendar" app:popUpTo="@id/fragment_event_calendar"
+                app:destination="@id/calendar_navigation" app:popUpTo="@id/fragment_event_calendar"
                 app:popUpToInclusive="true"/>
-    </fragment>
-    <fragment android:id="@+id/fragment_event_calendar"
-              android:name="app.bambushain.bamboo.calendar.EventCalendarFragment"
-              android:label="@string/label_event_calendar">
-        <action android:id="@+id/action_fragment_event_calendar_to_add_event_dialog"
-                app:destination="@id/add_event_dialog"/>
     </fragment>
     <action android:id="@+id/action_global_fragment_login" app:destination="@id/fragment_login"/>
     <fragment android:id="@+id/fragment_pandas" android:name="app.bambushain.bamboo.pandas.PandasFragment"
               android:label="@string/label_pandas"/>
     <action android:id="@+id/action_global_fragment_pandas" app:destination="@id/fragment_pandas"/>
     <action android:id="@+id/action_global_fragment_profile" app:destination="@id/my_profile_navigation"/>
-    <action android:id="@+id/action_global_fragment_event_calendar" app:destination="@id/fragment_event_calendar"/>
+    <action android:id="@+id/action_global_fragment_event_calendar" app:destination="@id/calendar_navigation"/>
     <navigation android:id="@+id/my_profile_navigation" app:startDestination="@id/fragment_profile">
         <fragment android:id="@+id/fragment_profile" android:name="app.bambushain.my.ProfileFragment"
                   android:label="@string/label_my_profile">
@@ -42,6 +36,18 @@
             <argument android:name="discordName" app:argType="string" app:nullable="true"/>
         </dialog>
     </navigation>
-    <dialog android:id="@+id/add_event_dialog" android:name="app.bambushain.bamboo.calendar.AddEventDialog"
-            android:label="AddEventDialog"/>
+    <navigation android:id="@+id/calendar_navigation" app:startDestination="@id/fragment_event_calendar">
+        <dialog android:id="@+id/add_event_dialog" android:name="app.bambushain.bamboo.calendar.AddEventDialog"
+                android:label="AddEventDialog"/>
+        <dialog android:id="@+id/edit_event_dialog" android:name="app.bambushain.bamboo.calendar.EditEventDialog"
+                android:label="EditEventDialog"/>
+        <fragment android:id="@+id/fragment_event_calendar"
+                  android:name="app.bambushain.bamboo.calendar.EventCalendarFragment"
+                  android:label="@string/label_event_calendar">
+            <action android:id="@+id/action_fragment_event_calendar_to_add_event_dialog"
+                    app:destination="@id/add_event_dialog"/>
+            <action android:id="@+id/action_fragment_event_calendar_to_edit_event_dialog"
+                    app:destination="@id/edit_event_dialog"/>
+        </fragment>
+    </navigation>
 </navigation>

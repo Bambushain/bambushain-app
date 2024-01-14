@@ -30,6 +30,8 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
     private Month month;
     private int year;
     @Setter
+    private OnEventUpdateListener onEventUpdateListener;
+    @Setter
     private OnEventDeleteListener onEventDeleteListener;
 
     public CalendarViewAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner, List<Event> events, Month month, int year) {
@@ -49,6 +51,11 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
         adapter.setOnEventDeleteListener(event -> {
             if (onEventDeleteListener != null) {
                 onEventDeleteListener.onEventDelete(event);
+            }
+        });
+        adapter.setOnEventUpdateListener(event -> {
+            if (onEventUpdateListener != null) {
+                onEventUpdateListener.onEventUpdate(event);
             }
         });
         binding.events.setAdapter(adapter);

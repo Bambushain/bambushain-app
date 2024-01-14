@@ -77,6 +77,16 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
                     .create()
                     .show();
         });
+        adapter.setOnEventUpdateListener(event -> {
+            val args = new Bundle();
+            args.putString("title", event.getTitle());
+            args.putString("description", event.getDescription());
+            args.putString("color", event.getColor());
+            args.putString("startDate", event.getStartDate().toString());
+            args.putString("endDate", event.getEndDate().toString());
+            args.putInt("id", event.getId());
+            navigator.navigate(R.id.action_fragment_event_calendar_to_edit_event_dialog, args);
+        });
         binding.eventList.setAdapter(adapter);
         binding.eventList.setLayoutManager(new LinearLayoutManager(getContext()));
         val dividerItemDecoration = new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL);
