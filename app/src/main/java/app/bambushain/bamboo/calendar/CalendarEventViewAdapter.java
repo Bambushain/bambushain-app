@@ -22,7 +22,7 @@ public class CalendarEventViewAdapter extends RecyclerView.Adapter<CalendarEvent
 
     private final ViewModelProvider viewModelProvider;
     private final LifecycleOwner lifecycleOwner;
-    private List<Event> events;
+    private final List<Event> events;
     @Setter
     private OnEventDeleteListener onEventDeleteListener;
 
@@ -69,7 +69,8 @@ public class CalendarEventViewAdapter extends RecyclerView.Adapter<CalendarEvent
 
     @SuppressLint("NotifyDataSetChanged")
     public void setEvents(List<Event> events) {
-        this.events = events;
+        this.events.clear();
+        this.events.addAll(events);
         this.notifyDataSetChanged();
     }
 

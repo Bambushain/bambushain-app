@@ -8,18 +8,25 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
+import app.bambushain.api.BambooCalendarEventSource;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentEventCalendarBinding;
 import app.bambushain.utils.SwipeDetector;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import com.launchdarkly.eventsource.StreamException;
 import dagger.hilt.android.AndroidEntryPoint;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.val;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
@@ -32,6 +39,9 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
 
     @Inject
     BambooApi bambooApi;
+
+    @Inject
+    BambooCalendarEventSource bambooCalendarEventSource;
 
     @Inject
     public EventCalendarFragment() {
@@ -51,7 +61,6 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
             new MaterialAlertDialogBuilder(activity)
                     .setPositiveButton(R.string.action_delete_calendar_event_confirm, (dialog, which) -> {
                         bambooApi.deleteEvent(event.getId()).subscribe(() -> {
-                            adapter.removeEvent(event);
                         }, throwable -> {
                             Snackbar
                                     .make(view, R.string.error_calendar_delete_failed, Snackbar.LENGTH_LONG)
@@ -109,6 +118,58 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
 
             return true;
         });
+        binding.eventList.setOnTouchListener(getSwipeDetector());
+        binding.addEvent.setOnClickListener(v -> {
+            navigator.navigate(R.id.action_fragment_event_calendar_to_add_event_dialog);
+        });
+        Schedulers.io().scheduleDirect(() -> {
+            try {
+                Log.d(TAG, "onViewCreated: Start observer on calendar sse");
+                bambooCalendarEventSource
+                        .start()
+                        .subscribe(calendarEventAction -> {
+                            val event = calendarEventAction.getEvent();
+                            val since = viewModel.currentMonth.getValue().withDayOfMonth(1).minusDays(1);
+                            val until = viewModel.currentMonth.getValue().withDayOfMonth(since.lengthOfMonth()).plusDays(1);
+                            if ((event.getStartDate().isAfter(since) && event.getStartDate().isBefore(until)) || (event.getEndDate().isAfter(since) && event.getEndDate().isBefore(until))) {
+                                val adapter = (CalendarViewAdapter) binding.eventList.getAdapter();
+                                switch (calendarEventAction.getAction()) {
+                                    case Created:
+                                        adapter.addEvent(event);
+                                        break;
+                                    case Updated:
+                                        adapter.updateEvent(event);
+                                        break;
+                                    case Deleted:
+                                        adapter.removeEvent(event);
+                                        break;
+                                }
+                            }
+                        }, throwable -> {
+                            Log.e(TAG, "onViewCreated: Failed to load data", throwable);
+                        });
+            } catch (StreamException exception) {
+                Log.e(TAG, "onViewCreated: Failed to start observer on calendar sse, setup reload on change", exception);
+                AndroidSchedulers.mainThread().scheduleDirect(() -> navigator.addOnDestinationChangedListener(this::destinationChanged));
+            }
+        });
+        loadData(date);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        navigator.removeOnDestinationChangedListener(this::destinationChanged);
+    }
+
+    private void destinationChanged(NavController controller, NavDestination destination, Bundle arguments) {
+        if (destination.getId() == R.id.fragment_event_calendar) {
+            loadData(binding.getViewModel().currentMonth.getValue());
+        }
+    }
+
+    @NotNull
+    private SwipeDetector getSwipeDetector() {
         val swipeListener = new SwipeDetector();
         swipeListener.setOnSwipeLeftListener(() -> loadData(
                 binding
@@ -124,21 +185,14 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
                         .getValue()
                         .minusMonths(1)
         ));
-        binding.eventList.setOnTouchListener(swipeListener);
-        binding.addEvent.setOnClickListener(v -> {
-            navigator.navigate(R.id.action_fragment_event_calendar_to_add_event_dialog);
-        });
-        navigator.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
-            if (navDestination.getId() == R.id.fragment_event_calendar) {
-                loadData(viewModel.currentMonth.getValue());
-            }
-        });
+
+        return swipeListener;
     }
 
     private void loadData(LocalDate date) {
         binding.getViewModel().isLoading.setValue(true);
-        val firstDayOfMonth = LocalDate.of(date.getYear(), date.getMonth(), 1);
-        val lastDayOfMonth = LocalDate.of(date.getYear(), date.getMonth(), date.getMonth().length(date.isLeapYear()));
+        val firstDayOfMonth = date.withDayOfMonth(1);
+        val lastDayOfMonth = firstDayOfMonth.withDayOfMonth(firstDayOfMonth.lengthOfMonth());
         binding.getViewModel().currentMonth.setValue(date);
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(activity);
         sharedPrefs
@@ -154,7 +208,7 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
                 }, throwable -> {
                     Log.e(TAG, "onViewCreated: Failed to load the events", throwable);
                     Snackbar
-                            .make(getView(), R.string.error_calendar_loading_failed, Snackbar.LENGTH_LONG)
+                            .make(requireView(), R.string.error_calendar_loading_failed, Snackbar.LENGTH_LONG)
                             .setBackgroundTint(getColor(R.color.md_theme_error))
                             .setTextColor(getColor(R.color.md_theme_onError))
                             .show();

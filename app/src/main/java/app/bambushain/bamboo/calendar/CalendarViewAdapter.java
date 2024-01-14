@@ -1,7 +1,6 @@
 package app.bambushain.bamboo.calendar;
 
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.lifecycle.LifecycleOwner;
@@ -27,7 +26,7 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
     private final ViewModelProvider viewModelProvider;
     private final LifecycleOwner lifecycleOwner;
     @Getter
-    private List<Event> events;
+    private final List<Event> events;
     private Month month;
     private int year;
     @Setter
@@ -74,21 +73,45 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
         return month.length(Year.isLeap(year));
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     public void setData(List<Event> events, Month month, int year) {
         this.year = year;
         this.month = month;
-        this.events = events;
+        this.events.clear();
+        this.events.addAll(events);
         notifyDataSetChanged();
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    public void addEvent(Event event) {
+        events.add(event);
+
+        val count = event.getEndDate().getDayOfMonth() - event.getStartDate().getDayOfMonth() + 1;
+        val firstItem = event.getStartDate().getDayOfMonth() - 1;
+        notifyItemRangeChanged(firstItem, count);
+    }
+
+    public void updateEvent(Event event) {
+        val oldEvent = events.stream().filter(event1 -> event1.getId().equals(event.getId())).findFirst();
+        events.removeIf(event1 -> event1.getId().equals(event.getId()));
+        events.add(event);
+
+        val countNew = event.getEndDate().getDayOfMonth() - event.getStartDate().getDayOfMonth() + 1;
+        val firstItemNew = event.getStartDate().getDayOfMonth() - 1;
+
+        val countOld = oldEvent.orElse(event).getEndDate().getDayOfMonth() - oldEvent.orElse(event).getStartDate().getDayOfMonth() + 1;
+        val firstItemOld = oldEvent.orElse(event).getStartDate().getDayOfMonth() - 1;
+
+        val firstItem = Math.min(firstItemNew, firstItemOld);
+        val count = Math.max(countNew, countOld);
+
+        notifyItemRangeChanged(firstItem, count);
+    }
+
     public void removeEvent(Event event) {
-        this.events = events
-                .stream()
-                .filter(e -> !e.getId().equals(event.getId()))
-                .collect(Collectors.toList());
-        notifyDataSetChanged();
+        events.removeIf(event1 -> event1.getId().equals(event.getId()));
+
+        val count = event.getEndDate().getDayOfMonth() - event.getStartDate().getDayOfMonth() + 1;
+        val firstItem = event.getStartDate().getDayOfMonth() - 1;
+        notifyItemRangeChanged(firstItem, count);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
