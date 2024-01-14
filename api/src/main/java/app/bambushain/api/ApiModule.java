@@ -2,6 +2,8 @@ package app.bambushain.api;
 
 import android.content.Context;
 import androidx.preference.PreferenceManager;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -14,6 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 import javax.inject.Singleton;
+import java.time.LocalDate;
 import java.util.concurrent.TimeUnit;
 
 @Module
@@ -36,6 +39,7 @@ public class ApiModule {
                                     .header("Authorization", "Panda " + authenticationToken)
                                     .build());
                 })
+                .cache(null)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
@@ -46,17 +50,25 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    Retrofit provideRetrofit(@ApplicationContext Context context, OkHttpClient client, BambooCallAdapterFactory callAdapterFactory) {
+    Retrofit provideRetrofit(@ApplicationContext Context context, Gson gson, OkHttpClient client, BambooCallAdapterFactory callAdapterFactory) {
         val instance = context.getString(R.string.bambooInstance);
         val baseUrl = "https://" + instance + ".bambushain.app/";
 
         return new Retrofit.Builder()
                 .addCallAdapterFactory(callAdapterFactory)
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(baseUrl)
                 .client(client)
                 .build();
+    }
+
+    @Provides
+    @Singleton
+    public Gson provideGson(LocalDateAdapter adapter) {
+        return new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, adapter)
+                .create();
     }
 
     @Provides

@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Character {
-    private Integer id;
+    private Integer id = 0;
     private CharacterRace race;
     private String name;
     private String world;

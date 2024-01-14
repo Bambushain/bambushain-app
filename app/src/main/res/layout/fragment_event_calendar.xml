@@ -2,38 +2,58 @@
 <layout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="viewModel" type="app.bambushain.bamboo.calendar.CalendarViewModel"/>
+    </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/layout">
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            <com.google.android.material.appbar.AppBarLayout
-                    android:layout_height="wrap_content"
+                android:id="@+id/toolbarLayout">
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
-                    android:id="@+id/toolbarLayout"
-                    app:layout_constraintTop_toTopOf="parent">
-                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
+                    app:expandedTitleTextColor="@color/md_theme_onSurface"
+                    app:collapsedTitleTextColor="@color/md_theme_onSurface"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:contentScrim="@color/md_theme_surfaceVariant"
+                    app:title="@{viewModel.currentMonthText}"
+                    style="?attr/collapsingToolbarLayoutMediumStyle">
+                <com.google.android.material.appbar.MaterialToolbar
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                    <com.google.android.material.appbar.MaterialToolbar
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
-                            android:id="@+id/toolbar"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent">
-                    </com.google.android.material.appbar.MaterialToolbar>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Eventkalender"
-                    app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
-                    app:layout_constraintStart_toStartOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:layout_height="?android:attr/actionBarSize"
+                        android:id="@+id/toolbar"
+                        app:layout_collapseMode="pin"
+                        app:menu="@menu/event_calendar_menu">
+                </com.google.android.material.appbar.MaterialToolbar>
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progress_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:indeterminate="true"
+                        android:visibility="@{viewModel.isLoading ? android.view.View.VISIBLE : android.view.View.GONE}"
+                        app:hideAnimationBehavior="inward"
+                        app:showAnimationBehavior="outward"/>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:id="@+id/event_list"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        </androidx.recyclerview.widget.RecyclerView>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/addEvent"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_calendar_plus"
+                android:layout_gravity="bottom|end"
+                android:contentDescription="@string/action_add_calendar_event"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
