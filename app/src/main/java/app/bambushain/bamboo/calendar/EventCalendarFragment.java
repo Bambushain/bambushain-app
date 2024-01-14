@@ -125,7 +125,14 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
                         .minusMonths(1)
         ));
         binding.eventList.setOnTouchListener(swipeListener);
-        loadData(date);
+        binding.addEvent.setOnClickListener(v -> {
+            navigator.navigate(R.id.action_fragment_event_calendar_to_add_event_dialog);
+        });
+        navigator.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+            if (navDestination.getId() == R.id.fragment_event_calendar) {
+                loadData(viewModel.currentMonth.getValue());
+            }
+        });
     }
 
     private void loadData(LocalDate date) {

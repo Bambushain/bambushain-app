@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import app.bambushain.R;
 import app.bambushain.databinding.CalendarEventBinding;
 import app.bambushain.models.bamboo.Event;
+import app.bambushain.utils.ColorUtils;
 import lombok.Setter;
 import lombok.val;
 import org.jetbrains.annotations.NotNull;
@@ -86,7 +87,7 @@ public class CalendarEventViewAdapter extends RecyclerView.Adapter<CalendarEvent
             binding.getViewModel().description.setValue(event.getDescription());
             binding.getViewModel().title.setValue(event.getTitle());
             binding.getViewModel().isPrivate.setValue(event.getIsPrivate());
-            binding.moreButton.setIconTintResource(binding.getViewModel().colorYiqRes(event.getColor()));
+            binding.moreButton.setIconTintResource(ColorUtils.colorYiqRes(event.getColor()));
         }
     }
 }

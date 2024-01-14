@@ -12,6 +12,16 @@
     <string name="action_delete_calendar_event">Event löschen</string>
     <string name="action_delete_calendar_event_decline">Nicht löschen</string>
     <string name="calendar_delete_event_message">Soll das Event Test wirklich gelöscht werden?</string>
+    <string name="label_add_event">Event hinzufügen</string>
+    <string name="event_title">Titel</string>
+    <string name="event_description">Beschreibung (optional)</string>
+    <string name="event_is_private">Nur für mich</string>
+    <string name="event_start_date">Von</string>
+    <string name="event_end_date">Bis</string>
+    <string name="event_open_calendar">Kalender öffnen</string>
+    <string name="choose_event_color">Farbe wählen</string>
+    <string name="error_add_event_title_empty">Der Titel ist erforderlich</string>
+    <string name="error_add_event_unknown">Leider konnte das Event nicht erstellt werden</string>
     <color name="color_yiq_light">#EFF1EE</color>
     <color name="color_yiq_dark">#191C1B</color>
 </resources>

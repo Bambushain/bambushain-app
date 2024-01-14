@@ -39,13 +39,7 @@ public class ChangePasswordDialog extends BindingDialogFragment<FragmentChangeMy
         viewModel = new ViewModelProvider(this).get(ChangeMyPasswordViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.action_change_my_password) {
-                changePassword();
-            }
-
-            return true;
-        });
+        binding.actionChangeMyPassword.setOnClickListener(v -> changePassword());
         viewModel.newPassword.observe(getViewLifecycleOwner(), s -> {
             if (snackbar != null) {
                 snackbar.dismiss();

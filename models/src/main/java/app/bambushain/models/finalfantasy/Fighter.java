@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Fighter {
-    private Integer id;
+    private Integer id = 0;
     private FighterJob job;
     private String level;
     private String gearScore;

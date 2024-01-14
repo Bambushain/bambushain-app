@@ -31,39 +31,24 @@
         <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
         <item name="android:colorBackground">@color/md_theme_background</item>
         <item name="android:statusBarColor">@color/seed</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
     </style>
 
     <style name="Theme.Bambushain" parent="Base.Theme.Bambushain"/>
 
-    <style name="Theme.FullScreenDialog" parent="Theme.Material3.DayNight.Dialog">
-        <item name="colorPrimary">@color/md_theme_primary</item>
-        <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
-        <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>
-        <item name="colorOnPrimaryContainer">@color/md_theme_onPrimaryContainer</item>
-        <item name="colorSecondary">@color/md_theme_secondary</item>
-        <item name="colorOnSecondary">@color/md_theme_onSecondary</item>
-        <item name="colorSecondaryContainer">@color/md_theme_secondaryContainer</item>
-        <item name="colorOnSecondaryContainer">@color/md_theme_onSecondaryContainer</item>
-        <item name="colorTertiary">@color/md_theme_tertiary</item>
-        <item name="colorOnTertiary">@color/md_theme_onTertiary</item>
-        <item name="colorTertiaryContainer">@color/md_theme_tertiaryContainer</item>
-        <item name="colorOnTertiaryContainer">@color/md_theme_onTertiaryContainer</item>
-        <item name="colorError">@color/md_theme_error</item>
-        <item name="colorErrorContainer">@color/md_theme_errorContainer</item>
-        <item name="colorOnError">@color/md_theme_onError</item>
-        <item name="colorOnErrorContainer">@color/md_theme_onErrorContainer</item>
-        <item name="android:colorBackground">@color/md_theme_background</item>
-        <item name="colorOnBackground">@color/md_theme_onBackground</item>
-        <item name="colorSurface">@color/md_theme_surface</item>
-        <item name="colorOnSurface">@color/md_theme_onSurface</item>
-        <item name="colorSurfaceVariant">@color/md_theme_surfaceVariant</item>
-        <item name="colorOnSurfaceVariant">@color/md_theme_onSurfaceVariant</item>
-        <item name="colorOutline">@color/md_theme_outline</item>
-        <item name="colorOnSurfaceInverse">@color/md_theme_inverseOnSurface</item>
-        <item name="colorSurfaceInverse">@color/md_theme_inverseSurface</item>
-        <item name="colorPrimaryInverse">@color/md_theme_inversePrimary</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowBackground">@color/md_theme_background</item>
-        <item name="actionMenuTextColor">@color/md_theme_primary</item>
+    <style name="Theme.Bambushain.BottomSheetButton" parent="Widget.Material3.Button">
+        <item name="android:layout_marginVertical">@dimen/margin</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Theme.Bambushain.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="android:layout_marginVertical">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginHorizontal">@dimen/activity_horizontal_margin</item>
+    </style>
+
+    <style name="Theme.Bambushain.ColorButton" parent="Widget.Material3.Button.IconButton.Filled">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_width">48dp</item>
     </style>
 </resources>

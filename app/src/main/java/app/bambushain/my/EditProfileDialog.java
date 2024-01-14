@@ -87,13 +87,7 @@ public class EditProfileDialog extends BindingDialogFragment<FragmentEditMyProfi
         viewModel.discordName.setValue(getArguments().getString("discordName"));
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.action_save_my_profile && viewModel.isDiscordNameValid.getValue() && viewModel.isDisplayNameValid.getValue() && viewModel.isEmailValid.getValue()) {
-                saveProfile();
-            }
-
-            return true;
-        });
+        binding.actionSaveMyProfile.setOnClickListener(v -> saveProfile());
 
         setObservers();
     }

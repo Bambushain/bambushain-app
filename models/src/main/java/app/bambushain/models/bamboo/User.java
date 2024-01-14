@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    private Integer id;
+    private Integer id = 0;
     private String displayName;
     private String email;
     private Boolean isMod;

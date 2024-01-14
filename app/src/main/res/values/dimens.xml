@@ -3,5 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="margin">8dp</dimen>
+    <dimen name="bottom_sheet_button_bottom_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 </resources>
