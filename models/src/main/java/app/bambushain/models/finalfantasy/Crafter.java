@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Crafter {
-    private Integer id;
+    private Integer id = 0;
     private CrafterJob job;
     private String level;
     private Integer characterId;

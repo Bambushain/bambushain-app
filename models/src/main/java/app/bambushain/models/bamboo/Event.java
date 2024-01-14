@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Event {
-    private Integer id;
+    private Integer id = 0;
     private String title;
     private String description;
     private LocalDate startDate;
