@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_profile_is_mod">" ist ein Mod"</string>
+    <string name="action_give_mod_status">Zum Mod machen</string>
+    <string name="action_revoke_mod_status">Modrechte entziehen</string>
+    <string name="action_edit_panda">Panda bearbeiten</string>
+    <string name="action_reset_two_factor">Zwei Faktor deaktivieren</string>
+    <string name="action_delete_panda">Panda löschen</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_revoke_mod_status_message">Sollen dem Panda die Modrechte entzogen werden?</string>
+    <string name="action_give_mod_status_message">Soll der Panda zum Mod gemacht werden?</string>
+    <string name="action_reset_two_factor_message">Soll die Zwei Faktor Authentifizierung für diesen Panda deaktiviert
+        werden?
+    </string>
+    <string name="action_delete_panda_message">Soll dieser Panda aus dem Hain geworfen werden?</string>
+    <string name="lable_edit_panda">Panda bearbeiten</string>
+    <string name="label_edit_user_profile">Panda bearbeiten</string>
+    <string name="pandas_is_mod">Panda ist Mod</string>
+    <string name="pandas_set_totp">Zwei Faktor setzen</string>
+    <string name="label_add_user_profile">Panda hinzufügen</string>
+</resources>

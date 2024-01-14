@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
                     headerViewModel.email.setValue(profile.getEmail());
                     headerViewModel.displayName.setValue(profile.getDisplayName());
                     headerViewModel.discordName.setValue(profile.getDiscordName());
+                    headerViewModel.id.setValue(profile.getId());
+                    headerViewModel.isMod.setValue(profile.getIsMod());
                     view.getViewTreeObserver().removeOnPreDrawListener(preDrawListener);
                 }, throwable -> {
                     Log.e(TAG, "loadProfile: Failed to load profile", throwable);
