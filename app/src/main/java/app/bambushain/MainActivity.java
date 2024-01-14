@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                     .remove(getString(app.bambushain.api.R.string.bambooAuthenticationToken))
                     .apply();
 
+            binding.drawerLayout.closeDrawers();
             navigator.navigate(R.id.action_global_fragment_login);
         });
 
