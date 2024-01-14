@@ -74,7 +74,7 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
                         } else if (item.getItemId() == R.id.action_change_mod_status) {
                             dialogBuilder
                                     .setTitle(panda.getIsMod() ? R.string.action_revoke_mod_status : R.string.action_give_mod_status)
-                                    .setMessage(panda.getIsMod() ? R.string.action_revoke_mod_status_message : R.string.action_give_mod_status_message)
+                                    .setMessage(v.getContext().getString(panda.getIsMod() ? R.string.action_revoke_mod_status_message : R.string.action_give_mod_status_message, panda.getDisplayName()))
                                     .setPositiveButton(panda.getIsMod() ? R.string.action_revoke_mod_status : R.string.action_give_mod_status, (dialog, which) -> {
                                         if (panda.getIsMod()) {
                                             if (onRevokeModListener != null) {
@@ -92,7 +92,7 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
                         } else if (item.getItemId() == R.id.action_reset_two_factor) {
                             dialogBuilder
                                     .setTitle(R.string.action_reset_two_factor)
-                                    .setMessage(R.string.action_reset_two_factor_message)
+                                    .setMessage(v.getContext().getString(R.string.action_reset_two_factor_message, panda.getDisplayName()))
                                     .setPositiveButton(R.string.action_reset_two_factor, (dialog, which) -> {
                                         if (onResetTotpListener != null) {
                                             onResetTotpListener.onResetTotp(position, panda);
@@ -104,7 +104,7 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
                         } else if (item.getItemId() == R.id.action_delete_panda) {
                             dialogBuilder
                                     .setTitle(R.string.action_delete_panda)
-                                    .setMessage(R.string.action_delete_panda_message)
+                                    .setMessage(v.getContext().getString(R.string.action_delete_panda_message, panda.getDisplayName()))
                                     .setPositiveButton(R.string.action_delete_panda, (dialog, which) -> {
                                         if (onDeleteUserListener != null) {
                                             onDeleteUserListener.onDeleteUser(position, panda);
