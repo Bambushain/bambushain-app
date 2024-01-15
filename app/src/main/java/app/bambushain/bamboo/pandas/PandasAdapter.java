@@ -69,7 +69,7 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
                     popupMenu.inflate(R.menu.pandas_card_menu);
                     popupMenu.getMenu().getItem(1).setTitle(
                             panda.getIsMod() ? R.string.action_revoke_mod_status : R.string.action_give_mod_status);
-                    popupMenu.getMenu().getItem(2).setVisible(panda.getIsMod());
+            popupMenu.getMenu().getItem(2).setVisible(panda.getAppTotpEnabled());
                     popupMenu.setOnMenuItemClickListener(item -> {
                         if (item.getItemId() == R.id.action_edit_panda) {
                             if (onEditUserListener != null) {

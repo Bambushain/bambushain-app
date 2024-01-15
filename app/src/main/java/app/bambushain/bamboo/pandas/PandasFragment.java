@@ -58,15 +58,15 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
             bambooApi.makeUserMod(user.getId()).subscribe(() -> {
                 user.setIsMod(true);
                 adapter.updatePanda(position, user);
-                Toast.makeText(requireContext(), R.string.success_panda_make_mod, Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), requireContext().getString(R.string.success_panda_make_mod, user.getDisplayName()), Toast.LENGTH_LONG).show();
             }, throwable -> {
                 Log.e(TAG, "makeUserMod: make user mod failed", throwable);
                 val bambooException = (BambooException) throwable;
-                var errorMessage = R.string.error_panda_make_mod_failed;
+                var errorMessage = requireContext().getString(R.string.error_panda_make_mod_failed, user.getDisplayName());
                 if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
-                    errorMessage = R.string.error_panda_make_mod_insufficient_rights;
+                    errorMessage = requireContext().getString(R.string.error_panda_make_mod_insufficient_rights);
                 } else if (bambooException.getErrorType() == ErrorType.Validation) {
-                    errorMessage = R.string.error_panda_make_mod_validation;
+                    errorMessage = requireContext().getString(R.string.error_panda_make_mod_validation);
                 }
 
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
@@ -76,15 +76,15 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
             bambooApi.makeUserMod(user.getId()).subscribe(() -> {
                 user.setIsMod(false);
                 adapter.updatePanda(position, user);
-                Toast.makeText(requireContext(), R.string.success_panda_mod_revoked, Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), requireContext().getString(R.string.success_panda_mod_revoked, user.getDisplayName()), Toast.LENGTH_LONG).show();
             }, throwable -> {
                 Log.e(TAG, "makeUserMod: revoke user modstatus failed", throwable);
                 val bambooException = (BambooException) throwable;
-                var errorMessage = R.string.error_panda_remove_mod_failed;
+                var errorMessage = requireContext().getString(R.string.error_panda_remove_mod_failed, user.getDisplayName());
                 if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
-                    errorMessage = R.string.error_panda_remove_mod_insufficient_rights;
+                    errorMessage = requireContext().getString(R.string.error_panda_remove_mod_insufficient_rights);
                 } else if (bambooException.getErrorType() == ErrorType.Validation) {
-                    errorMessage = R.string.error_panda_remove_mod_validation;
+                    errorMessage = requireContext().getString(R.string.error_panda_remove_mod_validation);
                 }
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
             });
@@ -93,7 +93,7 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
             bambooApi.resetUserTotp(user.getId()).subscribe(() -> {
                 user.setAppTotpEnabled(false);
                 adapter.updatePanda(position, user);
-                Toast.makeText(requireContext(), R.string.success_panda_disable_totp, Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), requireContext().getString(R.string.success_panda_disable_totp, user.getDisplayName()), Toast.LENGTH_LONG).show();
             }, throwable -> {
                 Log.e(TAG, "resetUserTotp: resetting two factor code for user failed", throwable);
                 val bambooException = (BambooException) throwable;
@@ -109,15 +109,15 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         adapter.setOnResetPasswordListener((position, user) -> {
             bambooApi.changePassword(user.getId()).subscribe(() -> {
                 adapter.notifyItemChanged(position);
-                Toast.makeText(requireContext(), R.string.success_panda_change_password, Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), requireContext().getString(R.string.success_panda_change_password, user.getDisplayName()), Toast.LENGTH_LONG).show();
             }, throwable -> {
                 Log.e(TAG, "changePassword: reset password failed", throwable);
                 val bambooException = (BambooException) throwable;
-                var errorMessage = R.string.error_panda_change_password_failed;
+                var errorMessage = requireContext().getString(R.string.error_panda_change_password_failed, user.getDisplayName());
                 if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
-                    errorMessage = R.string.error_panda_change_password_insufficient_rights;
+                    errorMessage = requireContext().getString(R.string.error_panda_change_password_insufficient_rights);
                 } else if (bambooException.getErrorType() == ErrorType.Validation) {
-                    errorMessage = R.string.error_panda_change_password_validation;
+                    errorMessage = requireContext().getString(R.string.error_panda_change_password_validation);
                 }
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
             });
@@ -125,15 +125,15 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         adapter.setOnDeleteUserListener((position, user) -> {
             bambooApi.deleteUser(user.getId()).subscribe(() -> {
                 adapter.removePanda(position);
-                Toast.makeText(requireContext(), R.string.success_panda_delete, Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), requireContext().getString(R.string.success_panda_delete, user.getDisplayName()), Toast.LENGTH_LONG).show();
             }, throwable -> {
                 Log.e(TAG, "deleteUser: deleting user failed", throwable);
                 val bambooException = (BambooException) throwable;
-                var errorMessage = R.string.error_panda_delete_failed;
+                var errorMessage = requireContext().getString(R.string.error_panda_delete_failed, user.getDisplayName());
                 if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
-                    errorMessage = R.string.error_panda_delete_insufficient_rights;
+                    errorMessage = requireContext().getString(R.string.error_panda_delete_insufficient_rights);
                 } else if (bambooException.getErrorType() == ErrorType.Validation) {
-                    errorMessage = R.string.error_panda_delete_validation;
+                    errorMessage = requireContext().getString(R.string.error_panda_delete_validation);
                 }
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
             });

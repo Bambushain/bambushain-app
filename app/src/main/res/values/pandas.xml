@@ -29,11 +29,11 @@
     <string name="error_panda_update_failed">Der Panda konnte nicht gespeichert werden</string>
     <string name="error_panda_update_exists">Der Name oder die Email sind schon vergeben</string>
 
-    <string name="error_panda_make_mod_failed">Der Panda konnte nicht zum Mod gemacht werden</string>
+    <string name="error_panda_make_mod_failed">%1$s konnte nicht zum Mod gemacht werden</string>
     <string name="error_panda_make_mod_insufficient_rights">Du musst Mod sein um Mods zu ernennen</string>
     <string name="error_panda_make_mod_validation">Du kannst dich nicht selbst zum Mod machen</string>
 
-    <string name="error_panda_remove_mod_failed">Dem Panda konnten die Modrechte nicht entzogen werden</string>
+    <string name="error_panda_remove_mod_failed">%1$s konnten die Modrechte nicht entzogen werden</string>
     <string name="error_panda_remove_mod_insufficient_rights">Du musst Mod sein um Pandas die Modrechte zu entziehen
     </string>
     <string name="error_panda_remove_mod_validation">Du kannst dir die Modrechte nicht entziehen</string>
@@ -47,14 +47,14 @@
         Profil deaktivieren
     </string>
 
-    <string name="error_panda_change_password_failed">Das Passwort konnte nicht zurückgesetzt werden</string>
+    <string name="error_panda_change_password_failed">Das Passwort von %1$s konnte nicht zurückgesetzt werden</string>
     <string name="error_panda_change_password_insufficient_rights">Du musst Mod sein um Passwörter zurückzusetzen
     </string>
     <string name="error_panda_change_password_validation">Wenn du dein Passwort ändern willst, kannst du das über
         Passwort ändern machen
     </string>
 
-    <string name="error_panda_delete_failed">Der Panda konnte nicht aus dem Hain geworfen werden</string>
+    <string name="error_panda_delete_failed">%1$s konnte nicht aus dem Hain geworfen werden</string>
     <string name="error_panda_delete_insufficient_rights">Du musst Mod sein um Pandas aus dem Hain zu werfen</string>
     <string name="error_panda_delete_validation">Du kannst dich nicht selbst aus dem Hain werfen, wenn du gehen
         möchtest, wende dich an einen Mod
@@ -69,10 +69,9 @@
     <string name="error_panda_dialog_discord_too_short">Der Name muss mindestens 3 Zeichen lang sein</string>
     <string name="error_panda_dialog_discord_too_long">Der Name darf nicht länger als 32 Zeichen lang sein</string>
     <string name="error_panda_dialog_name_required">Der Name ist erforderlich</string>
-    <string name="success_panda_created">Der Panda wurde zum Mod gemacht</string>
-    <string name="success_panda_mod_revoked">Dem Panda wurden die Modrechte entzogen</string>
-    <string name="success_panda_make_mod">Der Panda wurde zum Mod gemacht</string>
-    <string name="success_panda_disable_totp">Die Zwei Faktor Authentifizierung wurde deaktiviert</string>
-    <string name="success_panda_change_password">Das Passwort wurde zurückgesetzt</string>
-    <string name="success_panda_delete">Der Panda wurde aus dem Hain geworfen</string>
+    <string name="success_panda_mod_revoked">%1$s wurden die Modrechte entzogen</string>
+    <string name="success_panda_make_mod">%1$s wurde zum Mod gemacht</string>
+    <string name="success_panda_disable_totp">Die Zwei Faktor Authentifizierung wurde für %1$s deaktiviert</string>
+    <string name="success_panda_change_password">Das Passwort von %1$s wurde zurückgesetzt</string>
+    <string name="success_panda_delete">%1$s wurde aus dem Hain geworfen</string>
 </resources>
