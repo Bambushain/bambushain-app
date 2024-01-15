@@ -166,6 +166,16 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
         }
     }
 
+    public void removePanda(int position) {
+        pandas.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void updatePanda(int position, User user) {
+        pandas.set(position, user);
+        notifyItemChanged(position);
+    }
+
     public interface OnMakeModListener {
         void onMakeMod(int position, User user);
     }

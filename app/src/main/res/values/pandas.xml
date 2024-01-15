@@ -61,4 +61,18 @@
     </string>
     <string name="success_create_panda">Der Panda wurde erstellt</string>
     <string name="lable_add_panda">Neuen Panda erstellen</string>
+    <string name="error_panda_email_invalid">Die Email ist ungültig</string>
+    <string name="error_panda_discord_too_short">Der Name muss mindestens 3 Zeichen lang sein.</string>
+    <string name="error_panda_discord_too_long">Der Name darf nicht länger als 32 Zeichen lang sein</string>
+    <string name="error_panda_name_required">Der Name ist erforderlich</string>
+    <string name="error_panda_dialog_email_invalid">Die Email ist ungültig</string>
+    <string name="error_panda_dialog_discord_too_short">Der Name muss mindestens 3 Zeichen lang sein</string>
+    <string name="error_panda_dialog_discord_too_long">Der Name darf nicht länger als 32 Zeichen lang sein</string>
+    <string name="error_panda_dialog_name_required">Der Name ist erforderlich</string>
+    <string name="success_panda_created">Der Panda wurde zum Mod gemacht</string>
+    <string name="success_panda_mod_revoked">Dem Panda wurden die Modrechte entzogen</string>
+    <string name="success_panda_make_mod">Der Panda wurde zum Mod gemacht</string>
+    <string name="success_panda_disable_totp">Die Zwei Faktor Authentifizierung wurde deaktiviert</string>
+    <string name="success_panda_change_password">Das Passwort wurde zurückgesetzt</string>
+    <string name="success_panda_delete">Der Panda wurde aus dem Hain geworfen</string>
 </resources>

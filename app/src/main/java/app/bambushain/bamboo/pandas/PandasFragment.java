@@ -57,7 +57,8 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         adapter.setOnMakeModListener((position, user) -> {
             bambooApi.makeUserMod(user.getId()).subscribe(() -> {
                 user.setIsMod(true);
-                adapter.notifyItemChanged(position, user);
+                adapter.updatePanda(position, user);
+                Toast.makeText(requireContext(), R.string.success_panda_make_mod, Toast.LENGTH_LONG).show();
             }, throwable -> {
                 Log.e(TAG, "makeUserMod: make user mod failed", throwable);
                 val bambooException = (BambooException) throwable;
@@ -74,7 +75,8 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         adapter.setOnRevokeModListener((position, user) -> {
             bambooApi.makeUserMod(user.getId()).subscribe(() -> {
                 user.setIsMod(false);
-                adapter.notifyItemChanged(position, user);
+                adapter.updatePanda(position, user);
+                Toast.makeText(requireContext(), R.string.success_panda_mod_revoked, Toast.LENGTH_LONG).show();
             }, throwable -> {
                 Log.e(TAG, "makeUserMod: revoke user modstatus failed", throwable);
                 val bambooException = (BambooException) throwable;
@@ -89,7 +91,9 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         });
         adapter.setOnResetTotpListener((position, user) -> {
             bambooApi.resetUserTotp(user.getId()).subscribe(() -> {
-                adapter.notifyItemChanged(position, user);
+                user.setAppTotpEnabled(false);
+                adapter.updatePanda(position, user);
+                Toast.makeText(requireContext(), R.string.success_panda_disable_totp, Toast.LENGTH_LONG).show();
             }, throwable -> {
                 Log.e(TAG, "resetUserTotp: resetting two factor code for user failed", throwable);
                 val bambooException = (BambooException) throwable;
@@ -105,6 +109,7 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         adapter.setOnResetPasswordListener((position, user) -> {
             bambooApi.changePassword(user.getId()).subscribe(() -> {
                 adapter.notifyItemChanged(position);
+                Toast.makeText(requireContext(), R.string.success_panda_change_password, Toast.LENGTH_LONG).show();
             }, throwable -> {
                 Log.e(TAG, "changePassword: reset password failed", throwable);
                 val bambooException = (BambooException) throwable;
@@ -119,7 +124,8 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         });
         adapter.setOnDeleteUserListener((position, user) -> {
             bambooApi.deleteUser(user.getId()).subscribe(() -> {
-                adapter.notifyItemRemoved(position);
+                adapter.removePanda(position);
+                Toast.makeText(requireContext(), R.string.success_panda_delete, Toast.LENGTH_LONG).show();
             }, throwable -> {
                 Log.e(TAG, "deleteUser: deleting user failed", throwable);
                 val bambooException = (BambooException) throwable;
@@ -190,7 +196,6 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.addPanda.setOnClickListener(v -> {
             val bundle = new Bundle();
-            bundle.putInt("id", 0);
             bundle.putString("email", "");
             bundle.putString("displayName", "");
             bundle.putString("discordName", "");

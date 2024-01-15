@@ -103,7 +103,7 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
                 snackbar.dismiss();
             }
             if (value == null || value.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(value).matches()) {
-                binding.profileEmail.setError(getString(R.string.error_profile_email_invalid));
+                binding.profileEmail.setError(getString(R.string.error_panda_dialog_email_invalid));
                 viewModel.isEmailValid.setValue(false);
             } else {
                 binding.profileEmail.setError(null);
@@ -115,10 +115,10 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
                 snackbar.dismiss();
             }
             if (value != null && !value.isEmpty() && value.length() < 3) {
-                binding.profileDiscordName.setError(getString(R.string.error_profile_discord_too_short));
+                binding.profileDiscordName.setError(getString(R.string.error_panda_dialog_discord_too_short));
                 viewModel.isDiscordNameValid.setValue(false);
             } else if (value != null && !value.isEmpty() && value.length() > 32) {
-                binding.profileDiscordName.setError(getString(R.string.error_profile_discord_too_long));
+                binding.profileDiscordName.setError(getString(R.string.error_panda_dialog_discord_too_long));
                 viewModel.isDiscordNameValid.setValue(false);
             } else {
                 binding.profileDiscordName.setError(null);
@@ -130,7 +130,7 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
                 snackbar.dismiss();
             }
             if (value == null || value.isEmpty()) {
-                binding.profileDisplayName.setError(getString(R.string.error_profile_name_required));
+                binding.profileDisplayName.setError(getString(R.string.error_panda_dialog_name_required));
                 viewModel.isDisplayNameValid.setValue(false);
             } else {
                 binding.profileDisplayName.setError(null);

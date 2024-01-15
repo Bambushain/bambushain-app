@@ -10,14 +10,7 @@
                 app:popUpToInclusive="true"/>
     </fragment>
     <action android:id="@+id/action_global_fragment_login" app:destination="@id/fragment_login"/>
-    <fragment android:id="@+id/fragment_pandas" android:name="app.bambushain.bamboo.pandas.PandasFragment"
-              android:label="@string/label_pandas">
-        <action android:id="@+id/action_fragment_pandas_to_edit_panda_dialog" app:destination="@id/fragment_edit_panda"
-                app:popUpTo="@id/fragment_pandas"/>
-        <action android:id="@+id/action_fragment_pandas_to_add_panda_dialog" app:destination="@id/add_panda_dialog"
-                app:popUpTo="@id/fragment_pandas"/>
-    </fragment>
-    <action android:id="@+id/action_global_fragment_pandas" app:destination="@id/fragment_pandas"/>
+    <action android:id="@+id/action_global_fragment_pandas" app:destination="@id/pandas_navigation"/>
     <action android:id="@+id/action_global_fragment_profile" app:destination="@id/my_profile_navigation"/>
     <action android:id="@+id/action_global_fragment_event_calendar" app:destination="@id/calendar_navigation"/>
     <navigation android:id="@+id/my_profile_navigation" app:startDestination="@id/fragment_profile">
@@ -55,8 +48,18 @@
                     app:destination="@id/edit_event_dialog"/>
         </fragment>
     </navigation>
-    <dialog android:id="@+id/fragment_edit_panda" android:name="app.bambushain.bamboo.pandas.EditPandaDialog"
-            android:label="@string/lable_edit_panda"/>
-    <dialog android:id="@+id/add_panda_dialog" android:name="app.bambushain.bamboo.pandas.AddPandaDialog"
-            android:label="@string/lable_add_panda"/>
+    <navigation android:id="@+id/pandas_navigation" app:startDestination="@id/fragment_pandas">
+        <dialog android:id="@+id/fragment_edit_panda" android:name="app.bambushain.bamboo.pandas.EditPandaDialog"
+                android:label="@string/lable_edit_panda"/>
+        <dialog android:id="@+id/add_panda_dialog" android:name="app.bambushain.bamboo.pandas.AddPandaDialog"
+                android:label="@string/lable_add_panda"/>
+        <fragment android:id="@+id/fragment_pandas" android:name="app.bambushain.bamboo.pandas.PandasFragment"
+                  android:label="@string/label_pandas">
+            <action android:id="@+id/action_fragment_pandas_to_edit_panda_dialog"
+                    app:destination="@id/fragment_edit_panda"
+                    app:popUpTo="@id/fragment_pandas"/>
+            <action android:id="@+id/action_fragment_pandas_to_add_panda_dialog" app:destination="@id/add_panda_dialog"
+                    app:popUpTo="@id/fragment_pandas"/>
+        </fragment>
+    </navigation>
 </navigation>
