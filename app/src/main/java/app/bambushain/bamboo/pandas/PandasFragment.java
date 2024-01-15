@@ -77,6 +77,14 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
                 adapter.notifyItemChanged(position, user);
             }, throwable -> {
                 Log.e(TAG, "makeUserMod: revoke user modstatus failed", throwable);
+                val bambooException = (BambooException) throwable;
+                var errorMessage = R.string.error_panda_remove_mod_failed;
+                if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
+                    errorMessage = R.string.error_panda_remove_mod_insufficient_rights;
+                } else if (bambooException.getErrorType() == ErrorType.Validation) {
+                    errorMessage = R.string.error_panda_remove_mod_validation;
+                }
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
             });
         });
         adapter.setOnResetTotpListener((position, user) -> {
@@ -84,6 +92,29 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
                 adapter.notifyItemChanged(position, user);
             }, throwable -> {
                 Log.e(TAG, "resetUserTotp: resetting two factor code for user failed", throwable);
+                val bambooException = (BambooException) throwable;
+                var errorMessage = R.string.error_panda_disable_totp_failed;
+                if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
+                    errorMessage = R.string.error_panda_disable_totp_insufficient_rights;
+                } else if (bambooException.getErrorType() == ErrorType.Validation) {
+                    errorMessage = R.string.error_panda_disable_totp_validation;
+                }
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
+            });
+        });
+        adapter.setOnResetPasswordListener((position, user) -> {
+            bambooApi.changePassword(user.getId()).subscribe(() -> {
+                adapter.notifyItemChanged(position);
+            }, throwable -> {
+                Log.e(TAG, "changePassword: reset password failed", throwable);
+                val bambooException = (BambooException) throwable;
+                var errorMessage = R.string.error_panda_change_password_failed;
+                if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
+                    errorMessage = R.string.error_panda_change_password_insufficient_rights;
+                } else if (bambooException.getErrorType() == ErrorType.Validation) {
+                    errorMessage = R.string.error_panda_change_password_validation;
+                }
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
             });
         });
         adapter.setOnDeleteUserListener((position, user) -> {
@@ -91,6 +122,14 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
                 adapter.notifyItemRemoved(position);
             }, throwable -> {
                 Log.e(TAG, "deleteUser: deleting user failed", throwable);
+                val bambooException = (BambooException) throwable;
+                var errorMessage = R.string.error_panda_delete_failed;
+                if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
+                    errorMessage = R.string.error_panda_delete_insufficient_rights;
+                } else if (bambooException.getErrorType() == ErrorType.Validation) {
+                    errorMessage = R.string.error_panda_delete_validation;
+                }
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
             });
         });
 

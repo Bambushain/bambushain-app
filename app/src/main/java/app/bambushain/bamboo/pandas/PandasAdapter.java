@@ -33,6 +33,8 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
     @Setter
     private OnResetTotpListener onResetTotpListener;
     @Setter
+    private OnResetPasswordListener onResetPasswordListener;
+    @Setter
     private OnDeleteUserListener onDeleteUserListener;
     @Setter
     private OnEditUserListener onEditUserListener;
@@ -103,6 +105,18 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
                                     .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel());
                             val dialog = dialogBuilder.create();
                             dialog.show();
+                        } else if (item.getItemId() == R.id.action_reset_password) {
+                            dialogBuilder
+                                    .setTitle(R.string.action_reset_password)
+                                    .setMessage(v.getContext().getString(R.string.action_reset_password_message, panda.getDisplayName()))
+                                    .setPositiveButton(R.string.action_reset_password, (dialog, which) -> {
+                                        if (onResetPasswordListener != null) {
+                                            onResetPasswordListener.onResetPassword(position, panda);
+                                        }
+                                    })
+                                    .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel());
+                            val dialog = dialogBuilder.create();
+                            dialog.show();
                         } else if (item.getItemId() == R.id.action_delete_panda) {
                             dialogBuilder
                                     .setTitle(R.string.action_delete_panda)
@@ -162,6 +176,10 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
 
     public interface OnResetTotpListener {
         void onResetTotp(int position, User user);
+    }
+
+    public interface OnResetPasswordListener {
+        void onResetPassword(int position, User user);
     }
 
     public interface OnDeleteUserListener {

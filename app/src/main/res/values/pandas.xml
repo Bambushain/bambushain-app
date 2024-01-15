@@ -5,6 +5,7 @@
     <string name="action_revoke_mod_status">Modrechte entziehen</string>
     <string name="action_edit_panda">Panda bearbeiten</string>
     <string name="action_reset_two_factor">Zwei Faktor deaktivieren</string>
+    <string name="action_reset_password">Passwort zurücksetzen</string>
     <string name="action_delete_panda">Aus dem Hain werfen</string>
     <string name="action_change_password_panda">Passwort zurücksetzen</string>
     <string name="action_cancel">Abbrechen</string>
@@ -14,6 +15,7 @@
     <string name="action_reset_two_factor_message">Soll die Zwei Faktor Authentifizierung von %1$s wirklich deaktiviert
         werden?
     </string>
+    <string name="action_reset_password_message">Soll das Passwort für %1$s wirklich zurückgesetzt werden?</string>
     <string name="action_delete_panda_message">Soll der Panda %1$s wirklich aus dem Hain geworfen werden?</string>
     <string name="action_change_password_message">Das neue Passwort wird %1$s per Mail geschickt</string>
     <string name="lable_edit_panda">Panda bearbeiten</string>
