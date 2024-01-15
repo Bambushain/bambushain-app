@@ -57,4 +57,6 @@
     <string name="error_panda_delete_validation">Du kannst dich nicht selbst aus dem Hain werfen, wenn du gehen
         möchtest, wende dich an einen Mod
     </string>
+    <string name="success_create_panda">Der Panda wurde erstellt</string>
+    <string name="lable_add_panda">Neuen Panda erstellen</string>
 </resources>

@@ -93,6 +93,7 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
                 Log.e(TAG, "deleteUser: deleting user failed", throwable);
             });
         });
+
         binding.pandaList.setAdapter(adapter);
         binding.pandaList.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -148,6 +149,14 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         viewModel.isLoading.setValue(true);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
+        binding.addPanda.setOnClickListener(v -> {
+            val bundle = new Bundle();
+            bundle.putInt("id", 0);
+            bundle.putString("email", "");
+            bundle.putString("displayName", "");
+            bundle.putString("discordName", "");
+            navigator.navigate(R.id.action_fragment_pandas_to_add_panda_dialog, bundle);
+        });
         loadData();
 
     }

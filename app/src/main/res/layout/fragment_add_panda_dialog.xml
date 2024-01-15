@@ -73,6 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/margin"
                     android:id="@+id/isMod"
+                    android:checked="@={viewModel.isMod}"
                     app:layout_constraintTop_toBottomOf="@+id/profileDiscordName"
                     app:layout_constraintStart_toStartOf="@+id/profileDiscordName"/>
             <com.google.android.material.button.MaterialButton

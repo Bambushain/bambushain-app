@@ -14,6 +14,8 @@
               android:label="@string/label_pandas">
         <action android:id="@+id/action_fragment_pandas_to_edit_panda_dialog" app:destination="@id/fragment_edit_panda"
                 app:popUpTo="@id/fragment_pandas"/>
+        <action android:id="@+id/action_fragment_pandas_to_add_panda_dialog" app:destination="@id/add_panda_dialog"
+                app:popUpTo="@id/fragment_pandas"/>
     </fragment>
     <action android:id="@+id/action_global_fragment_pandas" app:destination="@id/fragment_pandas"/>
     <action android:id="@+id/action_global_fragment_profile" app:destination="@id/my_profile_navigation"/>
@@ -55,4 +57,6 @@
     </navigation>
     <dialog android:id="@+id/fragment_edit_panda" android:name="app.bambushain.bamboo.pandas.EditPandaDialog"
             android:label="@string/lable_edit_panda"/>
+    <dialog android:id="@+id/add_panda_dialog" android:name="app.bambushain.bamboo.pandas.AddPandaDialog"
+            android:label="@string/lable_add_panda"/>
 </navigation>
