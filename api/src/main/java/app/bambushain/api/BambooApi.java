@@ -10,6 +10,7 @@ import app.bambushain.models.finalfantasy.Character;
 import app.bambushain.models.finalfantasy.*;
 import app.bambushain.models.my.ChangeMyPassword;
 import app.bambushain.models.my.UpdateMyProfile;
+import app.bambushain.models.pandas.UpdateUserProfile;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.*;
@@ -649,7 +650,7 @@ public interface BambooApi {
      * Updates the profile of the given user
      *
      * @param id              The id of the user (required)
-     * @param updateMyProfile The data to update the user with (required)
+     * @param updateProfile The data to update the user with (required)
      * @return Completable
      */
     @Headers({
@@ -657,6 +658,6 @@ public interface BambooApi {
     })
     @PUT("api/user/{id}/profile")
     Completable updateUserProfile(
-            @retrofit2.http.Path("id") long id, @retrofit2.http.Body UpdateMyProfile updateMyProfile
+            @retrofit2.http.Path("id") long id, @retrofit2.http.Body UpdateUserProfile updateProfile
     );
 }

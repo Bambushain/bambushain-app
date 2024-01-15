@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateUserProfile {
-    private int id;
     private String email;
     private String displayName;
     private String discordName;

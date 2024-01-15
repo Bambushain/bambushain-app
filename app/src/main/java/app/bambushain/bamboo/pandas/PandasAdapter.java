@@ -1,5 +1,6 @@
 package app.bambushain.bamboo.pandas;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
@@ -15,6 +16,7 @@ import lombok.Setter;
 import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder> {
@@ -125,6 +127,29 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return pandas.size();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void addPanda(User user) {
+        pandas.add(user);
+        pandas.sort(Comparator.comparing(User::getEmail));
+        notifyDataSetChanged();
+    }
+
+    public void updatePanda(Integer id, String email, String displayName, String discordName) {
+        val panda = pandas
+                .stream()
+                .filter(user -> user.getId().equals(id))
+                .findFirst();
+        if (panda.isPresent()) {
+            val p = panda.get();
+            val idx = pandas.indexOf(p);
+            p.setEmail(email);
+            p.setDisplayName(displayName);
+            p.setDiscordName(discordName);
+            pandas.set(idx, p);
+            notifyItemChanged(idx);
+        }
     }
 
     public interface OnMakeModListener {

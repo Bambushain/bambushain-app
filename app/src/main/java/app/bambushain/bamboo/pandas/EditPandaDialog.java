@@ -14,7 +14,7 @@ import app.bambushain.base.BindingDialogFragment;
 import app.bambushain.databinding.FragmentEditPandaDialogBinding;
 import app.bambushain.models.exception.BambooException;
 import app.bambushain.models.exception.ErrorType;
-import app.bambushain.models.my.UpdateMyProfile;
+import app.bambushain.models.pandas.UpdateUserProfile;
 import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
@@ -40,7 +40,7 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
     }
 
     void saveProfile() {
-        val profile = new UpdateMyProfile(viewModel.email.getValue(), viewModel.displayName.getValue(), viewModel.discordName.getValue());
+        val profile = new UpdateUserProfile(viewModel.email.getValue(), viewModel.displayName.getValue(), viewModel.discordName.getValue());
         Log.d(TAG, "saveProfile: Perform profile update " + profile);
         viewModel.isLoading.setValue(true);
         bambooApi
@@ -51,9 +51,11 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
                             .makeText(getContext(), R.string.success_edit_panda, Toast.LENGTH_LONG)
                             .show();
                     val stateHandle = navigator.getPreviousBackStackEntry().getSavedStateHandle();
+                    stateHandle.set("id", viewModel.id.getValue());
                     stateHandle.set("email", profile.getEmail());
                     stateHandle.set("displayName", profile.getDisplayName());
                     stateHandle.set("discordName", profile.getDiscordName());
+                    stateHandle.set("action", "update");
                     navigator.popBackStack();
                 }, ex -> {
                     Log.e(TAG, "saveProfile: Update failed", ex);
