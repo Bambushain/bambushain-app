@@ -40,7 +40,7 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.30'
     implementation 'com.google.dagger:hilt-android:2.50'
     implementation 'com.launchdarkly:okhttp-eventsource:4.1.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'com.google.dagger:hilt-compiler:2.50'
