@@ -89,6 +89,7 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
                                     activity.headerViewModel.email.setValue(profile.getEmail());
                                     activity.headerViewModel.displayName.setValue(profile.getDisplayName());
                                     activity.headerViewModel.discordName.setValue(profile.getDiscordName());
+                                    activity.headerViewModel.isMod.setValue(profile.getIsMod());
                                     navigator.navigate(R.id.action_fragment_login_to_fragment_event_calendar);
                                 }, throwable -> {
                                     Log.e(TAG, "loadProfile: Failed to load profile", throwable);
