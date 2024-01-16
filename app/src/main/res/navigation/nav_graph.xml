@@ -13,6 +13,7 @@
     <action android:id="@+id/action_global_fragment_pandas" app:destination="@id/pandas_navigation"/>
     <action android:id="@+id/action_global_fragment_profile" app:destination="@id/my_profile_navigation"/>
     <action android:id="@+id/action_global_fragment_event_calendar" app:destination="@id/calendar_navigation"/>
+    <action android:id="@+id/action_global_fragment_characters" app:destination="@id/characters_navigation"/>
     <navigation android:id="@+id/my_profile_navigation" app:startDestination="@id/fragment_profile">
         <fragment android:id="@+id/fragment_profile" android:name="app.bambushain.my.ProfileFragment"
                   android:label="@string/label_my_profile">
@@ -61,5 +62,10 @@
             <action android:id="@+id/action_fragment_pandas_to_add_panda_dialog" app:destination="@id/add_panda_dialog"
                     app:popUpTo="@id/fragment_pandas"/>
         </fragment>
+    </navigation>
+    <navigation android:id="@+id/characters_navigation" app:startDestination="@id/fragment_characters">
+        <fragment android:id="@+id/fragment_characters"
+                  android:name="app.bambushain.finalfantasy.characters.CharactersFragment"
+                  android:label="@string/lable_characters"/>
     </navigation>
 </navigation>

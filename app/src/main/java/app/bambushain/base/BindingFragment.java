@@ -29,7 +29,7 @@ public abstract class BindingFragment<T extends ViewBinding> extends Fragment {
     protected abstract T getViewBinding();
 
     AppBarConfiguration getAppBarConfiguration() {
-        return new AppBarConfiguration.Builder(R.id.fragment_login, R.id.fragment_event_calendar, R.id.fragment_pandas, R.id.fragment_profile)
+        return new AppBarConfiguration.Builder(R.id.fragment_login, R.id.fragment_event_calendar, R.id.fragment_pandas, R.id.fragment_profile, R.id.fragment_characters)
                 .setDrawerLayout(activity.binding.drawerLayout)
                 .build();
     }
