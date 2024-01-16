@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId "app.bambushain"
-        minSdk 31
+        minSdk 30
         targetSdk 34
         versionCode computeVersionCode()
         versionName "$bambooMajorVersion.$bambooMinorVersion"
