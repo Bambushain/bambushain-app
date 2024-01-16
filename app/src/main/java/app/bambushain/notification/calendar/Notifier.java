@@ -46,6 +46,7 @@ public class Notifier {
                 .setOngoing(true)
                 .setSilent(true)
                 .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+                .setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
                 .build();
     }
 

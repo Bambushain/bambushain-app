@@ -17,6 +17,7 @@
             android:label="@string/app_name"
             android:screenOrientation="sensorPortrait"
             android:supportsRtl="false"
+            android:enableOnBackInvokedCallback="true"
             android:theme="@style/Theme.Bambushain">
         <receiver
                 android:name=".notification.calendar.StartEventNotificationReceiver"
