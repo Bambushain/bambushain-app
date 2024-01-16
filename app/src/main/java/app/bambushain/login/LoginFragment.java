@@ -1,5 +1,6 @@
 package app.bambushain.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
+import app.bambushain.EventNotificationService;
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
@@ -91,6 +93,9 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
                                     activity.headerViewModel.discordName.setValue(profile.getDiscordName());
                                     activity.headerViewModel.isMod.setValue(profile.getIsMod());
                                     navigator.navigate(R.id.action_fragment_login_to_fragment_event_calendar);
+                                    val startServiceIntent = new Intent(requireContext(), EventNotificationService.class);
+                                    startServiceIntent.setAction(getString(R.string.service_intent_login_successful));
+                                    requireContext().startForegroundService(startServiceIntent);
                                 }, throwable -> {
                                     Log.e(TAG, "loadProfile: Failed to load profile", throwable);
                                     navigator.navigate(R.id.action_global_fragment_login);
