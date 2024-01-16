@@ -54,7 +54,7 @@ public class EventNotificationService extends Service {
                     Log.d(TAG, "startListening: Auth token is valid");
                     eventDao
                             .getEventsForDay()
-                            .subscribe(events -> notifier.showNotificationForToday(events), throwable -> Log.e(TAG, "startListening: Failed to listen to database changes", throwable));
+                            .subscribe(notifier::showNotificationForToday, throwable -> Log.e(TAG, "startListening: Failed to listen to database changes", throwable));
                     Schedulers.io().scheduleDirect(() -> {
                         try {
                             eventListener.subscribeToEventChanges();

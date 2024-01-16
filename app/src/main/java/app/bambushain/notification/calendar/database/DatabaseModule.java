@@ -7,6 +7,7 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
+import io.requery.android.database.sqlite.RequerySQLiteOpenHelperFactory;
 
 import javax.inject.Singleton;
 
@@ -16,6 +17,7 @@ public class DatabaseModule {
     public static EventDao getEventDao(Context context) {
         return Room
                 .databaseBuilder(context, EventDatabase.class, "event-database")
+                .openHelperFactory(new RequerySQLiteOpenHelperFactory())
                 .build()
                 .eventDao();
     }

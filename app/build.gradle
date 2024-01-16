@@ -29,6 +29,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    packagingOptions {
+        exclude 'lib/armeabi-v7a/libsqlite3x.so'
+        exclude 'lib/x86/libsqlite3x.so'
+        exclude 'lib/x86_64/libsqlite3x.so'
+    }
+
     signingConfigs {
         release {
             storeFile file(System.getenv('ANDROID_KEY_STOREFILE') ?: '/opt/secure/signing-key.jks')
@@ -86,6 +92,7 @@ dependencies {
     implementation "androidx.room:room-runtime:2.6.1"
     implementation "androidx.room:room-rxjava3:2.6.1"
     implementation 'androidx.work:work-runtime:2.9.0'
+    implementation 'com.github.requery:sqlite-android:3.43.0'
 
     testImplementation 'junit:junit:4.13.2'
 
