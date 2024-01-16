@@ -11,6 +11,7 @@ import com.launchdarkly.eventsource.StreamException;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.observables.ConnectableObservable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +20,9 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class BambooCalendarEventSource {
     private static final String TAG = BambooCalendarEventSource.class.getName();
     @Inject
@@ -29,43 +32,49 @@ public class BambooCalendarEventSource {
     @ApplicationContext
     @Inject
     Context context;
-    private EventSource source;
+    private boolean isConnected = false;
+    private ConnectableObservable<CalendarEventAction> observable;
+
     @Inject
     public BambooCalendarEventSource() {
     }
 
     public Observable<CalendarEventAction> start() throws StreamException {
-        val instance = context.getString(R.string.bambooInstance);
-        val calendarEventSourceUrl = "https://" + instance + ".bambushain.app/sse/event";
-        val connectStrategy = HttpConnectStrategy
-                .http(HttpUrl.get(calendarEventSourceUrl))
-                .httpClient(client);
-        source = new EventSource.Builder(connectStrategy).errorStrategy(ErrorStrategy.alwaysContinue()).build();
-        val observable = Observable
-                .fromIterable(source.messages())
-                .map(messageEvent -> {
-                    val name = messageEvent.getEventName();
-                    Log.d(TAG, "onMessage: Got a new message " + name);
-                    switch (name) {
-                        case "created":
-                            return new CalendarEventAction(Action.Created, gson.fromJson(messageEvent.getDataReader(), Event.class));
-                        case "updated":
-                            return new CalendarEventAction(Action.Updated, gson.fromJson(messageEvent.getDataReader(), Event.class));
-                        case "deleted":
-                            return new CalendarEventAction(Action.Deleted, gson.fromJson(messageEvent.getDataReader(), Event.class));
-                    }
+        if (!isConnected) {
+            val instance = context.getString(R.string.bambooInstance);
+            val calendarEventSourceUrl = "https://" + instance + ".bambushain.app/sse/event";
+            val connectStrategy = HttpConnectStrategy
+                    .http(HttpUrl.get(calendarEventSourceUrl))
+                    .httpClient(client);
+            EventSource source = new EventSource
+                    .Builder(connectStrategy)
+                    .errorStrategy(ErrorStrategy.alwaysContinue())
+                    .build();
+            observable = Observable
+                    .fromIterable(source.messages())
+                    .map(messageEvent -> {
+                        val name = messageEvent.getEventName();
+                        Log.d(TAG, "onMessage: Got a new message " + name);
+                        switch (name) {
+                            case "created":
+                                return new CalendarEventAction(Action.Created, gson.fromJson(messageEvent.getDataReader(), Event.class));
+                            case "updated":
+                                return new CalendarEventAction(Action.Updated, gson.fromJson(messageEvent.getDataReader(), Event.class));
+                            case "deleted":
+                                return new CalendarEventAction(Action.Deleted, gson.fromJson(messageEvent.getDataReader(), Event.class));
+                        }
 
-                    throw new Exception();
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread());
-        source.start();
+                        throw new Exception();
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.newThread())
+                    .publish();
+            source.start();
+            observable.connect();
+            isConnected = true;
+        }
 
         return observable;
-    }
-
-    public void close() {
-        source.close();
     }
 
     public enum Action {

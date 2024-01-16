@@ -1,8 +1,9 @@
-package app.bambushain;
+package app.bambushain.notification.calendar;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import app.bambushain.R;
 import lombok.val;
 
 public class StartEventNotificationReceiver extends BroadcastReceiver {

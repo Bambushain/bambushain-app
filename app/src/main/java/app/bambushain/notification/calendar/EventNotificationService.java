@@ -1,22 +1,26 @@
-package app.bambushain;
+package app.bambushain.notification.calendar;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.ServiceInfo;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
-import androidx.core.app.NotificationCompat;
+import androidx.work.Constraints;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import app.bambushain.R;
 import app.bambushain.api.BambooApi;
-import app.bambushain.api.BambooCalendarEventSource;
+import app.bambushain.notification.calendar.database.CleanupWorker;
+import app.bambushain.notification.calendar.database.EventDao;
+import app.bambushain.notification.calendar.network.EventSubscriber;
 import com.launchdarkly.eventsource.StreamException;
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.val;
 
 import javax.inject.Inject;
+import java.util.concurrent.TimeUnit;
 
 @AndroidEntryPoint
 public class EventNotificationService extends Service {
@@ -24,7 +28,12 @@ public class EventNotificationService extends Service {
     @Inject
     BambooApi bambooApi;
     @Inject
-    BambooCalendarEventSource bambooCalendarEventSource;
+    EventSubscriber eventListener;
+    @Inject
+    Notifier notifier;
+    @Inject
+    EventDao eventDao;
+
     private boolean isListening = false;
 
     @Inject
@@ -43,15 +52,12 @@ public class EventNotificationService extends Service {
                 .subscribe(() -> {
                     isListening = true;
                     Log.d(TAG, "startListening: Auth token is valid");
-                    updateNotification(getString(R.string.service_no_events));
+                    eventDao
+                            .getEventsForDay()
+                            .subscribe(events -> notifier.showNotificationForToday(events), throwable -> Log.e(TAG, "startListening: Failed to listen to database changes", throwable));
                     Schedulers.io().scheduleDirect(() -> {
                         try {
-                            Log.d(TAG, "startListening: Start the sse connection");
-                            bambooCalendarEventSource.start().subscribe(calendarEventAction -> {
-                                Log.d(TAG, "startListening: New event notification received " + calendarEventAction.getAction().name());
-                            }, throwable -> {
-                                Log.d(TAG, "startListening: Failure in receiving", throwable);
-                            });
+                            eventListener.subscribeToEventChanges();
                         } catch (StreamException e) {
                             Log.e(TAG, "startListening: Failure in listening start", e);
                             stopSelf();
@@ -59,13 +65,8 @@ public class EventNotificationService extends Service {
                     });
                 }, throwable -> {
                     Log.i(TAG, "startListening: Login is not valid, wait for login action to trigger start", throwable);
-                    updateNotification(getString(R.string.service_not_logged_in));
+                    notifier.updateNotification(getString(R.string.service_not_logged_in));
                 });
-    }
-
-    private void updateNotification(String message) {
-        val manager = getSystemService(NotificationManager.class);
-        manager.notify(100, createNotification(message));
     }
 
     private void startService() {
@@ -73,32 +74,23 @@ public class EventNotificationService extends Service {
             val powerManager = getSystemService(PowerManager.class);
             powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "EventNotificationService::lock").acquire(10 * 60 * 1000L /*10 minutes*/);
 
-            startForeground(100, createNotification(getString(R.string.service_no_events)), ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+            startForeground(notifier.notificationId, notifier.createNotification(getString(R.string.service_no_events)), ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
         } catch (Exception e) {
             Log.e(TAG, "startService: Failed to start service, no persistent notification is going to be displayed", e);
         }
     }
 
-    private Notification createNotification(String message) {
-        Log.d(TAG, "createNotification: Create the persistent notification");
-        return new NotificationCompat
-                .Builder(this, getString(R.string.service_notification_channel_id))
-                .setContentTitle(getString(R.string.service_title))
-                .setContentText(message)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setChannelId(getString(R.string.service_notification_channel_id))
-                .setOngoing(true)
-                .setSilent(true)
-                .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+    private void enqueueCleanupWorker() {
+        val workerConstraints = new Constraints.Builder()
+                .setRequiresDeviceIdle(true)
                 .build();
-    }
-
-    @Override
-    public boolean stopService(Intent name) {
-        Log.d(TAG, "stopService: Closing the sse connection");
-        bambooCalendarEventSource.close();
-
-        return super.stopService(name);
+        val workRequest = new PeriodicWorkRequest
+                .Builder(CleanupWorker.class, 7, TimeUnit.DAYS)
+                .setConstraints(workerConstraints)
+                .build();
+        WorkManager
+                .getInstance(this)
+                .enqueue(workRequest);
     }
 
     @Override
@@ -113,6 +105,8 @@ public class EventNotificationService extends Service {
             Log.d(TAG, "onStartCommand: Start listening to the sse");
             startListening();
         }
+
+        enqueueCleanupWorker();
 
         return START_STICKY;
     }

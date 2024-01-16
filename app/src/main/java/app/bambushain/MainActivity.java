@@ -21,6 +21,7 @@ import app.bambushain.api.BambooApi;
 import app.bambushain.databinding.ActivityMainBinding;
 import app.bambushain.databinding.HeaderNavigationDrawerBinding;
 import app.bambushain.navigation.NavigationViewModel;
+import app.bambushain.notification.calendar.EventNotificationService;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
 

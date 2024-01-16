@@ -11,4 +11,6 @@
     <string name="service_title">Bambushain Events</string>
     <string name="service_no_events">Heute sind keine Events</string>
     <string name="service_not_logged_in">Du bist nicht angemeldet</string>
+    <string name="service_single_event">Heute steht das Event %1$s an</string>
+    <string name="service_multiple_events">Heute stehen die Events %1$s und %2$s an</string>
 </resources>

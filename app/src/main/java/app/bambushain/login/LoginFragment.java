@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
-import app.bambushain.EventNotificationService;
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
@@ -18,6 +17,8 @@ import app.bambushain.databinding.FragmentLoginBinding;
 import app.bambushain.models.authentication.ForgotPasswordRequest;
 import app.bambushain.models.authentication.LoginRequest;
 import app.bambushain.models.authentication.TwoFactorRequest;
+import app.bambushain.notification.calendar.EventNotificationService;
+import app.bambushain.notification.calendar.network.EventLoader;
 import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
@@ -32,6 +33,8 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
 
     @Inject
     BambooApi bambooApi;
+    @Inject
+    EventLoader eventLoader;
 
     @Inject
     public LoginFragment() {
@@ -93,6 +96,7 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
                                     activity.headerViewModel.discordName.setValue(profile.getDiscordName());
                                     activity.headerViewModel.isMod.setValue(profile.getIsMod());
                                     navigator.navigate(R.id.action_fragment_login_to_fragment_event_calendar);
+                                    eventLoader.fetchEvents();
                                     val startServiceIntent = new Intent(requireContext(), EventNotificationService.class);
                                     startServiceIntent.setAction(getString(R.string.service_intent_login_successful));
                                     requireContext().startForegroundService(startServiceIntent);

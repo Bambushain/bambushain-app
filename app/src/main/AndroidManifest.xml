@@ -19,7 +19,7 @@
             android:supportsRtl="false"
             android:theme="@style/Theme.Bambushain">
         <receiver
-                android:name=".StartEventNotificationReceiver"
+                android:name=".notification.calendar.StartEventNotificationReceiver"
                 android:enabled="true"
                 android:exported="false">
             <intent-filter>
@@ -28,7 +28,7 @@
         </receiver>
 
         <service
-                android:name=".EventNotificationService"
+                android:name=".notification.calendar.EventNotificationService"
                 android:enabled="true"
                 android:exported="true"
                 android:foregroundServiceType="dataSync"
