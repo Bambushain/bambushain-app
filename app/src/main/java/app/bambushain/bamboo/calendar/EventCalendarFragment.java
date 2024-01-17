@@ -217,11 +217,13 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
                     adapter.setData(events, date.getMonth(), date.getYear());
                 }, throwable -> {
                     Log.e(TAG, "onViewCreated: Failed to load the events", throwable);
-                    Snackbar
-                            .make(requireView(), R.string.error_calendar_loading_failed, Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(getColor(R.color.md_theme_error))
-                            .setTextColor(getColor(R.color.md_theme_onError))
-                            .show();
+                    if (getView() != null) {
+                        Snackbar
+                                .make(getView(), R.string.error_calendar_loading_failed, Snackbar.LENGTH_LONG)
+                                .setBackgroundTint(getColor(R.color.md_theme_error))
+                                .setTextColor(getColor(R.color.md_theme_onError))
+                                .show();
+                    }
                 });
     }
 }
