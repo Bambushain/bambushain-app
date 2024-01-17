@@ -6,12 +6,8 @@ import android.content.pm.ServiceInfo;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
-import androidx.work.Constraints;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
-import app.bambushain.notification.calendar.database.CleanupWorker;
 import app.bambushain.notification.calendar.database.EventDao;
 import app.bambushain.notification.calendar.network.EventSubscriber;
 import com.launchdarkly.eventsource.StreamException;
@@ -78,46 +74,58 @@ public class EventNotificationService extends Service {
     private void startService() {
         try {
             val powerManager = getSystemService(PowerManager.class);
-            powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "EventNotificationService::lock").acquire(10 * 60 * 1000L /*10 minutes*/);
+            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "EventNotificationService::lock");
+            wakeLock.acquire();
 
             startForeground(notifier.notificationId, notifier.createNotification(getString(R.string.service_no_events)), ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+
+            Log.d(TAG, "startService: Start listening to the sse");
+            startListening();
         } catch (Exception e) {
             Log.e(TAG, "startService: Failed to start service, no persistent notification is going to be displayed", e);
         }
-    }
-
-    private void enqueueCleanupWorker() {
-        val workerConstraints = new Constraints.Builder()
-                .setRequiresDeviceIdle(true)
-                .build();
-        val workRequest = new PeriodicWorkRequest
-                .Builder(CleanupWorker.class, 7, TimeUnit.DAYS)
-                .setConstraints(workerConstraints)
-                .build();
-        WorkManager
-                .getInstance(this)
-                .enqueue(workRequest);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: Received new intent");
         if (intent != null && intent.getAction().equals(getString(R.string.service_intent_startup))) {
-            Log.d(TAG, "onStartCommand: Start the service");
+            Log.d(TAG, "service_intent_startup: Start the service");
             startService();
-            Log.d(TAG, "onStartCommand: Start listening to the sse");
+        } else if (intent != null && intent.getAction().equals(getString(R.string.service_intent_start_listening))) {
+            Log.d(TAG, "service_intent_login_successful: Start listening to the sse");
             startListening();
-        } else if (intent != null && intent.getAction().equals(getString(R.string.service_intent_login_successful))) {
-            Log.d(TAG, "onStartCommand: Start listening to the sse");
-            startListening();
-        } else if (intent != null && intent.getAction().equals(getString(R.string.service_intent_logout))) {
+        } else if (intent != null && intent.getAction().equals(getString(R.string.service_intent_stop_listening))) {
+            Log.d(TAG, "service_intent_stop_listening: Stop listening");
             notifier.updateNotification(getString(R.string.service_not_logged_in));
             stopListening();
+        } else if (intent != null && intent.getAction().equals(getString(R.string.service_intent_cleanup))) {
+            Log.d(TAG, "service_intent_cleanup: Enqueue delete for events older than today");
+            cleanupDatabase();
+        } else if (intent != null && intent.getAction().equals(getString(R.string.service_intent_update_today))) {
+            Log.d(TAG, "service_intent_update_today: Force update of the notification for the current day");
+            updateToday();
         }
 
-        enqueueCleanupWorker();
-
         return START_STICKY;
+    }
+
+    private void cleanupDatabase() {
+        eventDao
+                .deleteEventsBeforeToday()
+                .delay(1, TimeUnit.HOURS)
+                .subscribe(() -> Log.d(TAG, "service_intent_cleanup: Successful cleanup done"), throwable -> Log.e(TAG, "service_intent_cleanup: Failed to run cleanup", throwable));
+    }
+
+    private void updateToday() {
+        bambooApi
+                .validateToken()
+                .subscribe(() -> {
+                    Log.d(TAG, "updateToday: Auth token is valid");
+                    eventDao
+                            .getEventsForDay()
+                            .subscribe(notifier::showNotificationForToday, throwable -> Log.e(TAG, "updateToday: Failed to listen to database changes", throwable));
+                }, throwable -> Log.e(TAG, "updateToday: Failed to update today", throwable));
     }
 
     @Override

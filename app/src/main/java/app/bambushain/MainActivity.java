@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
             eventDao.cleanDatabase();
             val logoutServiceIntent = new Intent(this, EventNotificationService.class);
-            logoutServiceIntent.setAction(getString(R.string.service_intent_logout));
+            logoutServiceIntent.setAction(getString(R.string.service_intent_stop_listening));
 
             startForegroundService(logoutServiceIntent);
             navigator.navigate(R.id.action_global_fragment_login);
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                     view.getViewTreeObserver().removeOnPreDrawListener(preDrawListener);
 
                     val startListeningIntent = new Intent(this, EventNotificationService.class);
-                    startListeningIntent.setAction(getString(R.string.service_intent_login_successful));
+                    startListeningIntent.setAction(getString(R.string.service_intent_start_listening));
                     startForegroundService(startListeningIntent);
                 }, throwable -> {
                     Log.e(TAG, "loadProfile: Failed to load profile", throwable);

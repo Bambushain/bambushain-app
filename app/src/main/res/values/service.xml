@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="service_intent_startup">STARTUP</string>
-    <string name="service_intent_login_successful">LOGIN_SUCCESSFUL</string>
-    <string name="service_intent_logout">LOGOUT</string>
+    <string name="service_intent_start_listening">START_LISTENING</string>
+    <string name="service_intent_stop_listening">STOP_LISTENING</string>
+    <string name="service_intent_cleanup">CLEANUP</string>
+    <string name="service_intent_update_today">UPDATE_TODAY</string>
     <string name="service_notification_channel_id">app.bambushain.CALENDAR_EVENT</string>
     <string name="service_notification_channel_name">Kalenderbenachrichtigungen</string>
     <string name="service_notification_channel_description">Steuert die dauerhafte Benachrichtigung über neue

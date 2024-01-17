@@ -11,7 +11,7 @@ import java.util.List;
 
 @Dao
 public interface EventDao {
-    @Query("SELECT * FROM event WHERE startDate < unixepoch() AND endDate > unixepoch()")
+    @Query("SELECT * FROM event WHERE startDate <= date() AND endDate >= date()")
     Observable<List<Event>> getEventsForDay();
 
     @Upsert
@@ -23,9 +23,9 @@ public interface EventDao {
     @Delete
     Completable deleteEvent(Event event);
 
-    @Query("DELETE FROM event WHERE endDate < :epoch")
-    Completable deleteEventsBeforeDay(long epoch);
-
     @Query("DELETE FROM event")
     Completable cleanDatabase();
+
+    @Query("DELETE FROM event WHERE endDate < date()")
+    Completable deleteEventsBeforeToday();
 }

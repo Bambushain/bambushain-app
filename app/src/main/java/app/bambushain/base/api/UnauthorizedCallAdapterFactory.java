@@ -21,8 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
+import retrofit2.HttpException;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava3.HttpException;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -77,7 +77,7 @@ public class UnauthorizedCallAdapterFactory extends CallAdapter.Factory {
 
         @NotNull
         @Override
-        public Object adapt(Call<R> call) {
+        public Object adapt(@NotNull Call<R> call) {
             val wrappedResult = wrapped.adapt(call);
             if (wrappedResult instanceof Completable) {
                 return ((Completable) wrappedResult)
@@ -102,7 +102,7 @@ public class UnauthorizedCallAdapterFactory extends CallAdapter.Factory {
             if ((throwable instanceof BambooException && ((BambooException) throwable).getErrorType() == ErrorType.Unauthorized) || (throwable instanceof HttpException && ((HttpException) throwable).code() == 401)) {
                 getMainActivity().navigator.navigate(app.bambushain.R.id.action_global_fragment_login);
                 val logoutServiceIntent = new Intent(getMainActivity(), EventNotificationService.class);
-                logoutServiceIntent.setAction(getMainActivity().getString(app.bambushain.R.string.service_intent_logout));
+                logoutServiceIntent.setAction(getMainActivity().getString(app.bambushain.R.string.service_intent_stop_listening));
 
                 getMainActivity().startForegroundService(logoutServiceIntent);
 

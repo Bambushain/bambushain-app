@@ -98,7 +98,7 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
                                     navigator.navigate(R.id.action_fragment_login_to_fragment_event_calendar);
                                     eventLoader.fetchEvents();
                                     val startServiceIntent = new Intent(requireContext(), EventNotificationService.class);
-                                    startServiceIntent.setAction(getString(R.string.service_intent_login_successful));
+                                    startServiceIntent.setAction(getString(R.string.service_intent_start_listening));
                                     requireContext().startForegroundService(startServiceIntent);
                                 }, throwable -> {
                                     Log.e(TAG, "loadProfile: Failed to load profile", throwable);

@@ -14,8 +14,8 @@ import java.time.ZonedDateTime;
 public class Event {
     @PrimaryKey
     public int uid;
-    public long startDate;
-    public long endDate;
+    public String startDate;
+    public String endDate;
     public String title;
 
     public static Event fromEvent(app.bambushain.models.bamboo.Event event) {
@@ -25,8 +25,8 @@ public class Event {
         val endDate = ZonedDateTime.of(event.getEndDate(), LocalTime.MAX, ZoneId.systemDefault()).toOffsetDateTime();
 
         result.uid = event.getId();
-        result.startDate = startDate.toEpochSecond();
-        result.endDate = endDate.toEpochSecond();
+        result.startDate = event.getStartDate().toString();
+        result.endDate = event.getEndDate().toString();
         result.title = event.getTitle();
 
         return result;

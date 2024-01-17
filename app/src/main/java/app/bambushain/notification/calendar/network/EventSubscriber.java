@@ -12,7 +12,6 @@ import lombok.val;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.LocalDate;
-import java.time.ZoneId;
 
 @Singleton
 public class EventSubscriber {
@@ -41,17 +40,17 @@ public class EventSubscriber {
     private void handleEvent(BambooCalendarEventSource.CalendarEventAction calendarEventAction) {
         Log.d(TAG, "startListening: New event notification received " + calendarEventAction.getAction().name());
         val event = Event.fromEvent(calendarEventAction.getEvent());
-        val today = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+        val today = LocalDate.now().toEpochDay();
         switch (calendarEventAction.getAction()) {
             case Created:
-                if (event.startDate <= today && event.endDate >= today) {
+                if (LocalDate.parse(event.startDate).toEpochDay() <= today && LocalDate.parse(event.endDate).toEpochDay() >= today) {
                     eventDao
                             .upsertEvent(event)
                             .subscribe(() -> Log.d(TAG, "handleEvent: Successfully created new event " + event.title), throwable -> Log.e(TAG, "handleEvent: Failed to create event " + event.title, throwable));
                 }
                 break;
             case Updated:
-                if (event.endDate < today) {
+                if (LocalDate.parse(event.endDate).toEpochDay() < today) {
                     eventDao
                             .deleteEvent(event)
                             .subscribe(() -> Log.d(TAG, "handleEvent: Successfully deleted event that ends in the past"), throwable -> Log.e(TAG, "handleEvent: Failed to delete event " + event.title, throwable));
