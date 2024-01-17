@@ -10,11 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.bamboo.pandas.PandasAdapter;
 import app.bambushain.bamboo.pandas.PandasFragment;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentCharactersBinding;
+import app.bambushain.models.bamboo.User;
+import app.bambushain.models.finalfantasy.Character;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
 
@@ -45,6 +48,21 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         binding.characterList.setAdapter(adapter);
         binding.characterList.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        val stateHandle = navigator
+                .getCurrentBackStackEntry()
+                .getSavedStateHandle();
+        val action = stateHandle.getLiveData("action", "");
+        action.observe(getViewLifecycleOwner(), a -> {
+            if (a.equals("update")) {
+                action.setValue("");
+            } else if (a.equals("create")) {
+                val character = (Character) stateHandle.get("character");
+                adapter.addCharacter(character);
+
+                action.setValue("");
+            }
+        });
+
         return view;
     }
 
@@ -58,6 +76,7 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
             Log.i(TAG, "loadData: " + characters.toString());
         }, throwable -> {
             Log.e(TAG, "loadData: failed to load characters", throwable);
+            // TODO: Show error message
         });
     }
 
@@ -68,6 +87,8 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         viewModel.isLoading.setValue(true);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
+
+        binding.addCharacter.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_characters_to_add_character_dialog));
 
         loadData();
     }

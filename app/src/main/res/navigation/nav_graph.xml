@@ -66,6 +66,12 @@
     <navigation android:id="@+id/characters_navigation" app:startDestination="@id/fragment_characters">
         <fragment android:id="@+id/fragment_characters"
                   android:name="app.bambushain.finalfantasy.characters.CharactersFragment"
-                  android:label="@string/lable_characters"/>
+                  android:label="@string/label_characters">
+            <action android:id="@+id/action_fragment_characters_to_add_character_dialog"
+                    app:destination="@id/add_character_dialog" app:popUpTo="@id/fragment_characters"/>
+        </fragment>
+        <dialog android:id="@+id/add_character_dialog"
+                android:name="app.bambushain.finalfantasy.characters.ChangeCharacterDialog"
+                android:label="@string/label_add_character"/>
     </navigation>
 </navigation>

@@ -1,5 +1,4 @@
 <resources>
-    <string name="lable_characters">Charaktere</string>
     <string name="character_race_hyur">Hyuran</string>
     <string name="character_race_elezen">Elezen</string>
     <string name="character_race_aura">Au Ra</string>
@@ -8,4 +7,22 @@
     <string name="character_race_roegadyn">Roegadyn</string>
     <string name="character_race_hrothgar">Hrothgar</string>
     <string name="character_race_viera">Viera</string>
+    <string name="character_name">Name</string>
+    <string name="character_race">Rasse</string>
+    <string name="character_free_company">Freie Gesellschaft</string>
+    <string name="action_add_character">Charakter hinzufügen</string>
+    <string name="label_add_character">Charakter hinzufügen</string>
+    <string name="action_update_character">Charakter speichern</string>
+    <string name="character_world">Welt</string>
+
+    <string-array name="character_races">
+        <item>@string/character_race_hyur</item>
+        <item>@string/character_race_elezen</item>
+        <item>@string/character_race_aura</item>
+        <item>@string/character_race_lalafell</item>
+        <item>@string/character_race_minqote</item>
+        <item>@string/character_race_roegadyn</item>
+        <item>@string/character_race_hrothgar</item>
+        <item>@string/character_race_viera</item>
+    </string-array>
 </resources>

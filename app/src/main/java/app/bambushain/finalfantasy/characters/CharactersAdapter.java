@@ -1,5 +1,6 @@
 package app.bambushain.finalfantasy.characters;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.ViewHolder> {
@@ -52,6 +54,13 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
         return characters.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void addCharacter(Character character) {
+        characters.add(character);
+        characters.sort(Comparator.comparing(Character::getName));
+        notifyDataSetChanged();
+    }
+
     @Getter
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final CharactersCardBinding binding;
@@ -65,10 +74,11 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
             Log.i(TAG, "setCharacter: character values set");
             binding.getViewModel().id.setValue(character.getId());
             binding.getViewModel().name.setValue(character.getName());
-            binding.getViewModel().race.setValue(character.getRace());
+            binding.getViewModel().setRace(character.getRace());
             binding.getViewModel().world.setValue(character.getWorld());
-            binding.getViewModel().customFields.setValue(character.getCustomFields());
-            binding.getViewModel().freeCompany.setValue(character.getFreeCompany());
+            if (character.getFreeCompany() != null) {
+                binding.getViewModel().freeCompany.setValue(character.getFreeCompany().getName());
+            }
         }
 
     }

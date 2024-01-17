@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:id="@+id/characterRace"
-                    android:text="@{viewModel.getRaceText(viewModel.race)}"
+                    android:text="@{viewModel.race}"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary"
                     app:layout_constraintStart_toStartOf="@id/characterName"
