@@ -1,3 +1,11 @@
 <resources>
     <string name="lable_characters">Charaktere</string>
+    <string name="character_race_hyur">Hyuran</string>
+    <string name="character_race_elezen">Elezen</string>
+    <string name="character_race_aura">Au Ra</string>
+    <string name="character_race_lalafell">Lalafell</string>
+    <string name="character_race_minqote">Minqo\'te</string>
+    <string name="character_race_roegadyn">Roegadyn</string>
+    <string name="character_race_hrothgar">Hrothgar</string>
+    <string name="character_race_viera">Viera</string>
 </resources>
