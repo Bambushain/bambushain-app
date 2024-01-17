@@ -69,6 +69,12 @@ public class EventNotificationService extends Service {
                 });
     }
 
+    private void stopListening() {
+        Log.d(TAG, "stopListening: Stop the listening and close connection");
+        isListening = false;
+        eventListener.unsubscribeFromEventChanges();
+    }
+
     private void startService() {
         try {
             val powerManager = getSystemService(PowerManager.class);
@@ -104,6 +110,9 @@ public class EventNotificationService extends Service {
         } else if (intent != null && intent.getAction().equals(getString(R.string.service_intent_login_successful))) {
             Log.d(TAG, "onStartCommand: Start listening to the sse");
             startListening();
+        } else if (intent != null && intent.getAction().equals(getString(R.string.service_intent_logout))) {
+            notifier.updateNotification(getString(R.string.service_not_logged_in));
+            stopListening();
         }
 
         enqueueCleanupWorker();

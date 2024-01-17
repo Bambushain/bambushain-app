@@ -34,6 +34,7 @@ public class BambooCalendarEventSource {
     Context context;
     private boolean isConnected = false;
     private ConnectableObservable<CalendarEventAction> observable;
+    private EventSource source;
 
     @Inject
     public BambooCalendarEventSource() {
@@ -46,7 +47,7 @@ public class BambooCalendarEventSource {
             val connectStrategy = HttpConnectStrategy
                     .http(HttpUrl.get(calendarEventSourceUrl))
                     .httpClient(client);
-            EventSource source = new EventSource
+            source = new EventSource
                     .Builder(connectStrategy)
                     .errorStrategy(ErrorStrategy.alwaysContinue())
                     .build();
@@ -75,6 +76,16 @@ public class BambooCalendarEventSource {
         }
 
         return observable;
+    }
+
+    public void stop() {
+        if (isConnected) {
+            observable.reset();
+            source.stop();
+            source = null;
+            observable = null;
+            isConnected = false;
+        }
     }
 
     public enum Action {

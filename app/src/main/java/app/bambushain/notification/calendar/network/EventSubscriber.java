@@ -68,4 +68,9 @@ public class EventSubscriber {
                 break;
         }
     }
+
+    public void unsubscribeFromEventChanges() {
+        bambooCalendarEventSource
+                .stop();
+    }
 }

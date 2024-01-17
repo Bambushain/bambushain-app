@@ -22,6 +22,7 @@ import app.bambushain.databinding.ActivityMainBinding;
 import app.bambushain.databinding.HeaderNavigationDrawerBinding;
 import app.bambushain.navigation.NavigationViewModel;
 import app.bambushain.notification.calendar.EventNotificationService;
+import app.bambushain.notification.calendar.database.EventDao;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
 
@@ -33,9 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
     public ActivityMainBinding binding;
     public NavigationViewModel headerViewModel;
-    NavController navigator;
+    public NavController navigator;
     @Inject
     BambooApi bambooApi;
+    @Inject
+    EventDao eventDao;
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -109,6 +112,12 @@ public class MainActivity extends AppCompatActivity {
                     .apply();
 
             binding.drawerLayout.closeDrawers();
+
+            eventDao.cleanDatabase();
+            val logoutServiceIntent = new Intent(this, EventNotificationService.class);
+            logoutServiceIntent.setAction(getString(R.string.service_intent_logout));
+
+            startForegroundService(logoutServiceIntent);
             navigator.navigate(R.id.action_global_fragment_login);
         });
 
