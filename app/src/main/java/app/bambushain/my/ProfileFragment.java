@@ -41,9 +41,7 @@ public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {
 
         binding.editProfile.setOnClickListener(v -> {
             val bundle = new Bundle();
-            bundle.putString("email", viewModel.email.getValue());
-            bundle.putString("displayName", viewModel.displayName.getValue());
-            bundle.putString("discordName", viewModel.discordName.getValue());
+            bundle.putSerializable("currentUser", viewModel);
             navigator.navigate(R.id.action_fragment_profile_to_edit_profile_fragment, bundle);
         });
         toolbar.setOnMenuItemClickListener(item -> {
@@ -54,26 +52,16 @@ public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {
             return true;
         });
 
-        val stateHandle = navigator
+        navigator
                 .getCurrentBackStackEntry()
-                .getSavedStateHandle();
-        stateHandle
-                .getLiveData("email", viewModel.email.getValue())
-                .observe(getViewLifecycleOwner(), email -> {
-                    viewModel.email.setValue(email);
-                    headerViewModel.email.setValue(email);
-                });
-        stateHandle
-                .getLiveData("displayName", viewModel.displayName.getValue())
-                .observe(getViewLifecycleOwner(), displayName -> {
-                    viewModel.displayName.setValue(displayName);
-                    headerViewModel.displayName.setValue(displayName);
-                });
-        stateHandle
-                .getLiveData("discordName", viewModel.discordName.getValue())
-                .observe(getViewLifecycleOwner(), discordName -> {
-                    viewModel.discordName.setValue(discordName);
-                    headerViewModel.discordName.setValue(discordName);
+                .getSavedStateHandle()
+                .getLiveData("currentUser", viewModel)
+                .observe(getViewLifecycleOwner(), user -> {
+                    if (user != null) {
+                        viewModel.email.setValue(user.email.getValue());
+                        viewModel.discordName.setValue(user.discordName.getValue());
+                        viewModel.displayName.setValue(user.displayName.getValue());
+                    }
                 });
     }
 }

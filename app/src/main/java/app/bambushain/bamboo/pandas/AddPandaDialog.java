@@ -54,12 +54,7 @@ public class AddPandaDialog extends BindingDialogFragment<FragmentAddPandaDialog
                                     .makeText(getContext(), R.string.success_create_panda, Toast.LENGTH_LONG)
                                     .show();
                             val stateHandle = navigator.getPreviousBackStackEntry().getSavedStateHandle();
-                            stateHandle.set("id", viewModel.id.getValue());
-                            stateHandle.set("email", user.getEmail());
-                            stateHandle.set("displayName", user.getDisplayName());
-                            stateHandle.set("discordName", user.getDiscordName());
-                            stateHandle.set("isMod", user.getIsMod());
-                            stateHandle.set("action", "create");
+                            stateHandle.set("createdUser", user);
                             navigator.popBackStack();
                         }, ex -> {
                             Log.e(TAG, "createUser: create user failed", ex);
@@ -87,9 +82,6 @@ public class AddPandaDialog extends BindingDialogFragment<FragmentAddPandaDialog
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(PandaViewModel.class);
-        viewModel.email.setValue(getArguments().getString("email"));
-        viewModel.displayName.setValue(getArguments().getString("displayName"));
-        viewModel.discordName.setValue(getArguments().getString("discordName"));
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.actionAddPanda.setOnClickListener(v -> {

@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 import javax.inject.Inject;
+import java.io.Serializable;
 
 @HiltViewModel
-public class ProfileViewModel extends ViewModel {
-    private static final String TAG = ProfileViewModel.class.getName();
+public class ProfileViewModel extends ViewModel implements Serializable {
     public MutableLiveData<String> email = new MutableLiveData<>("");
     public MutableLiveData<String> displayName = new MutableLiveData<>("");
     public MutableLiveData<String> discordName = new MutableLiveData<>("");

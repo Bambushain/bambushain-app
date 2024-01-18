@@ -35,9 +35,11 @@ public class EventLoader {
                             .stream()
                             .map(Event::fromEvent)
                             .collect(Collectors.toList());
-                    eventDao.cleanDatabase().subscribe(() -> eventDao
-                            .createOrUpdateEvents(evts)
-                            .subscribe(() -> Log.d(TAG, "fetchEvents: Successfully fetched events"), throwable -> Log.e(TAG, "fetchEvents: Error fetching events", throwable)), throwable -> Log.e(TAG, "fetchEvents: Error cleaning database", throwable));
+                    eventDao
+                            .cleanDatabase()
+                            .subscribe(() -> eventDao
+                                    .createOrUpdateEvents(evts)
+                                    .subscribe(() -> Log.d(TAG, "fetchEvents: Successfully fetched events"), throwable -> Log.e(TAG, "fetchEvents: Error fetching events", throwable)), throwable -> Log.e(TAG, "fetchEvents: Error cleaning database", throwable));
                 }, throwable -> {
                     Log.e(TAG, "fetchEvents: Failed to load events for the next year", throwable);
                 });

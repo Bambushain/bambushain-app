@@ -8,10 +8,11 @@ import lombok.Getter;
 import lombok.val;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 @JsonAdapter(CharacterRace.Adapter.class)
 @Getter
-public enum CharacterRace {
+public enum CharacterRace implements Serializable {
     HYUR("Hyur"),
 
     ELEZEN("Elezen"),

@@ -21,9 +21,6 @@ public class Event {
     public static Event fromEvent(app.bambushain.models.bamboo.Event event) {
         val result = new Event();
 
-        val startDate = ZonedDateTime.of(event.getStartDate(), LocalTime.MIN, ZoneId.systemDefault()).toOffsetDateTime();
-        val endDate = ZonedDateTime.of(event.getEndDate(), LocalTime.MAX, ZoneId.systemDefault()).toOffsetDateTime();
-
         result.uid = event.getId();
         result.startDate = event.getStartDate().toString();
         result.endDate = event.getEndDate().toString();

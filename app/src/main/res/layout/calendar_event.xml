@@ -8,10 +8,8 @@
     <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin"
             android:padding="@dimen/margin"
             android:id="@+id/eventCard"
-            app:cardBackgroundColor="@{viewModel.backgroundColor}"
             style="?attr/materialCardViewElevatedStyle">
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -39,14 +37,12 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/eventTitle"
                         android:text="@{viewModel.title}"
-                        android:textColor="@{viewModel.textColor}"
                         android:textAppearance="?attr/textAppearanceTitleMedium"/>
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/eventDescription"
                         android:text="@{viewModel.description}"
-                        android:textColor="@{viewModel.textColor}"
                         android:textAppearance="?attr/textAppearanceBodyMedium"
                         android:visibility="@{viewModel.description.empty ? android.view.View.GONE : android.view.View.VISIBLE}"/>
             </LinearLayout>

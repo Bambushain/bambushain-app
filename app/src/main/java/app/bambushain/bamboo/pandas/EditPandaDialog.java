@@ -12,9 +12,11 @@ import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingDialogFragment;
 import app.bambushain.databinding.FragmentEditPandaDialogBinding;
+import app.bambushain.models.bamboo.User;
 import app.bambushain.models.exception.BambooException;
 import app.bambushain.models.exception.ErrorType;
 import app.bambushain.models.pandas.UpdateUserProfile;
+import app.bambushain.utils.BundleUtils;
 import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
@@ -51,11 +53,7 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
                             .makeText(getContext(), R.string.success_edit_panda, Toast.LENGTH_LONG)
                             .show();
                     val stateHandle = navigator.getPreviousBackStackEntry().getSavedStateHandle();
-                    stateHandle.set("id", viewModel.id.getValue());
-                    stateHandle.set("email", profile.getEmail());
-                    stateHandle.set("displayName", profile.getDisplayName());
-                    stateHandle.set("discordName", profile.getDiscordName());
-                    stateHandle.set("action", "update");
+                    stateHandle.set("updatedUser", new User(viewModel.id.getValue(), profile.getDisplayName(), profile.getEmail(), false, profile.getDiscordName(), false));
                     navigator.popBackStack();
                 }, ex -> {
                     Log.e(TAG, "saveProfile: Update failed", ex);
@@ -82,10 +80,12 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(PandaViewModel.class);
-        viewModel.id.setValue(getArguments().getInt("id"));
-        viewModel.email.setValue(getArguments().getString("email"));
-        viewModel.displayName.setValue(getArguments().getString("displayName"));
-        viewModel.discordName.setValue(getArguments().getString("discordName"));
+        val user = BundleUtils.getSerializable(getArguments(), "user", User.class);
+        viewModel.id.setValue(user.getId());
+        viewModel.email.setValue(user.getEmail());
+        viewModel.displayName.setValue(user.getDisplayName());
+        viewModel.discordName.setValue(user.getDiscordName());
+
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.actionSavePanda.setOnClickListener(v -> {

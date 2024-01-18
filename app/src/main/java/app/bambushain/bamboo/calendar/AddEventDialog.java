@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import java.time.LocalDate;
 
 @AndroidEntryPoint
-public class AddEventDialog extends BindingDialogFragment<FragmentAddEventBinding> {
+public class AddEventDialog extends ChangeEventDialog<FragmentAddEventBinding> {
     @Inject
     BambooApi bambooApi;
 
@@ -35,28 +35,6 @@ public class AddEventDialog extends BindingDialogFragment<FragmentAddEventBindin
         return FragmentAddEventBinding.inflate(getLayoutInflater());
     }
 
-    void chooseRange() {
-        val viewModel = binding.getViewModel();
-        val secondsInDay = 86400000L;
-        val dialog = MaterialDatePicker
-                .Builder
-                .dateRangePicker()
-                .setSelection(
-                        Pair.create(
-                                viewModel.startDate.getValue().toEpochDay() * secondsInDay,
-                                viewModel.endDate.getValue().toEpochDay() * secondsInDay
-                        ))
-                .build();
-        dialog.addOnPositiveButtonClickListener(range -> {
-            val startDate = LocalDate.ofEpochDay(range.first / secondsInDay);
-            val endDate = LocalDate.ofEpochDay(range.second / secondsInDay);
-            binding.getViewModel().startDate.setValue(startDate);
-            binding.getViewModel().endDate.setValue(endDate);
-        });
-
-        dialog.show(getChildFragmentManager(), null);
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -65,14 +43,7 @@ public class AddEventDialog extends BindingDialogFragment<FragmentAddEventBindin
         viewModel.color.setValue(color);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.eventColorPicker.setOnClickListener(v -> ColorPickerDialog
-                .builder()
-                .context(requireContext())
-                .title(getString(R.string.choose_event_color))
-                .color(viewModel.color.getValue())
-                .onColorPickedListener(col -> viewModel.color.setValue(col))
-                .build()
-                .show());
+        binding.eventColorPicker.setOnClickListener(v -> openColorPicker());
         binding.eventStartDate.setEndIconOnClickListener(v -> chooseRange());
         binding.eventEndDate.setEndIconOnClickListener(v -> chooseRange());
         binding.actionAddEvent.setOnClickListener(v -> {
@@ -80,16 +51,9 @@ public class AddEventDialog extends BindingDialogFragment<FragmentAddEventBindin
                 binding.eventTitle.setError(getString(R.string.error_add_event_title_empty));
             } else {
                 binding.eventTitle.setError(null);
-                val event = new Event();
-                event.setColor(viewModel.color.getValue());
-                event.setTitle(viewModel.title.getValue());
-                event.setDescription(viewModel.description.getValue());
-                event.setEndDate(viewModel.endDate.getValue());
-                event.setStartDate(viewModel.startDate.getValue());
-                event.setIsPrivate(viewModel.isPrivate.getValue());
                 bambooApi
-                        .createEvent(event)
-                        .subscribe(event1 -> {
+                        .createEvent(viewModel.toEvent())
+                        .subscribe(event -> {
                             navigator.popBackStack();
                         }, throwable -> {
                             Toast.makeText(requireContext(), R.string.error_add_event_unknown, Toast.LENGTH_LONG).show();
@@ -103,5 +67,10 @@ public class AddEventDialog extends BindingDialogFragment<FragmentAddEventBindin
                 binding.eventTitle.setError(null);
             }
         });
+    }
+
+    @Override
+    protected CalendarEventViewModel getViewModel() {
+        return binding.getViewModel();
     }
 }

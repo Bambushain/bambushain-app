@@ -18,6 +18,7 @@ import app.bambushain.api.BambooApi;
 import app.bambushain.api.BambooCalendarEventSource;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentEventCalendarBinding;
+import app.bambushain.models.bamboo.Event;
 import app.bambushain.utils.SwipeDetector;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 public class EventCalendarFragment extends BindingFragment<FragmentEventCalendarBinding> {
 
     private static final String TAG = EventCalendarFragment.class.getName();
+    public static final String EVENT_CALENDAR_CURRENT_MONTH = "event_calendar_current_month";
 
     @Inject
     BambooApi bambooApi;
@@ -57,34 +59,10 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         val view = super.onCreateView(inflater, container, savedInstanceState);
         val adapter = new CalendarViewAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), new ArrayList<>(), LocalDate.now().getMonth(), LocalDate.now().getYear());
-        adapter.setOnEventDeleteListener(event -> {
-            new MaterialAlertDialogBuilder(activity)
-                    .setPositiveButton(R.string.action_delete_calendar_event_confirm, (dialog, which) -> {
-                        bambooApi.deleteEvent(event.getId()).subscribe(() -> {
-                        }, throwable -> {
-                            Snackbar
-                                    .make(view, R.string.error_calendar_delete_failed, Snackbar.LENGTH_LONG)
-                                    .setTextColor(getColor(R.color.md_theme_onError))
-                                    .setBackgroundTint(getColor(R.color.md_theme_error))
-                                    .show();
-                        });
-                    })
-                    .setNegativeButton(R.string.action_delete_calendar_event_decline, (dialog, which) -> {
-                        dialog.dismiss();
-                    })
-                    .setTitle(R.string.calendar_delete_event_title)
-                    .setMessage(R.string.calendar_delete_event_message)
-                    .create()
-                    .show();
-        });
+        adapter.setOnEventDeleteListener(this::openDelete);
         adapter.setOnEventUpdateListener(event -> {
             val args = new Bundle();
-            args.putString("title", event.getTitle());
-            args.putString("description", event.getDescription());
-            args.putString("color", event.getColor());
-            args.putString("startDate", event.getStartDate().toString());
-            args.putString("endDate", event.getEndDate().toString());
-            args.putInt("id", event.getId());
+            args.putSerializable("event", event);
             navigator.navigate(R.id.action_fragment_event_calendar_to_edit_event_dialog, args);
         });
         binding.eventList.setAdapter(adapter);
@@ -95,11 +73,34 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
         return view;
     }
 
+    private void openDelete(Event event) {
+        new MaterialAlertDialogBuilder(activity)
+                .setPositiveButton(R.string.action_delete_calendar_event_confirm, (dialog, which) -> {
+                    bambooApi.deleteEvent(event.getId()).subscribe(() -> {
+                        Log.d(TAG, "openDelete: Successfully deleted event " + event.getTitle());
+                    }, throwable -> {
+                        Log.e(TAG, "openDelete: Failed to delete event " + event.getTitle(), throwable);
+                        Snackbar
+                                .make(getView(), R.string.error_calendar_delete_failed, Snackbar.LENGTH_LONG)
+                                .setTextColor(getColor(R.color.md_theme_onError))
+                                .setBackgroundTint(getColor(R.color.md_theme_error))
+                                .show();
+                    });
+                })
+                .setNegativeButton(R.string.action_delete_calendar_event_decline, (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setTitle(R.string.calendar_delete_event_title)
+                .setMessage(R.string.calendar_delete_event_message)
+                .create()
+                .show();
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(activity);
-        var dateString = sharedPrefs.getLong("event_calendar_current_month", LocalDate.now().toEpochDay());
+        var dateString = sharedPrefs.getLong(EVENT_CALENDAR_CURRENT_MONTH, LocalDate.now().toEpochDay());
         val date = LocalDate.ofEpochDay(dateString);
         val viewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
         viewModel.currentMonth.setValue(date);
@@ -109,21 +110,9 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
             if (menuItem.getItemId() == R.id.actionToday) {
                 loadData(LocalDate.now());
             } else if (menuItem.getItemId() == R.id.actionPreviousMonth) {
-                loadData(
-                        binding
-                                .getViewModel()
-                                .currentMonth
-                                .getValue()
-                                .minusMonths(1)
-                );
+                navigateToPreviousMonth();
             } else if (menuItem.getItemId() == R.id.actionNextMonth) {
-                loadData(
-                        binding
-                                .getViewModel()
-                                .currentMonth
-                                .getValue()
-                                .plusMonths(1)
-                );
+                navigateToNextMonth();
             }
 
             return true;
@@ -166,6 +155,16 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
         loadData(date);
     }
 
+    private void navigateToPreviousMonth() {
+        loadData(
+                binding
+                        .getViewModel()
+                        .currentMonth
+                        .getValue()
+                        .minusMonths(1)
+        );
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -181,22 +180,20 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
     @NotNull
     private SwipeDetector getSwipeDetector() {
         val swipeListener = new SwipeDetector();
-        swipeListener.setOnSwipeLeftListener(() -> loadData(
+        swipeListener.setOnSwipeLeftListener(this::navigateToNextMonth);
+        swipeListener.setOnSwipeRightListener(this::navigateToPreviousMonth);
+
+        return swipeListener;
+    }
+
+    private void navigateToNextMonth() {
+        loadData(
                 binding
                         .getViewModel()
                         .currentMonth
                         .getValue()
                         .plusMonths(1)
-        ));
-        swipeListener.setOnSwipeRightListener(() -> loadData(
-                binding
-                        .getViewModel()
-                        .currentMonth
-                        .getValue()
-                        .minusMonths(1)
-        ));
-
-        return swipeListener;
+        );
     }
 
     private void loadData(LocalDate date) {
@@ -207,7 +204,7 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(activity);
         sharedPrefs
                 .edit()
-                .putLong("event_calendar_current_month", date.toEpochDay())
+                .putLong(EVENT_CALENDAR_CURRENT_MONTH, date.toEpochDay())
                 .apply();
         bambooApi
                 .getEvents(firstDayOfMonth, lastDayOfMonth)

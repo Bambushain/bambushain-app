@@ -15,6 +15,7 @@ import app.bambushain.databinding.FragmentEditMyProfileBinding;
 import app.bambushain.models.exception.BambooException;
 import app.bambushain.models.exception.ErrorType;
 import app.bambushain.models.my.UpdateMyProfile;
+import app.bambushain.utils.BundleUtils;
 import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
@@ -53,9 +54,7 @@ public class EditProfileDialog extends BindingDialogFragment<FragmentEditMyProfi
                             .makeText(getContext(), R.string.success_profile_update, Toast.LENGTH_LONG)
                             .show();
                     val stateHandle = navigator.getPreviousBackStackEntry().getSavedStateHandle();
-                    stateHandle.set("email", profile.getEmail());
-                    stateHandle.set("displayName", profile.getDisplayName());
-                    stateHandle.set("discordName", profile.getDiscordName());
+                    stateHandle.set("currentUser", viewModel);
                     navigator.popBackStack();
                 }, ex -> {
                     Log.e(TAG, "saveProfile: Update failed", ex);
@@ -82,9 +81,11 @@ public class EditProfileDialog extends BindingDialogFragment<FragmentEditMyProfi
     public void onViewCreated(@NonNull @NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
-        viewModel.email.setValue(getArguments().getString("email"));
-        viewModel.displayName.setValue(getArguments().getString("displayName"));
-        viewModel.discordName.setValue(getArguments().getString("discordName"));
+        val args = getArguments();
+        val profile = BundleUtils.getSerializable(args, "currentUser", ProfileViewModel.class);
+        viewModel.email.setValue(profile.email.getValue());
+        viewModel.displayName.setValue(profile.displayName.getValue());
+        viewModel.discordName.setValue(profile.discordName.getValue());
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.actionSaveMyProfile.setOnClickListener(v -> saveProfile());

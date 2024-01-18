@@ -33,8 +33,14 @@ public final class ColorUtils {
         }
     }
 
+    private static String getColor(@ColorRes int color, Context context) {
+        val c = context.getColor(color);
+
+        return String.format("#%06x", c).replace("#ff", "#");
+    }
+
     public static List<String> getColors(Context context) {
-        return Arrays.asList("#E57373", "#7986CB", "#4FC3F7", "#81C784", "#BA68C8", "#FF8A65", "#DCE775", "#FFD54F", "#4DB6AC", "#FFB74D");
+        return Arrays.asList(getColor(R.color.color_dialog_E57373, context), getColor(R.color.color_dialog_7986CB, context), getColor(R.color.color_dialog_4FC3F7, context), getColor(R.color.color_dialog_81C784, context), getColor(R.color.color_dialog_BA68C8, context), getColor(R.color.color_dialog_FF8A65, context), getColor(R.color.color_dialog_DCE775, context), getColor(R.color.color_dialog_FFD54F, context), getColor(R.color.color_dialog_4DB6AC, context), getColor(R.color.color_dialog_FFB74D, context));
     }
 
     public static String getRandomColor(Context context) {

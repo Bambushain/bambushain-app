@@ -22,7 +22,6 @@ import app.bambushain.notification.calendar.network.EventLoader;
 import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
-import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -46,7 +45,7 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
     }
 
     @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         binding.setViewModel(viewModel);
