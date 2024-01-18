@@ -18,9 +18,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.viewbinding.ViewBinding;
 import app.bambushain.MainActivity;
 import app.bambushain.R;
-import app.bambushain.databinding.FragmentLoginBinding;
 import app.bambushain.login.LoginFragment;
-import app.bambushain.login.LoginViewModel;
 import lombok.val;
 
 public abstract class BindingFragment<T extends ViewBinding> extends Fragment {
