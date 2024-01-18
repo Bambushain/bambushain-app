@@ -14,7 +14,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Bambushain"
+rootProject.name = 'Bambushain'
 include ':app'
 include ':models'
 include ':api'
