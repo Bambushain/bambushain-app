@@ -3,13 +3,22 @@ package app.bambushain.bamboo.calendar;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Space;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import app.bambushain.R;
 import app.bambushain.databinding.CalendarDayBinding;
+import app.bambushain.databinding.CalendarEventBinding;
 import app.bambushain.models.bamboo.Event;
+import app.bambushain.utils.ColorUtils;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
@@ -48,19 +57,6 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         val binding = CalendarDayBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
         binding.setLifecycleOwner(lifecycleOwner);
-        val adapter = new CalendarEventViewAdapter(viewModelProvider, lifecycleOwner, new ArrayList<>());
-        adapter.setOnEventDeleteListener(event -> {
-            if (onEventDeleteListener != null) {
-                onEventDeleteListener.onEventDelete(event);
-            }
-        });
-        adapter.setOnEventUpdateListener(event -> {
-            if (onEventUpdateListener != null) {
-                onEventUpdateListener.onEventUpdate(event);
-            }
-        });
-        binding.events.setAdapter(adapter);
-        binding.events.setLayoutManager(new LinearLayoutManager(viewGroup.getContext()));
 
         return new ViewHolder(binding);
     }
@@ -123,6 +119,21 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
         notifyItemRangeChanged(firstItem, count);
     }
 
+    private void moreButtonClicked(Event event, View v) {
+        val popup = new PopupMenu(v.getContext(), v);
+        popup.inflate(R.menu.calendar_event_more_menu);
+        popup.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.actionDeleteEvent && onEventDeleteListener != null) {
+                onEventDeleteListener.onEventDelete(event);
+            } else if (item.getItemId() == R.id.actionEditEvent && onEventUpdateListener != null) {
+                onEventUpdateListener.onEventUpdate(event);
+            }
+
+            return true;
+        });
+        popup.show();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final CalendarDayBinding binding;
 
@@ -133,8 +144,37 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
 
         public void setData(LocalDate day, List<Event> events) {
             binding.getViewModel().date.setValue(day);
-            val adapter = (CalendarEventViewAdapter) binding.events.getAdapter();
-            adapter.setEvents(events);
+            renderEvents(events);
+        }
+
+        private void renderEvents(List<Event> events) {
+            binding.events.removeAllViews();
+            val margin = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            margin.bottomMargin = (int) itemView.getResources().getDimension(R.dimen.margin);
+            margin.topMargin = (int) itemView.getResources().getDimension(R.dimen.margin);
+            for (val event : events) {
+                renderEvent(event, margin);
+            }
+        }
+
+        private void renderEvent(Event event, ViewGroup.MarginLayoutParams margin) {
+            val layoutInflater = LayoutInflater.from(itemView.getContext());
+            val card = CalendarEventBinding.inflate(layoutInflater);
+            val viewModel = viewModelProvider.get(event.getId().toString(), CalendarEventViewModel.class);
+            viewModel.fromEvent(event);
+            card.setViewModel(viewModel);
+            card.moreButton.setOnClickListener(v -> {
+                moreButtonClicked(event, v);
+            });
+            val textColorRes = ColorUtils.colorYiqRes(event.getColor());
+            val textColor = itemView.getContext().getColor(textColorRes);
+            val backgroundColor = ColorUtils.parseColor(event.getColor());
+            card.eventCard.setCardBackgroundColor(backgroundColor);
+            card.moreButton.setIconTintResource(textColorRes);
+            card.eventTitle.setTextColor(textColor);
+            card.eventDescription.setTextColor(textColor);
+
+            binding.events.addView(card.getRoot(), margin);
         }
     }
 }
