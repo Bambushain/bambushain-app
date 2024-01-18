@@ -1,17 +1,21 @@
 package app.bambushain.finalfantasy.characters;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingDialogFragment;
 import app.bambushain.databinding.FragmentChangeCharacterDialogBinding;
-import app.bambushain.models.finalfantasy.*;
 import app.bambushain.models.finalfantasy.Character;
+import app.bambushain.models.finalfantasy.*;
+import app.bambushain.utils.BundleUtils;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
@@ -21,10 +25,11 @@ import java.util.*;
 
 @AndroidEntryPoint
 public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeCharacterDialogBinding> {
+    private final static String TAG = ChangeCharacterDialog.class.getName();
     @Inject
     BambooApi bambooApi;
     private List<FreeCompany> freeCompanies;
-    private Map<String, Set<String>> customFieldValues = new HashMap<>();
+    private final Map<String, Set<String>> customFieldValues = new HashMap<>();
     private boolean isCreate = true;
     private int id = 0;
 
@@ -40,10 +45,16 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
         val args = getArguments();
         if (args != null) {
             isCreate = false;
-            val ch = (Character) args.get("character");
+            val ch = BundleUtils.getSerializable(args, "character", Character.class);
             id = ch.getId();
+            viewModel.name.setValue(ch.getName());
             viewModel.setRace(ch.getRace());
-            // TODO: Handle arguments
+            viewModel.world.setValue(ch.getWorld());
+            viewModel.freeCompany.setValue(ch.getFreeCompany() != null ? ch.getFreeCompany().getName() : null);
+            for (val customField : ch.getCustomFields()) {
+                customFieldValues.put(customField.getLabel(), customField.getValues());
+            }
+
         }
         bambooApi
                 .getFreeCompanies()
@@ -51,7 +62,7 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
                     this.freeCompanies = freeCompanies;
                     binding.characterFreeCompanyDropdown.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_item, freeCompanies.toArray()));
                 }, throwable -> {
-                    // TODO: Implement error handling
+                    Log.e(TAG, "onViewCreated: getFreeCompanies failed", throwable);
                 });
         bambooApi
                 .getCustomFields()
@@ -60,7 +71,7 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
 
                     renderCustomFields(customCharacterFields);
                 }, throwable -> {
-                    // TODO: Implement error handling
+                    Log.e(TAG, "onViewCreated: getCustomFields failed", throwable);
                 });
 
         binding.actionSaveCharacter.setText(isCreate ? R.string.action_add_character : R.string.action_update_character);
@@ -81,23 +92,25 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
                 bambooApi
                         .createCharacter(character)
                         .subscribe(c -> {
+                            Log.i(TAG, "onViewCreated: character created " + character);
                             val stateHandle = navigator.getPreviousBackStackEntry().getSavedStateHandle();
                             stateHandle.set("character", c);
                             stateHandle.set("action", "create");
                             navigator.popBackStack();
                         }, throwable -> {
-                            // TODO: Implement error handling
+                            Log.e(TAG, "onViewCreated: failed to create character", throwable);
                         });
             } else {
                 bambooApi
                         .updateCharacter(id, character)
                         .subscribe(() -> {
+                            Log.i(TAG, "onViewCreated: character updated " + character);
                             val stateHandle = navigator.getPreviousBackStackEntry().getSavedStateHandle();
                             stateHandle.set("character", character);
                             stateHandle.set("action", "update");
                             navigator.popBackStack();
                         }, throwable -> {
-                            // TODO: Implement error handling
+                            Log.e(TAG, "onViewCreated: failed to update character", throwable);
                         });
             }
         });

@@ -14,6 +14,12 @@
     <string name="label_add_character">Charakter hinzufügen</string>
     <string name="action_update_character">Charakter speichern</string>
     <string name="character_world">Welt</string>
+    <string name="label_character_freecompany">"In freier Gesellschaft "</string>
+    <string name="label_character_world">"In der Welt "</string>
+    <string name="action_edit_character">Charakter bearbeiten</string>
+    <string name="action_character_details">Charakterdetails</string>
+    <string name="action_delete_character">Charakter löschen</string>
+    <string name="error_characters_loading_failed">Beim Laden der Charaktere ist einn Fehler aufgetreten</string>
 
     <string-array name="character_races">
         <item>@string/character_race_hyur</item>

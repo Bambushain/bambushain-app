@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+import app.bambushain.R;
 import app.bambushain.databinding.CharactersCardBinding;
 import app.bambushain.models.finalfantasy.Character;
 import lombok.Getter;
@@ -25,6 +27,8 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
     private final LifecycleOwner lifecycleOwner;
     @Setter
     private List<Character> characters = new ArrayList<>();
+    @Setter
+    private OnEditCharacterListener onEditCharacterListener;
 
     public CharactersAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner) {
         this.viewModelProvider = viewModelProvider;
@@ -47,6 +51,23 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
         val viewModel = viewModelProvider.get(character.getId().toString(), CharacterViewModel.class);
         viewHolder.binding.setViewModel(viewModel);
         viewHolder.setCharacter(character);
+        viewHolder.binding.actionMore.setOnClickListener(v -> {
+            val popupMenu = new PopupMenu(v.getContext(), v);
+            popupMenu.inflate(R.menu.characters_card_menu);
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.action_character_details) {
+
+                } else if (item.getItemId() == R.id.action_edit_character) {
+                    if (onEditCharacterListener != null) {
+                        onEditCharacterListener.onEditCharacterListener(position, character);
+                    }
+                } else if (item.getItemId() == R.id.action_delete_character) {
+
+                }
+                return true;
+            });
+            popupMenu.show();
+        });
     }
 
     @Override
@@ -81,5 +102,9 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
             }
         }
 
+    }
+
+    public interface OnEditCharacterListener {
+        void onEditCharacterListener(int position, Character character);
     }
 }

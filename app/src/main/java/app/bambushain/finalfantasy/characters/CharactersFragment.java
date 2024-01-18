@@ -6,23 +6,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
-import app.bambushain.bamboo.pandas.PandasAdapter;
-import app.bambushain.bamboo.pandas.PandasFragment;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentCharactersBinding;
-import app.bambushain.models.bamboo.User;
 import app.bambushain.models.finalfantasy.Character;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 
 @AndroidEntryPoint
 public class CharactersFragment extends BindingFragment<FragmentCharactersBinding> {
@@ -45,6 +42,13 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         val view = super.onCreateView(inflater, container, savedInstanceState);
         val adapter = new CharactersAdapter(new ViewModelProvider(this), getViewLifecycleOwner());
+
+        adapter.setOnEditCharacterListener((position, character) -> {
+            val bundle = new Bundle();
+            bundle.putSerializable("character", character);
+            navigator.navigate(R.id.action_fragment_characters_to_add_character_dialog, bundle);
+        });
+
         binding.characterList.setAdapter(adapter);
         binding.characterList.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -76,7 +80,7 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
             Log.i(TAG, "loadData: " + characters.toString());
         }, throwable -> {
             Log.e(TAG, "loadData: failed to load characters", throwable);
-            // TODO: Show error message
+            Toast.makeText(requireContext(), R.string.error_characters_loading_failed, Toast.LENGTH_LONG).show();
         });
     }
 
