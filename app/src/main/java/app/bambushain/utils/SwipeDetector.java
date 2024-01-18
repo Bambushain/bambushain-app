@@ -15,6 +15,8 @@ public class SwipeDetector implements View.OnTouchListener {
     @Setter
     private OnSwipeDetectListener onSwipeDownListener;
 
+    private float threshold = 120;
+
     @Override
     public boolean onTouch(View view, MotionEvent event) {
         switch (event.getAction()) {
@@ -29,13 +31,13 @@ public class SwipeDetector implements View.OnTouchListener {
 
                 float xDiff = x2 - x1;
                 float yDiff = y2 - y1;
-                if (Math.abs(xDiff) > Math.abs(yDiff) && (xDiff > 40 || xDiff < -40)) {
+                if (Math.abs(xDiff) > Math.abs(yDiff) && (xDiff > threshold || xDiff < -threshold)) {
                     if (x1 < x2) {
                         direction = SwipeDirection.RIGHT;
                     } else {
                         direction = SwipeDirection.LEFT;
                     }
-                } else if (yDiff > 40 || yDiff < -40) {
+                } else if (yDiff > threshold || yDiff < -threshold) {
                     if (y1 > y2) {
                         direction = SwipeDirection.UP;
                     } else {

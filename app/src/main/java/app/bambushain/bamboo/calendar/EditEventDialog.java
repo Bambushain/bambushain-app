@@ -13,6 +13,7 @@ import app.bambushain.base.BindingDialogFragment;
 import app.bambushain.databinding.FragmentEditEventBinding;
 import app.bambushain.models.bamboo.Event;
 import app.bambushain.ui.color.ColorPickerDialog;
+import app.bambushain.utils.BundleUtils;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
@@ -21,7 +22,7 @@ import javax.inject.Inject;
 import java.time.LocalDate;
 
 @AndroidEntryPoint
-public class EditEventDialog extends BindingDialogFragment<FragmentEditEventBinding> {
+public class EditEventDialog extends ChangeEventDialog<FragmentEditEventBinding> {
     @Inject
     BambooApi bambooApi;
 
@@ -34,26 +35,9 @@ public class EditEventDialog extends BindingDialogFragment<FragmentEditEventBind
         return FragmentEditEventBinding.inflate(getLayoutInflater());
     }
 
-    void chooseRange() {
-        val viewModel = binding.getViewModel();
-        val secondsInDay = 86400000L;
-        val dialog = MaterialDatePicker
-                .Builder
-                .dateRangePicker()
-                .setSelection(
-                        Pair.create(
-                                viewModel.startDate.getValue().toEpochDay() * secondsInDay,
-                                viewModel.endDate.getValue().toEpochDay() * secondsInDay
-                        ))
-                .build();
-        dialog.addOnPositiveButtonClickListener(range -> {
-            val startDate = LocalDate.ofEpochDay(range.first / secondsInDay);
-            val endDate = LocalDate.ofEpochDay(range.second / secondsInDay);
-            binding.getViewModel().startDate.setValue(startDate);
-            binding.getViewModel().endDate.setValue(endDate);
-        });
-
-        dialog.show(getChildFragmentManager(), null);
+    @Override
+    protected CalendarEventViewModel getViewModel() {
+        return binding.getViewModel();
     }
 
     @Override
@@ -61,22 +45,11 @@ public class EditEventDialog extends BindingDialogFragment<FragmentEditEventBind
         super.onViewCreated(view, savedInstanceState);
         val args = getArguments();
         val viewModel = new ViewModelProvider(this).get(CalendarEventViewModel.class);
-        viewModel.color.setValue(args.getString("color"));
-        viewModel.title.setValue(args.getString("title"));
-        viewModel.description.setValue(args.getString("description"));
-        viewModel.id.setValue(args.getInt("id"));
-        viewModel.startDate.setValue(LocalDate.parse(args.getString("startDate")));
-        viewModel.endDate.setValue(LocalDate.parse(args.getString("endDate")));
+        viewModel.fromEvent(BundleUtils.getSerializable(args, "event", Event.class));
+
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.eventColorPicker.setOnClickListener(v -> ColorPickerDialog
-                .builder()
-                .context(requireContext())
-                .title(getString(R.string.choose_event_color))
-                .color(viewModel.color.getValue())
-                .onColorPickedListener(col -> viewModel.color.setValue(col))
-                .build()
-                .show());
+        binding.eventColorPicker.setOnClickListener(v -> openColorPicker());
         binding.eventStartDate.setEndIconOnClickListener(v -> chooseRange());
         binding.eventEndDate.setEndIconOnClickListener(v -> chooseRange());
         binding.actionAddEvent.setOnClickListener(v -> {
@@ -84,15 +57,8 @@ public class EditEventDialog extends BindingDialogFragment<FragmentEditEventBind
                 binding.eventTitle.setError(getString(R.string.error_add_event_title_empty));
             } else {
                 binding.eventTitle.setError(null);
-                val event = new Event();
-                event.setColor(viewModel.color.getValue());
-                event.setTitle(viewModel.title.getValue());
-                event.setDescription(viewModel.description.getValue());
-                event.setEndDate(viewModel.endDate.getValue());
-                event.setStartDate(viewModel.startDate.getValue());
-                event.setIsPrivate(viewModel.isPrivate.getValue());
                 bambooApi
-                        .updateEvent(viewModel.id.getValue(), event)
+                        .updateEvent(viewModel.id.getValue(), viewModel.toEvent())
                         .subscribe(() -> {
                             navigator.popBackStack();
                         }, throwable -> {
