@@ -8,10 +8,11 @@ import lombok.Getter;
 import lombok.val;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 @Getter
 @JsonAdapter(ErrorType.Adapter.class)
-public enum ErrorType {
+public enum ErrorType implements Serializable {
     Crypto("crypto"),
     Database("database"),
     ExistsAlready("existsAlready"),

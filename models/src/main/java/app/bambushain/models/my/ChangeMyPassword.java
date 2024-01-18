@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * ChangeMyPassword
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChangeMyPassword {
+public class ChangeMyPassword implements Serializable {
     private String oldPassword;
     private String newPassword;
 }

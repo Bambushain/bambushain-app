@@ -7,10 +7,11 @@ import com.google.gson.stream.JsonWriter;
 import lombok.Getter;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 @Getter
 @JsonAdapter(FighterJob.Adapter.class)
-public enum FighterJob {
+public enum FighterJob implements Serializable {
     PALADIN("Paladin"),
 
     WARRIOR("Warrior"),

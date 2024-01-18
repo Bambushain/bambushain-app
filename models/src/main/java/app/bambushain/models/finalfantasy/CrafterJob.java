@@ -7,10 +7,11 @@ import com.google.gson.stream.JsonWriter;
 import lombok.Getter;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 @Getter
 @JsonAdapter(CrafterJob.Adapter.class)
-public enum CrafterJob {
+public enum CrafterJob implements Serializable {
     CARPENTER("Carpenter"),
 
     BLACKSMITH("Blacksmith"),
