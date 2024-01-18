@@ -51,7 +51,7 @@
     </navigation>
     <navigation android:id="@+id/pandas_navigation" app:startDestination="@id/fragment_pandas">
         <dialog android:id="@+id/fragment_edit_panda" android:name="app.bambushain.bamboo.pandas.EditPandaDialog"
-                android:label="@string/lable_edit_panda"/>
+                android:label="@string/label_edit_panda"/>
         <dialog android:id="@+id/add_panda_dialog" android:name="app.bambushain.bamboo.pandas.AddPandaDialog"
                 android:label="@string/lable_add_panda"/>
         <fragment android:id="@+id/fragment_pandas" android:name="app.bambushain.bamboo.pandas.PandasFragment"

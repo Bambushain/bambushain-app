@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+import app.bambushain.models.bamboo.Event;
 import app.bambushain.utils.ColorUtils;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import dagger.hilt.android.qualifiers.ApplicationContext;
+import lombok.val;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
@@ -21,10 +23,10 @@ public class CalendarEventViewModel extends ViewModel {
     @ApplicationContext
     @Inject
     Context context;
-    public MutableLiveData<Integer> id = new MutableLiveData<>();
+    public MutableLiveData<Integer> id = new MutableLiveData<>(0);
     public MutableLiveData<String> title = new MutableLiveData<>("");
     public MutableLiveData<String> description = new MutableLiveData<>("");
-    public MutableLiveData<String> color = new MutableLiveData<>();
+    public MutableLiveData<String> color = new MutableLiveData<>("#598c79");
     public MutableLiveData<LocalDate> startDate = new MutableLiveData<>(LocalDate.now());
     public MutableLiveData<LocalDate> endDate = new MutableLiveData<>(LocalDate.now());
     public LiveData<String> startDateString = Transformations.map(startDate, this::mapDate);
@@ -47,8 +49,32 @@ public class CalendarEventViewModel extends ViewModel {
                 .toFormatter());
     }
 
-
     int colorYiq(String data) {
-        return context.getColor(ColorUtils.colorYiqRes(data));
+        if (context != null) {
+            return context.getColor(ColorUtils.colorYiqRes(data));
+        }
+
+        return ColorUtils.colorYiqRes(data);
+    }
+
+    public Event toEvent() {
+        val event = new Event();
+        event.setColor(color.getValue());
+        event.setTitle(title.getValue());
+        event.setDescription(description.getValue());
+        event.setEndDate(endDate.getValue());
+        event.setStartDate(startDate.getValue());
+        event.setIsPrivate(isPrivate.getValue());
+
+        return event;
+    }
+
+    public void fromEvent(Event event) {
+        color.setValue(event.getColor());
+        title.setValue(event.getTitle());
+        description.setValue(event.getDescription());
+        id.setValue(event.getId());
+        startDate.setValue(event.getStartDate());
+        endDate.setValue(event.getEndDate());
     }
 }

@@ -50,17 +50,15 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    Retrofit provideRetrofit(@ApplicationContext Context context, Gson gson, OkHttpClient client, BambooCallAdapterFactory callAdapterFactory) {
+    Retrofit.Builder provideRetrofit(@ApplicationContext Context context, Gson gson, OkHttpClient client) {
         val instance = context.getString(R.string.bambooInstance);
         val baseUrl = "https://" + instance + ".bambushain.app/";
 
         return new Retrofit.Builder()
-                .addCallAdapterFactory(callAdapterFactory)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(baseUrl)
-                .client(client)
-                .build();
+                .client(client);
     }
 
     @Provides
@@ -69,11 +67,5 @@ public class ApiModule {
         return new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, adapter)
                 .create();
-    }
-
-    @Provides
-    @Singleton
-    public BambooApi provideBambooApi(Retrofit retrofit) {
-        return retrofit.create(BambooApi.class);
     }
 }

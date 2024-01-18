@@ -35,7 +35,7 @@ public class ColorPickerDialog {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public void show() {
-        val availColors = Arrays.asList("#E57373", "#7986CB", "#4FC3F7", "#81C784", "#BA68C8", "#FF8A65", "#DCE775", "#FFD54F", "#4DB6AC", "#FFB74D");
+        val availColors = ColorUtils.getColors(context);
         if (color != null && !availColors.contains(color)) {
             availColors.set(0, color);
         } else if (color == null) {

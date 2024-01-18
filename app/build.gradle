@@ -21,12 +21,18 @@ android {
 
     defaultConfig {
         applicationId "app.bambushain"
-        minSdk 31
+        minSdk 30
         targetSdk 34
         versionCode computeVersionCode()
         versionName "$bambooMajorVersion.$bambooMinorVersion"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    packagingOptions {
+        exclude 'lib/armeabi-v7a/libsqlite3x.so'
+        exclude 'lib/x86/libsqlite3x.so'
+        exclude 'lib/x86_64/libsqlite3x.so'
     }
 
     signingConfigs {
@@ -64,6 +70,9 @@ dependencies {
     implementation project(':api')
     implementation project(':models')
 
+    implementation 'androidx.core:core:1.12.0'
+    implementation 'androidx.activity:activity:1.8.2'
+    implementation 'androidx.fragment:fragment:1.6.2'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.preference:preference:1.2.1'
     implementation "androidx.core:core-splashscreen:1.0.1"
@@ -79,7 +88,12 @@ dependencies {
     implementation 'com.google.dagger:hilt-android:2.50'
     implementation "io.reactivex.rxjava3:rxjava:3.1.8"
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
     implementation 'com.launchdarkly:okhttp-eventsource:4.1.1'
+    implementation "androidx.room:room-runtime:2.6.1"
+    implementation "androidx.room:room-rxjava3:2.6.1"
+    implementation 'com.github.requery:sqlite-android:3.43.0'
 
     testImplementation 'junit:junit:4.13.2'
 
@@ -89,6 +103,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'com.google.dagger:hilt-compiler:2.50'
     annotationProcessor 'androidx.databinding:databinding-compiler:8.2.1'
+    annotationProcessor "androidx.room:room-compiler:2.6.1"
 
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
