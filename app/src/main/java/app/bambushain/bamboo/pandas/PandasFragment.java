@@ -224,6 +224,8 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
     }
 
     void loadData() {
+        binding.getViewModel().isLoading.setValue(true);
+        binding.pullToRefreshPandaList.setRefreshing(true);
         bambooApi
                 .getUsers()
                 .subscribe(users -> {
@@ -231,8 +233,10 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
                     adapter.setPandas(users);
                     adapter.notifyDataSetChanged();
                     binding.getViewModel().isLoading.setValue(false);
+                    binding.pullToRefreshPandaList.setRefreshing(false);
                 }, throwable -> {
                     Log.e(TAG, "onViewCreated: Failed to load users", throwable);
+                    binding.pullToRefreshPandaList.setRefreshing(false);
                 });
     }
 
@@ -247,6 +251,7 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         binding.addPanda.setOnClickListener(v -> {
             navigator.navigate(R.id.action_fragment_pandas_to_add_panda_dialog);
         });
+        binding.pullToRefreshPandaList.setOnRefreshListener(this::loadData);
         loadData();
     }
 }
