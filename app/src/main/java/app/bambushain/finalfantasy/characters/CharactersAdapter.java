@@ -29,6 +29,8 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
     private List<Character> characters = new ArrayList<>();
     @Setter
     private OnEditCharacterListener onEditCharacterListener;
+    @Setter
+    private OnDeleteCharacterListener onDeleteCharacterListener;
 
     public CharactersAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner) {
         this.viewModelProvider = viewModelProvider;
@@ -62,7 +64,9 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
                         onEditCharacterListener.onEditCharacterListener(position, character);
                     }
                 } else if (item.getItemId() == R.id.action_delete_character) {
-
+                    if (onDeleteCharacterListener != null) {
+                        onDeleteCharacterListener.onDeleteCharacter(position, character);
+                    }
                 }
                 return true;
             });
@@ -80,6 +84,11 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
         characters.add(character);
         characters.sort(Comparator.comparing(Character::getName));
         notifyDataSetChanged();
+    }
+
+    public void removeCharacter(int position) {
+        characters.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Getter
@@ -106,5 +115,9 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
 
     public interface OnEditCharacterListener {
         void onEditCharacterListener(int position, Character character);
+    }
+
+    public interface OnDeleteCharacterListener {
+        void onDeleteCharacter(int position, Character character);
     }
 }

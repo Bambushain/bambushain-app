@@ -16,6 +16,7 @@ import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentCharactersBinding;
 import app.bambushain.models.finalfantasy.Character;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
 
@@ -43,14 +44,16 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         val view = super.onCreateView(inflater, container, savedInstanceState);
         val adapter = new CharactersAdapter(new ViewModelProvider(this), getViewLifecycleOwner());
 
+        binding.characterList.setAdapter(adapter);
+        binding.characterList.setLayoutManager(new LinearLayoutManager(getContext()));
+
         adapter.setOnEditCharacterListener((position, character) -> {
             val bundle = new Bundle();
             bundle.putSerializable("character", character);
             navigator.navigate(R.id.action_fragment_characters_to_add_character_dialog, bundle);
         });
 
-        binding.characterList.setAdapter(adapter);
-        binding.characterList.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter.setOnDeleteCharacterListener(this::delete);
 
         val stateHandle = navigator
                 .getCurrentBackStackEntry()
@@ -95,5 +98,26 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         binding.addCharacter.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_characters_to_add_character_dialog));
 
         loadData();
+    }
+
+    private void delete(int position, Character character) {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.action_delete_character)
+                .setMessage(getString(R.string.action_delete_character_message, character.getName()))
+                .setPositiveButton(R.string.action_delete_character, (dialog, which) -> {
+                    bambooApi
+                            .deleteCharacter(character.getId())
+                            .subscribe(() -> {
+                                val adapter = (CharactersAdapter) binding.characterList.getAdapter();
+                                adapter.removeCharacter(position);
+                                Toast.makeText(requireContext(), getString(R.string.success_character_delete, character.getName()), Toast.LENGTH_LONG).show();
+                            }, throwable -> {
+                                Log.e(TAG, "delete: deleting character failed", throwable);
+                                Toast.makeText(requireContext(), getString(R.string.error_character_delete_failed, character.getName()), Toast.LENGTH_LONG);
+                            });
+                })
+                .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel())
+                .create()
+                .show();
     }
 }

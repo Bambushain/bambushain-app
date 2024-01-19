@@ -20,6 +20,9 @@
     <string name="action_character_details">Charakterdetails</string>
     <string name="action_delete_character">Charakter löschen</string>
     <string name="error_characters_loading_failed">Beim Laden der Charaktere ist einn Fehler aufgetreten</string>
+    <string name="action_delete_character_message">Soll der Charakter %1$s wirklich gelöscht werden?</string>
+    <string name="success_character_delete">%1$s wurde gelöscht</string>
+    <string name="error_character_delete_failed">%1$s konnte nicht gelöscht werden</string>
 
     <string-array name="character_races">
         <item>@string/character_race_hyur</item>
