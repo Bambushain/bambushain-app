@@ -59,11 +59,9 @@ public class AddPandaDialog extends BindingDialogFragment<FragmentAddPandaDialog
                         }, ex -> {
                             Log.e(TAG, "createUser: create user failed", ex);
                             val bambooEx = (BambooException) ex;
-                            var message = 0;
+                            var message = R.string.error_panda_update_failed;
                             if (bambooEx.getErrorType() == ErrorType.ExistsAlready) {
                                 message = R.string.error_panda_update_exists;
-                            } else {
-                                message = R.string.error_panda_update_failed;
                             }
                             if (snackbar == null) {
                                 snackbar = Snackbar.make(binding.layout, message, Snackbar.LENGTH_INDEFINITE);

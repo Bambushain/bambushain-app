@@ -5,12 +5,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import app.bambushain.R;
 import app.bambushain.models.finalfantasy.CharacterRace;
-import app.bambushain.models.finalfantasy.CustomField;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 
 import javax.inject.Inject;
-import java.util.List;
 
 @HiltViewModel
 public class CharacterViewModel extends ViewModel {
@@ -19,6 +17,9 @@ public class CharacterViewModel extends ViewModel {
     public MutableLiveData<String> race = new MutableLiveData<>("");
     public MutableLiveData<String> world = new MutableLiveData<>("");
     public MutableLiveData<String> freeCompany = new MutableLiveData<>("");
+
+    public MutableLiveData<Boolean> nameIsValid = new MutableLiveData<>(false);
+    public MutableLiveData<Boolean> worldIsValid = new MutableLiveData<>(false);
 
     @Inject
     public CharacterViewModel() {

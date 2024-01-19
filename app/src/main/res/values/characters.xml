@@ -23,6 +23,19 @@
     <string name="action_delete_character_message">Soll der Charakter %1$s wirklich gelöscht werden?</string>
     <string name="success_character_delete">%1$s wurde gelöscht</string>
     <string name="error_character_delete_failed">%1$s konnte nicht gelöscht werden</string>
+    <string name="error_character_name_required">Der Name ist erforderlich</string>
+    <string name="error_character_world_required">Die Welt ist erforderlich</string>
+    <string name="error_character_create_failed">Der Charakter konnte leider nicht erstellt werden</string>
+    <string name="error_character_create_exists">Ein Charakter mit diesem Namen existiert auf der Welt bereits</string>
+    <string name="error_character_update_failed">Der Charakter konnte leider nicht gespeichert werden</string>
+    <string name="error_character_update_exists">Ein Charakter mit diesem Namen existiert auf der Welt bereits</string>
+    <string name="error_character_free_company_loading_failed">Deine freien Gesellschaften konnten leider nicht geladen
+        werden
+    </string>
+    <string name="error_character_custom_fields_loading_failed">Deine eigenen Felder konnten leider nicht geladen
+        werden
+    </string>
+    <string name="character_no_free_company">Keine Freie Gesellschaft</string>
 
     <string-array name="character_races">
         <item>@string/character_race_hyur</item>

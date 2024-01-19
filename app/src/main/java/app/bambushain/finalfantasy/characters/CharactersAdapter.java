@@ -57,16 +57,10 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
             val popupMenu = new PopupMenu(v.getContext(), v);
             popupMenu.inflate(R.menu.characters_card_menu);
             popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getItemId() == R.id.action_character_details) {
-
-                } else if (item.getItemId() == R.id.action_edit_character) {
-                    if (onEditCharacterListener != null) {
-                        onEditCharacterListener.onEditCharacterListener(position, character);
-                    }
-                } else if (item.getItemId() == R.id.action_delete_character) {
-                    if (onDeleteCharacterListener != null) {
-                        onDeleteCharacterListener.onDeleteCharacter(position, character);
-                    }
+                if (item.getItemId() == R.id.action_edit_character && onEditCharacterListener != null) {
+                    onEditCharacterListener.onEditCharacterListener(position, character);
+                } else if (item.getItemId() == R.id.action_delete_character && onDeleteCharacterListener != null) {
+                    onDeleteCharacterListener.onDeleteCharacter(position, character);
                 }
                 return true;
             });
@@ -82,6 +76,13 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
     @SuppressLint("NotifyDataSetChanged")
     public void addCharacter(Character character) {
         characters.add(character);
+        characters.sort(Comparator.comparing(Character::getName));
+        notifyDataSetChanged();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateCharacter(int position, Character character) {
+        characters.set(position, character);
         characters.sort(Comparator.comparing(Character::getName));
         notifyDataSetChanged();
     }

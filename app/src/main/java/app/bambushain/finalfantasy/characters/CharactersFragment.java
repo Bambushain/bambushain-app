@@ -50,6 +50,7 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         adapter.setOnEditCharacterListener((position, character) -> {
             val bundle = new Bundle();
             bundle.putSerializable("character", character);
+            bundle.putInt("position", position);
             navigator.navigate(R.id.action_fragment_characters_to_add_character_dialog, bundle);
         });
 
@@ -58,15 +59,15 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         val stateHandle = navigator
                 .getCurrentBackStackEntry()
                 .getSavedStateHandle();
-        val action = stateHandle.getLiveData("action", "");
-        action.observe(getViewLifecycleOwner(), a -> {
-            if (a.equals("update")) {
-                action.setValue("");
-            } else if (a.equals("create")) {
-                val character = (Character) stateHandle.get("character");
+        stateHandle.getLiveData("createdCharacter", (Character) null).observe(getViewLifecycleOwner(), character -> {
+            if (character != null) {
                 adapter.addCharacter(character);
-
-                action.setValue("");
+            }
+        });
+        stateHandle.getLiveData("updatedCharacter", (Character) null).observe(getViewLifecycleOwner(), character -> {
+            if (character != null) {
+                val editPosition = (Integer) stateHandle.get("position");
+                adapter.updateCharacter(editPosition, character);
             }
         });
 
@@ -75,12 +76,13 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
 
 
     void loadData() {
+        binding.pullToRefreshCharacterList.setRefreshing(true);
         bambooApi.getCharacters().subscribe(characters -> {
             val adapter = (CharactersAdapter) binding.characterList.getAdapter();
             adapter.setCharacters(characters);
             adapter.notifyDataSetChanged();
             binding.getViewModel().isLoading.setValue(false);
-            Log.i(TAG, "loadData: " + characters.toString());
+            binding.pullToRefreshCharacterList.setRefreshing(false);
         }, throwable -> {
             Log.e(TAG, "loadData: failed to load characters", throwable);
             Toast.makeText(requireContext(), R.string.error_characters_loading_failed, Toast.LENGTH_LONG).show();
@@ -96,6 +98,7 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         binding.addCharacter.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_characters_to_add_character_dialog));
+        binding.pullToRefreshCharacterList.setOnRefreshListener(this::loadData);
 
         loadData();
     }
