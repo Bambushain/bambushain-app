@@ -15,7 +15,7 @@ public class SwipeDetector implements View.OnTouchListener {
     @Setter
     private OnSwipeDetectListener onSwipeDownListener;
 
-    private float threshold = 120;
+    private final float threshold = 400;
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
