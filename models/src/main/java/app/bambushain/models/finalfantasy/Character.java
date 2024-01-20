@@ -18,7 +18,7 @@ public class Character implements Serializable {
     private CharacterRace race;
     private String name;
     private String world;
-    private List<Object> customFields = null;
+    private List<CustomField> customFields = null;
     private FreeCompany freeCompany;
 }
 

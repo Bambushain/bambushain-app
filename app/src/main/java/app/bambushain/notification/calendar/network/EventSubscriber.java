@@ -30,6 +30,7 @@ public class EventSubscriber {
 
     public void subscribeToEventChanges() throws StreamException {
         Log.d(TAG, "startListening: Start the sse connection");
+        //noinspection ResultOfMethodCallIgnored
         bambooCalendarEventSource
                 .start()
                 .subscribeOn(Schedulers.io())
@@ -44,6 +45,7 @@ public class EventSubscriber {
         switch (calendarEventAction.getAction()) {
             case Created:
                 if (LocalDate.parse(event.startDate).toEpochDay() <= today && LocalDate.parse(event.endDate).toEpochDay() >= today) {
+                    //noinspection ResultOfMethodCallIgnored
                     eventDao
                             .upsertEvent(event)
                             .subscribe(() -> Log.d(TAG, "handleEvent: Successfully created new event " + event.title), throwable -> Log.e(TAG, "handleEvent: Failed to create event " + event.title, throwable));
@@ -51,16 +53,19 @@ public class EventSubscriber {
                 break;
             case Updated:
                 if (LocalDate.parse(event.endDate).toEpochDay() < today) {
+                    //noinspection ResultOfMethodCallIgnored
                     eventDao
                             .deleteEvent(event)
                             .subscribe(() -> Log.d(TAG, "handleEvent: Successfully deleted event that ends in the past"), throwable -> Log.e(TAG, "handleEvent: Failed to delete event " + event.title, throwable));
                 } else {
+                    //noinspection ResultOfMethodCallIgnored
                     eventDao
                             .upsertEvent(event)
                             .subscribe(() -> Log.d(TAG, "handleEvent: Successfully updated the event " + event.title), throwable -> Log.e(TAG, "handleEvent: Failed to update event " + event.title, throwable));
                 }
                 break;
             case Deleted:
+                //noinspection ResultOfMethodCallIgnored
                 eventDao
                         .deleteEvent(event)
                         .subscribe(() -> Log.d(TAG, "handleEvent: Successfully deleted event " + event.title), throwable -> Log.e(TAG, "handleEvent: Failed to delete event " + event.title, throwable));

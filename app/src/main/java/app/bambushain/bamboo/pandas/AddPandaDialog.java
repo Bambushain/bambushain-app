@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
 
 import javax.inject.Inject;
+import java.util.Objects;
 
 @AndroidEntryPoint
 public class AddPandaDialog extends BindingDialogFragment<FragmentAddPandaDialogBinding> {
@@ -45,25 +46,24 @@ public class AddPandaDialog extends BindingDialogFragment<FragmentAddPandaDialog
                 viewModel.isMod.getValue(), viewModel.discordName.getValue(), viewModel.appTotpEnabled.getValue());
         Log.d(TAG, "createUser: create user " + user);
         viewModel.isLoading.setValue(true);
+        //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .createUser(user)
                 .subscribe(
                         panda -> {
                             Log.d(TAG, "createUser: create user successful");
                             Toast
-                                    .makeText(getContext(), R.string.success_create_panda, Toast.LENGTH_LONG)
+                                    .makeText(requireContext(), R.string.success_create_panda, Toast.LENGTH_LONG)
                                     .show();
-                            val stateHandle = navigator.getPreviousBackStackEntry().getSavedStateHandle();
+                            val stateHandle = Objects.requireNonNull(navigator.getPreviousBackStackEntry()).getSavedStateHandle();
                             stateHandle.set("createdUser", user);
                             navigator.popBackStack();
                         }, ex -> {
                             Log.e(TAG, "createUser: create user failed", ex);
                             val bambooEx = (BambooException) ex;
-                            var message = 0;
+                            var message = R.string.error_panda_create_failed;
                             if (bambooEx.getErrorType() == ErrorType.ExistsAlready) {
-                                message = R.string.error_panda_update_exists;
-                            } else {
-                                message = R.string.error_panda_update_failed;
+                                message = R.string.error_panda_create_exists;
                             }
                             if (snackbar == null) {
                                 snackbar = Snackbar.make(binding.layout, message, Snackbar.LENGTH_INDEFINITE);
@@ -85,7 +85,7 @@ public class AddPandaDialog extends BindingDialogFragment<FragmentAddPandaDialog
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.actionAddPanda.setOnClickListener(v -> {
-            if (viewModel.isDiscordNameValid.getValue() && viewModel.isDisplayNameValid.getValue() && viewModel.isEmailValid.getValue()) {
+            if (Boolean.TRUE.equals(viewModel.isDiscordNameValid.getValue()) && Boolean.TRUE.equals(viewModel.isDisplayNameValid.getValue()) && Boolean.TRUE.equals(viewModel.isEmailValid.getValue())) {
                 saveUser();
             }
         });

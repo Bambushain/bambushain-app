@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
 
 import javax.inject.Inject;
+import java.util.Objects;
 
 @AndroidEntryPoint
 public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {
@@ -52,8 +53,8 @@ public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {
             return true;
         });
 
-        navigator
-                .getCurrentBackStackEntry()
+        Objects.requireNonNull(navigator
+                        .getCurrentBackStackEntry())
                 .getSavedStateHandle()
                 .getLiveData("currentUser", viewModel)
                 .observe(getViewLifecycleOwner(), user -> {

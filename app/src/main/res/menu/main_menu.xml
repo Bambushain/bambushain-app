@@ -16,7 +16,7 @@
             android:icon="@drawable/ic_pandas"
             android:checkable="true"/>
     <item
-            android:id="@+id/fragment_characters"
+            android:id="@+id/characters_navigation"
             android:title="@string/label_characters"
             android:icon="@drawable/ic_characters"
             android:checkable="true"/>

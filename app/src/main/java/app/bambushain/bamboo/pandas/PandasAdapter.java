@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import app.bambushain.R;
 import app.bambushain.databinding.PandasCardBinding;
 import app.bambushain.models.bamboo.User;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
@@ -49,7 +48,7 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
 
     @NotNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ViewHolder onCreateViewHolder(@NotNull ViewGroup viewGroup, int viewType) {
         val binding = PandasCardBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
         binding.setLifecycleOwner(lifecycleOwner);
 

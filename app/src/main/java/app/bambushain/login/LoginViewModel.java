@@ -8,10 +8,10 @@ import javax.inject.Inject;
 
 @HiltViewModel
 public final class LoginViewModel extends ViewModel {
-    public MutableLiveData<String> email = new MutableLiveData<>("");
-    public MutableLiveData<String> password = new MutableLiveData<>("");
-    public MutableLiveData<String> twoFactorCode = new MutableLiveData<>("");
-    public MutableLiveData<Boolean> twoFactorRequested = new MutableLiveData<>(false);
+    public final MutableLiveData<String> email = new MutableLiveData<>("");
+    public final MutableLiveData<String> password = new MutableLiveData<>("");
+    public final MutableLiveData<String> twoFactorCode = new MutableLiveData<>("");
+    public final MutableLiveData<Boolean> twoFactorRequested = new MutableLiveData<>(false);
 
     @Inject
     LoginViewModel() {

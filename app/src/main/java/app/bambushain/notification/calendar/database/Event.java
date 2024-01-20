@@ -5,10 +5,6 @@ import androidx.room.PrimaryKey;
 import lombok.NoArgsConstructor;
 import lombok.val;
 
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-
 @Entity
 @NoArgsConstructor
 public class Event {

@@ -9,13 +9,13 @@ import java.io.Serializable;
 
 @HiltViewModel
 public class ProfileViewModel extends ViewModel implements Serializable {
-    public MutableLiveData<String> email = new MutableLiveData<>("");
-    public MutableLiveData<String> displayName = new MutableLiveData<>("");
-    public MutableLiveData<String> discordName = new MutableLiveData<>("");
-    public MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
-    public MutableLiveData<Boolean> isEmailValid = new MutableLiveData<>(true);
-    public MutableLiveData<Boolean> isDiscordNameValid = new MutableLiveData<>(true);
-    public MutableLiveData<Boolean> isDisplayNameValid = new MutableLiveData<>(true);
+    public final MutableLiveData<String> email = new MutableLiveData<>("");
+    public final MutableLiveData<String> displayName = new MutableLiveData<>("");
+    public final MutableLiveData<String> discordName = new MutableLiveData<>("");
+    public final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+    public final MutableLiveData<Boolean> isEmailValid = new MutableLiveData<>(true);
+    public final MutableLiveData<Boolean> isDiscordNameValid = new MutableLiveData<>(true);
+    public final MutableLiveData<Boolean> isDisplayNameValid = new MutableLiveData<>(true);
 
     @Inject
     ProfileViewModel() {

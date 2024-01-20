@@ -11,14 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewbinding.ViewBinding;
-import app.bambushain.MainActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import lombok.val;
 
 public abstract class BindingDialogFragment<T extends ViewBinding> extends BottomSheetDialogFragment {
     protected T binding;
     protected NavController navigator;
-    protected MainActivity activity;
 
     protected abstract T getViewBinding();
 
@@ -43,7 +41,6 @@ public abstract class BindingDialogFragment<T extends ViewBinding> extends Botto
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = getViewBinding();
         navigator = NavHostFragment.findNavController(this);
-        activity = (MainActivity) getActivity();
 
         return binding.getRoot();
     }

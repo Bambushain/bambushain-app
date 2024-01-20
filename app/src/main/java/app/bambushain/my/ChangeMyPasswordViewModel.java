@@ -8,8 +8,8 @@ import javax.inject.Inject;
 
 @HiltViewModel
 public class ChangeMyPasswordViewModel extends ViewModel {
-    public MutableLiveData<String> oldPassword = new MutableLiveData<>("");
-    public MutableLiveData<String> newPassword = new MutableLiveData<>("");
+    public final MutableLiveData<String> oldPassword = new MutableLiveData<>("");
+    public final MutableLiveData<String> newPassword = new MutableLiveData<>("");
 
     @Inject
     public ChangeMyPasswordViewModel() {

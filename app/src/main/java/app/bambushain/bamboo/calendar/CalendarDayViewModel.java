@@ -16,7 +16,7 @@ import static java.time.temporal.ChronoField.*;
 
 @HiltViewModel
 public class CalendarDayViewModel extends ViewModel {
-    public MutableLiveData<LocalDate> date = new MutableLiveData<>();
+    public final MutableLiveData<LocalDate> date = new MutableLiveData<>();
     public LiveData<String> formattedDate = Transformations.map(date, localDate -> localDate.format(new DateTimeFormatterBuilder()
             .appendText(DAY_OF_WEEK, TextStyle.SHORT)
             .appendLiteral(", ")

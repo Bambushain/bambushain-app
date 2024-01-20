@@ -12,7 +12,6 @@
     <string name="action_delete_calendar_event">Event löschen</string>
     <string name="action_delete_calendar_event_decline">Nicht löschen</string>
     <string name="calendar_delete_event_message">Soll das Event Test wirklich gelöscht werden?</string>
-    <string name="label_add_event">Event hinzufügen</string>
     <string name="event_title">Titel</string>
     <string name="event_description">Beschreibung (optional)</string>
     <string name="event_is_private">Nur für mich</string>

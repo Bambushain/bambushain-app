@@ -9,6 +9,7 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import lombok.val;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public abstract class ChangeEventDialog<T extends ViewBinding> extends BindingDialogFragment<T> {
 
@@ -22,8 +23,8 @@ public abstract class ChangeEventDialog<T extends ViewBinding> extends BindingDi
                 .dateRangePicker()
                 .setSelection(
                         Pair.create(
-                                viewModel.startDate.getValue().toEpochDay() * secondsInDay,
-                                viewModel.endDate.getValue().toEpochDay() * secondsInDay
+                                Objects.requireNonNull(viewModel.startDate.getValue()).toEpochDay() * secondsInDay,
+                                Objects.requireNonNull(viewModel.endDate.getValue()).toEpochDay() * secondsInDay
                         ))
                 .build();
         dialog.addOnPositiveButtonClickListener(range -> {

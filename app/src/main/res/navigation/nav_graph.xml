@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
+            xmlns:tools="http://schemas.android.com/tools"
             app:startDestination="@id/calendar_navigation">
     <fragment android:id="@+id/fragment_login" android:name="app.bambushain.login.LoginFragment"
               android:label="@string/label_login">
@@ -13,26 +13,19 @@
     <action android:id="@+id/action_global_fragment_pandas" app:destination="@id/pandas_navigation"/>
     <action android:id="@+id/action_global_fragment_profile" app:destination="@id/my_profile_navigation"/>
     <action android:id="@+id/action_global_fragment_event_calendar" app:destination="@id/calendar_navigation"/>
+    <action android:id="@+id/action_global_fragment_characters" app:destination="@id/characters_navigation"/>
     <navigation android:id="@+id/my_profile_navigation" app:startDestination="@id/fragment_profile">
         <fragment android:id="@+id/fragment_profile" android:name="app.bambushain.my.ProfileFragment"
                   android:label="@string/label_my_profile">
             <action android:id="@+id/action_fragment_profile_to_edit_profile_fragment"
-                    app:destination="@id/fragment_edit_profile" app:popUpTo="@id/fragment_profile">
-                <argument android:name="email" app:argType="string"/>
-                <argument android:name="displayName" app:argType="string"/>
-                <argument android:name="discordName" app:argType="string" app:nullable="true"/>
-            </action>
+                    app:destination="@id/fragment_edit_profile" app:popUpTo="@id/fragment_profile"/>
             <action android:id="@+id/action_fragment_profile_to_change_my_password_fragment"
                     app:destination="@id/fragment_change_password" app:popUpTo="@id/fragment_profile"/>
         </fragment>
         <dialog android:id="@+id/fragment_change_password" android:name="app.bambushain.my.ChangePasswordDialog"
                 android:label="@string/label_change_my_password"/>
         <dialog android:id="@+id/fragment_edit_profile" android:name="app.bambushain.my.EditProfileDialog"
-                android:label="@string/label_edit_my_profile" tools:layout="@layout/fragment_edit_my_profile">
-            <argument android:name="email" app:argType="string"/>
-            <argument android:name="displayName" app:argType="string"/>
-            <argument android:name="discordName" app:argType="string" app:nullable="true"/>
-        </dialog>
+                android:label="@string/label_edit_my_profile" tools:layout="@layout/fragment_edit_my_profile"/>
     </navigation>
     <navigation android:id="@+id/calendar_navigation" app:startDestination="@id/fragment_event_calendar">
         <dialog android:id="@+id/add_event_dialog" android:name="app.bambushain.bamboo.calendar.AddEventDialog"
@@ -61,5 +54,21 @@
             <action android:id="@+id/action_fragment_pandas_to_add_panda_dialog" app:destination="@id/add_panda_dialog"
                     app:popUpTo="@id/fragment_pandas"/>
         </fragment>
+    </navigation>
+    <navigation android:id="@+id/characters_navigation" app:startDestination="@id/fragment_characters">
+        <fragment android:id="@+id/fragment_characters"
+                  android:name="app.bambushain.finalfantasy.characters.CharactersFragment"
+                  android:label="@string/label_characters">
+            <action android:id="@+id/action_fragment_characters_to_add_character_dialog"
+                    app:destination="@id/add_character_dialog" app:popUpTo="@id/fragment_characters"/>
+            <action android:id="@+id/action_fragment_characters_to_character_details_dialog"
+                    app:destination="@id/character_details_dialog"/>
+        </fragment>
+        <dialog android:id="@+id/add_character_dialog"
+                android:name="app.bambushain.finalfantasy.characters.ChangeCharacterDialog"
+                android:label="@string/label_add_character"/>
+        <dialog android:id="@+id/character_details_dialog"
+                android:name="app.bambushain.finalfantasy.characters.CharacterDetailsDialog"
+                android:label="@string/action_character_details"/>
     </navigation>
 </navigation>

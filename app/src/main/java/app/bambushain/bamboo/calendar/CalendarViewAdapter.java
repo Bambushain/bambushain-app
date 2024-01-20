@@ -6,19 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
-import android.widget.Space;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import app.bambushain.R;
 import app.bambushain.databinding.CalendarDayBinding;
 import app.bambushain.databinding.CalendarEventBinding;
 import app.bambushain.models.bamboo.Event;
 import app.bambushain.utils.ColorUtils;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
@@ -27,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,7 +48,7 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
 
     @NotNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ViewHolder onCreateViewHolder(@NotNull ViewGroup viewGroup, int viewType) {
         val binding = CalendarDayBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
         binding.setLifecycleOwner(lifecycleOwner);
 
@@ -163,9 +157,7 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
             val viewModel = viewModelProvider.get(event.getId().toString(), CalendarEventViewModel.class);
             viewModel.fromEvent(event);
             card.setViewModel(viewModel);
-            card.moreButton.setOnClickListener(v -> {
-                moreButtonClicked(event, v);
-            });
+            card.moreButton.setOnClickListener(v -> moreButtonClicked(event, v));
             val textColorRes = ColorUtils.colorYiqRes(event.getColor());
             val textColor = itemView.getContext().getColor(textColorRes);
             val backgroundColor = ColorUtils.parseColor(event.getColor());

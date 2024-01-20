@@ -29,7 +29,7 @@ import java.lang.reflect.Type;
 @Module
 @InstallIn(SingletonComponent.class)
 public class BambooCallAdapterFactory extends CallAdapter.Factory {
-    RxJava3CallAdapterFactory original;
+    final RxJava3CallAdapterFactory original;
 
     public BambooCallAdapterFactory() {
         original = RxJava3CallAdapterFactory.create();
@@ -38,6 +38,7 @@ public class BambooCallAdapterFactory extends CallAdapter.Factory {
     @Nullable
     @Override
     public CallAdapter<?, ?> get(@NotNull Type returnType, @NotNull Annotation[] annotations, @NotNull Retrofit retrofit) {
+        //noinspection rawtypes
         return new RxCallAdapterWrapper(original.get(returnType, annotations, retrofit));
     }
 
@@ -63,14 +64,16 @@ public class BambooCallAdapterFactory extends CallAdapter.Factory {
 
         @NotNull
         @Override
-        public Object adapt(Call<R> call) {
+        public Object adapt(@NotNull Call<R> call) {
             val wrappedResult = wrapped.adapt(call);
             if (wrappedResult instanceof Completable) {
+                //noinspection ReactiveStreamsUnusedPublisher
                 return ((Completable) wrappedResult)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.newThread())
                         .onErrorResumeNext(throwable -> Completable.error(asBambooException(throwable)));
             } else if (wrappedResult instanceof Observable<?>) {
+                //noinspection ReactiveStreamsUnusedPublisher
                 return ((Observable<?>) wrappedResult)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.newThread())
@@ -81,9 +84,10 @@ public class BambooCallAdapterFactory extends CallAdapter.Factory {
         }
 
         private BambooException asBambooException(Throwable throwable) {
-            if (throwable instanceof HttpException) {
-                val httpException = (HttpException) throwable;
+            if (throwable instanceof HttpException httpException) {
                 val response = httpException.response();
+                assert response != null;
+                assert response.errorBody() != null;
                 return new Gson().fromJson(response.errorBody().charStream(), BambooException.class);
             }
             if (throwable instanceof IOException) {

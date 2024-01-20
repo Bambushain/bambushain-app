@@ -55,7 +55,8 @@ public class UnauthorizedCallAdapterFactory extends CallAdapter.Factory {
 
     @Nullable
     @Override
-    public CallAdapter<?, ?> get(@NotNull Type returnType, @NotNull Annotation[] annotations, @NotNull Retrofit retrofit) {
+    public CallAdapter<?, ?> get(@NotNull Type returnType, @NotNull Annotation @NotNull [] annotations, @NotNull Retrofit retrofit) {
+        //noinspection rawtypes
         return new UnauthorizedCallAdapterWrapper(original.get(returnType, annotations, retrofit));
     }
 
@@ -80,9 +81,11 @@ public class UnauthorizedCallAdapterFactory extends CallAdapter.Factory {
         public Object adapt(@NotNull Call<R> call) {
             val wrappedResult = wrapped.adapt(call);
             if (wrappedResult instanceof Completable) {
+                //noinspection ReactiveStreamsUnusedPublisher
                 return ((Completable) wrappedResult)
                         .onErrorComplete(this::handleError);
             } else if (wrappedResult instanceof Observable<?>) {
+                //noinspection ReactiveStreamsUnusedPublisher
                 return ((Observable<?>) wrappedResult)
                         .onErrorResumeNext(throwable -> {
                             handleError(throwable);
