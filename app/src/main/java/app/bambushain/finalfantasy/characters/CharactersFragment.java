@@ -1,6 +1,7 @@
 package app.bambushain.finalfantasy.characters;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,17 +22,17 @@ import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
 
 import javax.inject.Inject;
+import java.util.Objects;
 
 @AndroidEntryPoint
 public class CharactersFragment extends BindingFragment<FragmentCharactersBinding> {
     private static final String TAG = CharactersFragment.class.getName();
+    @Inject
+    BambooApi bambooApi;
 
     @Inject
     public CharactersFragment() {
     }
-
-    @Inject
-    BambooApi bambooApi;
 
     @Override
     protected FragmentCharactersBinding getViewBinding() {
@@ -45,7 +46,7 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         val adapter = new CharactersAdapter(new ViewModelProvider(this), getViewLifecycleOwner());
 
         binding.characterList.setAdapter(adapter);
-        binding.characterList.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.characterList.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         adapter.setOnEditCharacterListener((position, character) -> {
             val bundle = new Bundle();
@@ -61,8 +62,7 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
             navigator.navigate(R.id.action_fragment_characters_to_character_details_dialog, bundle);
         });
 
-        val stateHandle = navigator
-                .getCurrentBackStackEntry()
+        val stateHandle = Objects.requireNonNull(navigator.getCurrentBackStackEntry())
                 .getSavedStateHandle();
         stateHandle.getLiveData("createdCharacter", (Character) null).observe(getViewLifecycleOwner(), character -> {
             if (character != null) {
@@ -72,6 +72,7 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         stateHandle.getLiveData("updatedCharacter", (Character) null).observe(getViewLifecycleOwner(), character -> {
             if (character != null) {
                 val editPosition = (Integer) stateHandle.get("position");
+                //noinspection DataFlowIssue
                 adapter.updateCharacter(editPosition, character);
             }
         });
@@ -80,11 +81,13 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     void loadData() {
         binding.pullToRefreshCharacterList.setRefreshing(true);
+        //noinspection ResultOfMethodCallIgnored
         bambooApi.getCharacters().subscribe(characters -> {
             val adapter = (CharactersAdapter) binding.characterList.getAdapter();
-            adapter.setCharacters(characters);
+            Objects.requireNonNull(adapter).setCharacters(characters);
             adapter.notifyDataSetChanged();
             binding.getViewModel().isLoading.setValue(false);
             binding.pullToRefreshCharacterList.setRefreshing(false);
@@ -109,21 +112,23 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
     }
 
     private void delete(int position, Character character) {
+        //noinspection ResultOfMethodCallIgnored
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.action_delete_character)
                 .setMessage(getString(R.string.action_delete_character_message, character.getName()))
-                .setPositiveButton(R.string.action_delete_character, (dialog, which) -> {
-                    bambooApi
-                            .deleteCharacter(character.getId())
-                            .subscribe(() -> {
-                                val adapter = (CharactersAdapter) binding.characterList.getAdapter();
-                                adapter.removeCharacter(position);
-                                Toast.makeText(requireContext(), getString(R.string.success_character_delete, character.getName()), Toast.LENGTH_LONG).show();
-                            }, throwable -> {
-                                Log.e(TAG, "delete: deleting character failed", throwable);
-                                Toast.makeText(requireContext(), getString(R.string.error_character_delete_failed, character.getName()), Toast.LENGTH_LONG);
-                            });
-                })
+                .setPositiveButton(R.string.action_delete_character, (dialog, which) -> bambooApi
+                        .deleteCharacter(character.getId())
+                        .subscribe(() -> {
+                            val adapter = (CharactersAdapter) binding.characterList.getAdapter();
+                            assert adapter != null;
+                            adapter.removeCharacter(position);
+                            Toast.makeText(requireContext(), getString(R.string.success_character_delete, character.getName()), Toast.LENGTH_LONG).show();
+                        }, throwable -> {
+                            Log.e(TAG, "delete: deleting character failed", throwable);
+                            Toast
+                                    .makeText(requireContext(), getString(R.string.error_character_delete_failed, character.getName()), Toast.LENGTH_LONG)
+                                    .show();
+                        }))
                 .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();

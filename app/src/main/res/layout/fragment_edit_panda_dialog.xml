@@ -33,7 +33,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/margin"
                             android:id="@+id/profileEmail"
-                            app:layout_constraintTop_toBottomOf="@id/drag_handle"
+                            app:layout_constraintTop_toTopOf="parent"
                             app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                                 android:text="@={viewModel.email}"
                                 android:ems="10"
                                 android:singleLine="true"
-                                android:hint="@string/profile_email"/>
+                                android:hint="@string/panda_email"/>
                     </com.google.android.material.textfield.TextInputLayout>
                     <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -58,7 +58,7 @@
                                 android:text="@={viewModel.displayName}"
                                 android:ems="10"
                                 android:singleLine="true"
-                                android:hint="@string/profile_name"/>
+                                android:hint="@string/panda_name"/>
                     </com.google.android.material.textfield.TextInputLayout>
                     <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -74,7 +74,7 @@
                                 android:text="@={viewModel.discordName}"
                                 android:ems="10"
                                 android:singleLine="true"
-                                android:hint="@string/profile_discord_name"/>
+                                android:hint="@string/panda_discord_name"/>
                         <com.google.android.material.button.MaterialButton
                                 android:text="@string/action_save_panda"
                                 android:id="@+id/action_save_panda"

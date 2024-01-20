@@ -27,19 +27,11 @@ import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
 
 import javax.inject.Inject;
+import java.util.Objects;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
-
-    public ActivityMainBinding binding;
-    public NavigationViewModel headerViewModel;
-    public NavController navigator;
-    @Inject
-    BambooApi bambooApi;
-    @Inject
-    EventDao eventDao;
-
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
@@ -48,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "requestPermissionLauncher: Permission for notifications was rejected");
                 }
             });
+    public ActivityMainBinding binding;
+    public NavigationViewModel headerViewModel;
+    public NavController navigator;
+    @Inject
+    BambooApi bambooApi;
+    @Inject
+    EventDao eventDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         val view = binding.getRoot();
         setContentView(view);
         val navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(binding.navHostFragment.getId());
-        navigator = navHostFragment.getNavController();
+        navigator = Objects.requireNonNull(navHostFragment).getNavController();
 
         val notificationManager = getSystemService(NotificationManager.class);
         val channel = new NotificationChannel(
@@ -99,11 +98,9 @@ public class MainActivity extends AppCompatActivity {
         headerBinding.setViewModel(headerViewModel);
         headerBinding.setLifecycleOwner(this);
 
-        navigator.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            binding.navView.setCheckedItem(destination.getId());
-        });
+        navigator.addOnDestinationChangedListener((controller, destination, arguments) -> binding.navView.setCheckedItem(destination.getId()));
         headerBinding.actionLogout.setOnClickListener(v -> {
-            bambooApi.logout();
+            bambooApi.logout().subscribe();
 
             val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
             sharedPrefs
@@ -113,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
             binding.drawerLayout.closeDrawers();
 
-            eventDao.cleanDatabase();
+            eventDao.cleanDatabase().subscribe();
             val logoutServiceIntent = new Intent(this, EventNotificationService.class);
             logoutServiceIntent.setAction(getString(R.string.service_intent_stop_listening));
 
@@ -121,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
             navigator.navigate(R.id.action_global_fragment_login);
         });
 
+        //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .getMyProfile()
                 .subscribe(profile -> {

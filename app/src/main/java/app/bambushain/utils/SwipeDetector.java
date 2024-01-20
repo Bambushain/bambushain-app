@@ -3,6 +3,7 @@ package app.bambushain.utils;
 import android.view.MotionEvent;
 import android.view.View;
 import lombok.Setter;
+import lombok.val;
 
 public class SwipeDetector implements View.OnTouchListener {
     float x1, x2, y1, y2;
@@ -15,10 +16,9 @@ public class SwipeDetector implements View.OnTouchListener {
     @Setter
     private OnSwipeDetectListener onSwipeDownListener;
 
-    private final float threshold = 400;
-
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+        val threshold = 400;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 x1 = event.getX();
@@ -59,6 +59,9 @@ public class SwipeDetector implements View.OnTouchListener {
                     view.performClick();
                 }
 
+                break;
+            default:
+                view.performClick();
                 break;
         }
 

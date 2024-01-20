@@ -22,6 +22,7 @@ import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
+import java.util.Objects;
 
 @AndroidEntryPoint
 public class EditProfileDialog extends BindingDialogFragment<FragmentEditMyProfileBinding> {
@@ -46,14 +47,15 @@ public class EditProfileDialog extends BindingDialogFragment<FragmentEditMyProfi
         val profile = new UpdateMyProfile(viewModel.email.getValue(), viewModel.displayName.getValue(), viewModel.discordName.getValue());
         Log.d(TAG, "saveProfile: Perform profile update " + profile);
         viewModel.isLoading.setValue(true);
+        //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .updateMyProfile(profile)
                 .subscribe(() -> {
                     Log.d(TAG, "saveProfile: Update successful");
                     Toast
-                            .makeText(getContext(), R.string.success_profile_update, Toast.LENGTH_LONG)
+                            .makeText(requireContext(), R.string.success_profile_update, Toast.LENGTH_LONG)
                             .show();
-                    val stateHandle = navigator.getPreviousBackStackEntry().getSavedStateHandle();
+                    val stateHandle = Objects.requireNonNull(navigator.getPreviousBackStackEntry()).getSavedStateHandle();
                     stateHandle.set("currentUser", viewModel);
                     navigator.popBackStack();
                 }, ex -> {

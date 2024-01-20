@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="panda_name">Name</string>
+    <string name="panda_email">Email</string>
+    <string name="panda_discord_name">Discord Name (optional)</string>
     <string name="label_profile_is_mod">" ist ein Mod"</string>
     <string name="action_give_mod_status">Zum Mod machen</string>
     <string name="action_revoke_mod_status">Modrechte entziehen</string>
@@ -7,7 +10,6 @@
     <string name="action_reset_two_factor">Zwei Faktor deaktivieren</string>
     <string name="action_reset_password">Passwort zurücksetzen</string>
     <string name="action_delete_panda">Aus dem Hain werfen</string>
-    <string name="action_change_password_panda">Passwort zurücksetzen</string>
     <string name="action_cancel">Abbrechen</string>
     <string name="action_revoke_mod_status_message">Sollen dem Panda %1$s wirklich die Modrechte entzogen werden?
     </string>
@@ -17,17 +19,14 @@
     </string>
     <string name="action_reset_password_message">Soll das Passwort für %1$s wirklich zurückgesetzt werden?</string>
     <string name="action_delete_panda_message">Soll der Panda %1$s wirklich aus dem Hain geworfen werden?</string>
-    <string name="action_change_password_message">Das neue Passwort wird %1$s per Mail geschickt</string>
     <string name="label_edit_panda">Panda bearbeiten</string>
-    <string name="label_edit_user_profile">Panda bearbeiten</string>
-    <string name="pandas_is_mod">Panda ist Mod</string>
-    <string name="label_add_user_profile">Panda hinzufügen</string>
+    <string name="panda_is_mod">Panda ist Mod</string>
     <string name="action_save_panda">Panda speichern</string>
     <string name="action_add_panda">Panda hinzufügen</string>
     <string name="success_edit_panda">Der Panda wurde erfolgreich gespeichert</string>
 
     <string name="error_panda_update_failed">Der Panda konnte nicht gespeichert werden</string>
-    <string name="error_panda_update_exists">Der Name oder die Email sind schon vergeben</string>
+    <string name="error_panda_update_exists">Der Name oder die E-Mail sind schon vergeben</string>
 
     <string name="error_panda_make_mod_failed">%1$s konnte nicht zum Mod gemacht werden</string>
     <string name="error_panda_make_mod_insufficient_rights">Du musst Mod sein um Mods zu ernennen</string>
@@ -61,11 +60,11 @@
     </string>
     <string name="success_create_panda">Der Panda wurde erstellt</string>
     <string name="lable_add_panda">Neuen Panda erstellen</string>
-    <string name="error_panda_email_invalid">Die Email ist ungültig</string>
+    <string name="error_panda_email_invalid">Die E-Mail ist ungültig</string>
     <string name="error_panda_discord_too_short">Der Name muss mindestens 3 Zeichen lang sein.</string>
     <string name="error_panda_discord_too_long">Der Name darf nicht länger als 32 Zeichen lang sein</string>
     <string name="error_panda_name_required">Der Name ist erforderlich</string>
-    <string name="error_panda_dialog_email_invalid">Die Email ist ungültig</string>
+    <string name="error_panda_dialog_email_invalid">Die E-Mail ist ungültig</string>
     <string name="error_panda_dialog_discord_too_short">Der Name muss mindestens 3 Zeichen lang sein</string>
     <string name="error_panda_dialog_discord_too_long">Der Name darf nicht länger als 32 Zeichen lang sein</string>
     <string name="error_panda_dialog_name_required">Der Name ist erforderlich</string>
@@ -74,4 +73,7 @@
     <string name="success_panda_disable_totp">Die Zwei Faktor Authentifizierung wurde für %1$s deaktiviert</string>
     <string name="success_panda_change_password">Das Passwort von %1$s wurde zurückgesetzt</string>
     <string name="success_panda_delete">%1$s wurde aus dem Hain geworfen</string>
+    <string name="error_panda_create_failed">Der Panda konnte leider nicht erstellt werden</string>
+    <string name="error_panda_create_exists">Ein Panda mit dieser E-Mail-Adresse oder dem Namen existiert bereits
+    </string>
 </resources>

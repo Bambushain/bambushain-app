@@ -57,11 +57,10 @@ public class ChangePasswordDialog extends BindingDialogFragment<FragmentChangeMy
     private void changePassword() {
         val changeMyPassword = new ChangeMyPassword(viewModel.oldPassword.getValue(), viewModel.newPassword.getValue());
         if (!changeMyPassword.getNewPassword().isEmpty() && !changeMyPassword.getOldPassword().isEmpty()) {
+            //noinspection ResultOfMethodCallIgnored
             bambooApi
                     .changeMyPassword(changeMyPassword)
-                    .subscribe(() -> {
-                        navigator.popBackStack();
-                    }, throwable -> {
+                    .subscribe(() -> navigator.popBackStack(), throwable -> {
                         var message = 0;
                         val bambooException = (BambooException) throwable;
                         if (bambooException.getErrorType() == ErrorType.InsufficientRights) {

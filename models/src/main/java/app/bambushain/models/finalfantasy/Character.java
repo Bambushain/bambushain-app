@@ -1,7 +1,5 @@
 package app.bambushain.models.finalfantasy;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

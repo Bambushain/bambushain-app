@@ -1,5 +1,6 @@
 package app.bambushain.bamboo.calendar;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -32,13 +32,13 @@ import org.jetbrains.annotations.NotNull;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @AndroidEntryPoint
 public class EventCalendarFragment extends BindingFragment<FragmentEventCalendarBinding> {
 
-    private static final String TAG = EventCalendarFragment.class.getName();
     public static final String EVENT_CALENDAR_CURRENT_MONTH = "event_calendar_current_month";
-
+    private static final String TAG = EventCalendarFragment.class.getName();
     @Inject
     BambooApi bambooApi;
 
@@ -66,7 +66,7 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
             navigator.navigate(R.id.action_fragment_event_calendar_to_edit_event_dialog, args);
         });
         binding.eventList.setAdapter(adapter);
-        binding.eventList.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.eventList.setLayoutManager(new LinearLayoutManager(requireContext()));
         val dividerItemDecoration = new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL);
         binding.eventList.addItemDecoration(dividerItemDecoration);
 
@@ -74,28 +74,24 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
     }
 
     private void openDelete(Event event) {
+        //noinspection ResultOfMethodCallIgnored
         new MaterialAlertDialogBuilder(activity)
-                .setPositiveButton(R.string.action_delete_calendar_event_confirm, (dialog, which) -> {
-                    bambooApi.deleteEvent(event.getId()).subscribe(() -> {
-                        Log.d(TAG, "openDelete: Successfully deleted event " + event.getTitle());
-                    }, throwable -> {
-                        Log.e(TAG, "openDelete: Failed to delete event " + event.getTitle(), throwable);
-                        Snackbar
-                                .make(getView(), R.string.error_calendar_delete_failed, Snackbar.LENGTH_LONG)
-                                .setTextColor(getColor(R.color.md_theme_onError))
-                                .setBackgroundTint(getColor(R.color.md_theme_error))
-                                .show();
-                    });
-                })
-                .setNegativeButton(R.string.action_delete_calendar_event_decline, (dialog, which) -> {
-                    dialog.dismiss();
-                })
+                .setPositiveButton(R.string.action_delete_calendar_event_confirm, (dialog, which) -> bambooApi.deleteEvent(event.getId()).subscribe(() -> Log.d(TAG, "openDelete: Successfully deleted event " + event.getTitle()), throwable -> {
+                    Log.e(TAG, "openDelete: Failed to delete event " + event.getTitle(), throwable);
+                    Snackbar
+                            .make(requireView(), R.string.error_calendar_delete_failed, Snackbar.LENGTH_LONG)
+                            .setTextColor(getColor(R.color.md_theme_onError))
+                            .setBackgroundTint(getColor(R.color.md_theme_error))
+                            .show();
+                }))
+                .setNegativeButton(R.string.action_delete_calendar_event_decline, (dialog, which) -> dialog.dismiss())
                 .setTitle(R.string.calendar_delete_event_title)
                 .setMessage(R.string.calendar_delete_event_message)
                 .create()
                 .show();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -118,38 +114,35 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
             return true;
         });
         binding.eventList.setOnTouchListener(getSwipeDetector());
-        binding.addEvent.setOnClickListener(v -> {
-            navigator.navigate(R.id.action_fragment_event_calendar_to_add_event_dialog);
-        });
+        binding.addEvent.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_event_calendar_to_add_event_dialog));
         Schedulers.io().scheduleDirect(() -> {
             try {
                 Log.d(TAG, "onViewCreated: Start observer on calendar sse");
+                //noinspection ResultOfMethodCallIgnored
                 bambooCalendarEventSource
                         .start()
                         .subscribe(calendarEventAction -> {
                             val event = calendarEventAction.getEvent();
-                            val since = viewModel.currentMonth.getValue().withDayOfMonth(1).minusDays(1);
+                            val since = Objects.requireNonNull(viewModel.currentMonth.getValue()).withDayOfMonth(1).minusDays(1);
                             val until = viewModel.currentMonth.getValue().withDayOfMonth(since.lengthOfMonth()).plusDays(1);
                             if ((event.getStartDate().isAfter(since) && event.getStartDate().isBefore(until)) || (event.getEndDate().isAfter(since) && event.getEndDate().isBefore(until))) {
                                 val adapter = (CalendarViewAdapter) binding.eventList.getAdapter();
                                 switch (calendarEventAction.getAction()) {
                                     case Created:
-                                        adapter.addEvent(event);
+                                        Objects.requireNonNull(adapter).addEvent(event);
                                         break;
                                     case Updated:
-                                        adapter.updateEvent(event);
+                                        Objects.requireNonNull(adapter).updateEvent(event);
                                         break;
                                     case Deleted:
-                                        adapter.removeEvent(event);
+                                        Objects.requireNonNull(adapter).removeEvent(event);
                                         break;
                                 }
                             }
-                        }, throwable -> {
-                            Log.e(TAG, "onViewCreated: Failed to load data", throwable);
-                        });
+                        }, throwable -> Log.e(TAG, "onViewCreated: Failed to load data", throwable));
             } catch (StreamException exception) {
                 Log.e(TAG, "onViewCreated: Failed to start observer on calendar sse, setup reload on change", exception);
-                AndroidSchedulers.mainThread().scheduleDirect(() -> navigator.addOnDestinationChangedListener(this::destinationChanged));
+                AndroidSchedulers.mainThread().scheduleDirect(() -> navigator.addOnDestinationChangedListener((controller, destination, arguments) -> destinationChanged(destination)));
             }
         });
         loadData(date);
@@ -157,10 +150,10 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
 
     private void navigateToPreviousMonth() {
         loadData(
-                binding
-                        .getViewModel()
-                        .currentMonth
-                        .getValue()
+                Objects.requireNonNull(binding
+                                .getViewModel()
+                                .currentMonth
+                                .getValue())
                         .minusMonths(1)
         );
     }
@@ -168,12 +161,12 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        navigator.removeOnDestinationChangedListener(this::destinationChanged);
+        navigator.removeOnDestinationChangedListener((controller, destination, arguments) -> destinationChanged(destination));
     }
 
-    private void destinationChanged(NavController controller, NavDestination destination, Bundle arguments) {
+    private void destinationChanged(NavDestination destination) {
         if (destination.getId() == R.id.fragment_event_calendar) {
-            loadData(binding.getViewModel().currentMonth.getValue());
+            loadData(Objects.requireNonNull(binding.getViewModel().currentMonth.getValue()));
         }
     }
 
@@ -188,10 +181,10 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
 
     private void navigateToNextMonth() {
         loadData(
-                binding
-                        .getViewModel()
-                        .currentMonth
-                        .getValue()
+                Objects.requireNonNull(binding
+                                .getViewModel()
+                                .currentMonth
+                                .getValue())
                         .plusMonths(1)
         );
     }
@@ -206,12 +199,13 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
                 .edit()
                 .putLong(EVENT_CALENDAR_CURRENT_MONTH, date.toEpochDay())
                 .apply();
+        //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .getEvents(firstDayOfMonth, lastDayOfMonth)
                 .subscribe(events -> {
                     binding.getViewModel().isLoading.setValue(false);
                     val adapter = (CalendarViewAdapter) binding.eventList.getAdapter();
-                    adapter.setData(events, date.getMonth(), date.getYear());
+                    Objects.requireNonNull(adapter).setData(events, date.getMonth(), date.getYear());
                 }, throwable -> {
                     Log.e(TAG, "onViewCreated: Failed to load the events", throwable);
                     if (getView() != null) {

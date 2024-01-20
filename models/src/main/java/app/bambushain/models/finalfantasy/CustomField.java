@@ -2,19 +2,16 @@ package app.bambushain.models.finalfantasy;
 
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
+@Getter
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class CustomField {
-    @Getter
     @Setter
     private String label;
-    @Getter
-    private Integer position = 0;
-    @Getter
+    private final Integer position = 0;
     @Setter
     private Set<String> values;
 

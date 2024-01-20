@@ -22,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
 
 import javax.inject.Inject;
+import java.util.Objects;
 
 @AndroidEntryPoint
 public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDialogBinding> {
@@ -31,6 +32,7 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
 
     PandaViewModel viewModel;
     Snackbar snackbar;
+    private int id;
 
     @Inject
     public EditPandaDialog() {
@@ -45,14 +47,15 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
         val profile = new UpdateUserProfile(viewModel.email.getValue(), viewModel.displayName.getValue(), viewModel.discordName.getValue());
         Log.d(TAG, "saveProfile: Perform profile update " + profile);
         viewModel.isLoading.setValue(true);
+        // noinspection ResultOfMethodCallIgnored
         bambooApi
-                .updateUserProfile(viewModel.id.getValue(), profile)
+                .updateUserProfile(id, profile)
                 .subscribe(() -> {
                     Log.d(TAG, "saveProfile: Update successful");
                     Toast
-                            .makeText(getContext(), R.string.success_edit_panda, Toast.LENGTH_LONG)
+                            .makeText(requireContext(), R.string.success_edit_panda, Toast.LENGTH_LONG)
                             .show();
-                    val stateHandle = navigator.getPreviousBackStackEntry().getSavedStateHandle();
+                    val stateHandle = Objects.requireNonNull(navigator.getPreviousBackStackEntry()).getSavedStateHandle();
                     stateHandle.set("updatedUser", new User(viewModel.id.getValue(), profile.getDisplayName(), profile.getEmail(), false, profile.getDiscordName(), false));
                     navigator.popBackStack();
                 }, ex -> {
@@ -79,7 +82,7 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(PandaViewModel.class);
         val user = BundleUtils.getSerializable(getArguments(), "user", User.class);
-        viewModel.id.setValue(user.getId());
+        id = user.getId();
         viewModel.email.setValue(user.getEmail());
         viewModel.displayName.setValue(user.getDisplayName());
         viewModel.discordName.setValue(user.getDiscordName());
@@ -87,7 +90,7 @@ public class EditPandaDialog extends BindingDialogFragment<FragmentEditPandaDial
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.actionSavePanda.setOnClickListener(v -> {
-            if (viewModel.isDiscordNameValid.getValue() && viewModel.isDisplayNameValid.getValue() && viewModel.isEmailValid.getValue()) {
+            if (Boolean.TRUE.equals(viewModel.isDiscordNameValid.getValue()) && Boolean.TRUE.equals(viewModel.isDisplayNameValid.getValue()) && Boolean.TRUE.equals(viewModel.isEmailValid.getValue())) {
                 saveProfile();
             }
         });

@@ -16,8 +16,8 @@ import static java.time.temporal.ChronoField.YEAR;
 
 @HiltViewModel
 public class CalendarViewModel extends ViewModel {
-    public MutableLiveData<Boolean> isLoading = new MutableLiveData<>(true);
-    public MutableLiveData<LocalDate> currentMonth = new MutableLiveData<>(LocalDate.now());
+    public final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(true);
+    public final MutableLiveData<LocalDate> currentMonth = new MutableLiveData<>(LocalDate.now());
 
     public LiveData<String> currentMonthText = Transformations.map(currentMonth, localDate -> localDate.format(new DateTimeFormatterBuilder()
             .appendText(MONTH_OF_YEAR, TextStyle.FULL)

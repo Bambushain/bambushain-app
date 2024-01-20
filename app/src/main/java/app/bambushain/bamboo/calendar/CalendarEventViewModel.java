@@ -20,19 +20,19 @@ import static java.time.temporal.ChronoField.*;
 
 @HiltViewModel
 public class CalendarEventViewModel extends ViewModel {
+    public final MutableLiveData<Integer> id = new MutableLiveData<>(0);
+    public final MutableLiveData<String> title = new MutableLiveData<>("");
+    public final MutableLiveData<String> description = new MutableLiveData<>("");
+    public final MutableLiveData<String> color = new MutableLiveData<>("#598c79");
+    public final MutableLiveData<LocalDate> startDate = new MutableLiveData<>(LocalDate.now());
+    public final MutableLiveData<LocalDate> endDate = new MutableLiveData<>(LocalDate.now());
+    public final MutableLiveData<Boolean> isPrivate = new MutableLiveData<>(false);
+    public LiveData<String> startDateString = Transformations.map(startDate, this::mapDate);
+    public LiveData<String> endDateString = Transformations.map(endDate, this::mapDate);
+    public LiveData<Integer> backgroundColor = Transformations.map(color, ColorUtils::parseColor);
     @ApplicationContext
     @Inject
     Context context;
-    public MutableLiveData<Integer> id = new MutableLiveData<>(0);
-    public MutableLiveData<String> title = new MutableLiveData<>("");
-    public MutableLiveData<String> description = new MutableLiveData<>("");
-    public MutableLiveData<String> color = new MutableLiveData<>("#598c79");
-    public MutableLiveData<LocalDate> startDate = new MutableLiveData<>(LocalDate.now());
-    public MutableLiveData<LocalDate> endDate = new MutableLiveData<>(LocalDate.now());
-    public LiveData<String> startDateString = Transformations.map(startDate, this::mapDate);
-    public LiveData<String> endDateString = Transformations.map(endDate, this::mapDate);
-    public MutableLiveData<Boolean> isPrivate = new MutableLiveData<>(false);
-    public LiveData<Integer> backgroundColor = Transformations.map(color, ColorUtils::parseColor);
     public LiveData<Integer> textColor = Transformations.map(color, this::colorYiq);
 
     @Inject

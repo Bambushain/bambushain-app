@@ -31,6 +31,7 @@ public class EventNotificationService extends Service {
     EventDao eventDao;
 
     private boolean isListening = false;
+    private PowerManager.WakeLock wakeLock;
 
     @Inject
     public EventNotificationService() {
@@ -43,11 +44,13 @@ public class EventNotificationService extends Service {
         }
 
         Log.d(TAG, "startListening: Check if the auth token is valid");
+        //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .validateToken()
                 .subscribe(() -> {
                     isListening = true;
                     Log.d(TAG, "startListening: Auth token is valid");
+                    //noinspection ResultOfMethodCallIgnored
                     eventDao
                             .getEventsForDay()
                             .subscribe(notifier::showNotificationForToday, throwable -> Log.e(TAG, "startListening: Failed to listen to database changes", throwable));
@@ -71,11 +74,17 @@ public class EventNotificationService extends Service {
         eventListener.unsubscribeFromEventChanges();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        wakeLock.release();
+    }
+
     private void startService() {
         try {
             val powerManager = getSystemService(PowerManager.class);
-            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "EventNotificationService::lock");
-            wakeLock.acquire();
+            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "EventNotificationService::lock");
+            wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/);
 
             startForeground(notifier.notificationId, notifier.createNotification(getString(R.string.service_no_events)), ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
 
@@ -111,6 +120,7 @@ public class EventNotificationService extends Service {
     }
 
     private void cleanupDatabase() {
+        //noinspection ResultOfMethodCallIgnored
         eventDao
                 .deleteEventsBeforeToday()
                 .delay(1, TimeUnit.HOURS)
@@ -118,10 +128,12 @@ public class EventNotificationService extends Service {
     }
 
     private void updateToday() {
+        //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .validateToken()
                 .subscribe(() -> {
                     Log.d(TAG, "updateToday: Auth token is valid");
+                    //noinspection ResultOfMethodCallIgnored
                     eventDao
                             .getEventsForDay()
                             .subscribe(notifier::showNotificationForToday, throwable -> Log.e(TAG, "updateToday: Failed to listen to database changes", throwable));

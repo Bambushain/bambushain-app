@@ -64,11 +64,12 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
     }
 
     private void forgotPassword() {
+        //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .forgotPassword(new ForgotPasswordRequest(viewModel.email.getValue()))
                 .subscribe(() -> {
                     Log.d(TAG, "onForgotPassword: Password reset email sent");
-                    Toast.makeText(getContext(), R.string.success_forgot_password, Toast.LENGTH_LONG);
+                    Toast.makeText(requireContext(), R.string.success_forgot_password, Toast.LENGTH_LONG).show();
                 }, ex -> {
                     Log.e(TAG, "onForgotPassword: Failed to send password reset email", ex);
                     showErrorSnackbar(R.string.error_forgot_password_failed);
@@ -78,15 +79,17 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
     private void login() {
         Log.d(TAG, "onLogin: Perform login with email " + viewModel.email.getValue());
         if (Boolean.TRUE.equals(viewModel.twoFactorRequested.getValue()) || "playstore@google.bambushain".equals(viewModel.email.getValue())) {
+            //noinspection ResultOfMethodCallIgnored
             bambooApi
                     .login(new LoginRequest(viewModel.email.getValue(), viewModel.password.getValue(), viewModel.twoFactorCode.getValue()))
                     .subscribe(response -> {
                         Log.d(TAG, "onLogin: Login successful, redirect to main view");
-                        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
                         sharedPrefs
                                 .edit()
                                 .putString(getString(app.bambushain.api.R.string.bambooAuthenticationToken), response.getToken())
                                 .apply();
+                        //noinspection ResultOfMethodCallIgnored
                         bambooApi
                                 .getMyProfile()
                                 .subscribe(profile -> {
@@ -108,6 +111,7 @@ public class LoginFragment extends BindingFragment<FragmentLoginBinding> {
                         showErrorSnackbar(R.string.error_login_failed_login);
                     });
         } else {
+            //noinspection ResultOfMethodCallIgnored
             bambooApi
                     .requestTwoFactorCode(new TwoFactorRequest(viewModel.email.getValue(), viewModel.password.getValue()))
                     .subscribe(() -> {

@@ -57,6 +57,7 @@
                                 android:singleLine="true"
                                 android:hint="@string/event_description"/>
                     </com.google.android.material.textfield.TextInputLayout>
+                    <!--suppress Annotator -->
                     <com.google.android.material.button.MaterialButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package app.bambushain.bamboo.pandas;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,17 +25,17 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @AndroidEntryPoint
 public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
     private static final String TAG = PandasFragment.class.getName();
+    @Inject
+    BambooApi bambooApi;
 
     @Inject
     public PandasFragment() {
     }
-
-    @Inject
-    BambooApi bambooApi;
 
     @Override
     protected FragmentPandasBinding getViewBinding() {
@@ -48,10 +49,10 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         val adapter = getPandasAdapter();
 
         binding.pandaList.setAdapter(adapter);
-        binding.pandaList.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.pandaList.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        val stateHandle = navigator
-                .getCurrentBackStackEntry()
+        val stateHandle = Objects.requireNonNull(navigator
+                        .getCurrentBackStackEntry())
                 .getSavedStateHandle();
         stateHandle
                 .getLiveData("updatedUser", (User) null)
@@ -75,7 +76,8 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
     private PandasAdapter getPandasAdapter() {
         val isMod = activity.headerViewModel.isMod.getValue();
         val myId = activity.headerViewModel.id.getValue();
-        val adapter = new PandasAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), isMod, myId, new ArrayList<>());
+        //noinspection DataFlowIssue
+        val adapter = new PandasAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), Boolean.TRUE.equals(isMod), myId, new ArrayList<>());
         adapter.setOnEditUserListener((position, user) -> {
             val bundle = new Bundle();
             bundle.putSerializable("user", user);
@@ -84,153 +86,152 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         adapter.setOnMakeModListener(this::makeMod);
         adapter.setOnRevokeModListener(this::revokeMod);
         adapter.setOnResetTotpListener(this::resetTotp);
-        adapter.setOnResetPasswordListener(this::resetPassword);
+        adapter.setOnResetPasswordListener((position, user) -> resetPassword(user));
         adapter.setOnDeleteUserListener(this::delete);
 
         return adapter;
     }
 
     private void makeMod(int position, User user) {
+        //noinspection ResultOfMethodCallIgnored
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.action_give_mod_status)
                 .setMessage(getString(R.string.action_give_mod_status_message, user.getDisplayName()))
-                .setPositiveButton(R.string.action_give_mod_status, (dialog, which) -> {
-                    bambooApi.makeUserMod(user.getId()).subscribe(() -> {
-                        val adapter = (PandasAdapter) binding.pandaList.getAdapter();
-                        user.setIsMod(true);
-                        adapter.updatePanda(position, user);
-                        Toast.makeText(requireContext(), getString(R.string.success_panda_make_mod, user.getDisplayName()), Toast.LENGTH_LONG).show();
-                    }, throwable -> {
-                        Log.e(TAG, "makeUserMod: make user mod failed", throwable);
-                        val bambooException = (BambooException) throwable;
-                        var errorMessage = getString(R.string.error_panda_make_mod_failed, user.getDisplayName());
-                        if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
-                            errorMessage = getString(R.string.error_panda_make_mod_insufficient_rights);
-                        } else if (bambooException.getErrorType() == ErrorType.Validation) {
-                            errorMessage = getString(R.string.error_panda_make_mod_validation);
-                        }
+                .setPositiveButton(R.string.action_give_mod_status, (dialog, which) -> bambooApi.makeUserMod(user.getId()).subscribe(() -> {
+                    val adapter = (PandasAdapter) binding.pandaList.getAdapter();
+                    user.setIsMod(true);
+                    assert adapter != null;
+                    adapter.updatePanda(position, user);
+                    Toast.makeText(requireContext(), getString(R.string.success_panda_make_mod, user.getDisplayName()), Toast.LENGTH_LONG).show();
+                }, throwable -> {
+                    Log.e(TAG, "makeUserMod: make user mod failed", throwable);
+                    val bambooException = (BambooException) throwable;
+                    var errorMessage = getString(R.string.error_panda_make_mod_failed, user.getDisplayName());
+                    if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
+                        errorMessage = getString(R.string.error_panda_make_mod_insufficient_rights);
+                    } else if (bambooException.getErrorType() == ErrorType.Validation) {
+                        errorMessage = getString(R.string.error_panda_make_mod_validation);
+                    }
 
-                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
-                    });
-                })
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
+                }))
                 .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();
     }
 
     private void revokeMod(int position, User user) {
+        //noinspection ResultOfMethodCallIgnored
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.action_revoke_mod_status)
                 .setMessage(getString(R.string.action_revoke_mod_status_message, user.getDisplayName()))
-                .setPositiveButton(R.string.action_revoke_mod_status, (dialog, which) -> {
-                    bambooApi.revokeUserModRights(user.getId()).subscribe(() -> {
-                        val adapter = (PandasAdapter) binding.pandaList.getAdapter();
-                        user.setIsMod(false);
-                        adapter.updatePanda(position, user);
-                        Toast.makeText(requireContext(), getString(R.string.success_panda_mod_revoked, user.getDisplayName()), Toast.LENGTH_LONG).show();
-                    }, throwable -> {
-                        Log.e(TAG, "makeUserMod: make user mod failed", throwable);
-                        val bambooException = (BambooException) throwable;
-                        var errorMessage = getString(R.string.error_panda_remove_mod_failed, user.getDisplayName());
-                        if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
-                            errorMessage = getString(R.string.error_panda_remove_mod_insufficient_rights);
-                        } else if (bambooException.getErrorType() == ErrorType.Validation) {
-                            errorMessage = getString(R.string.error_panda_remove_mod_validation);
-                        }
+                .setPositiveButton(R.string.action_revoke_mod_status, (dialog, which) -> bambooApi.revokeUserModRights(user.getId()).subscribe(() -> {
+                    val adapter = (PandasAdapter) binding.pandaList.getAdapter();
+                    user.setIsMod(false);
+                    assert adapter != null;
+                    adapter.updatePanda(position, user);
+                    Toast.makeText(requireContext(), getString(R.string.success_panda_mod_revoked, user.getDisplayName()), Toast.LENGTH_LONG).show();
+                }, throwable -> {
+                    Log.e(TAG, "makeUserMod: make user mod failed", throwable);
+                    val bambooException = (BambooException) throwable;
+                    var errorMessage = getString(R.string.error_panda_remove_mod_failed, user.getDisplayName());
+                    if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
+                        errorMessage = getString(R.string.error_panda_remove_mod_insufficient_rights);
+                    } else if (bambooException.getErrorType() == ErrorType.Validation) {
+                        errorMessage = getString(R.string.error_panda_remove_mod_validation);
+                    }
 
-                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
-                    });
-                })
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
+                }))
                 .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();
     }
 
     private void resetTotp(int position, User user) {
+        //noinspection ResultOfMethodCallIgnored
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.action_reset_two_factor)
                 .setMessage(getString(R.string.action_reset_two_factor_message, user.getDisplayName()))
-                .setPositiveButton(R.string.action_reset_two_factor, (dialog, which) -> {
-                    bambooApi.resetUserTotp(user.getId()).subscribe(() -> {
-                        val adapter = (PandasAdapter) binding.pandaList.getAdapter();
-                        user.setAppTotpEnabled(false);
-                        adapter.updatePanda(position, user);
-                        Toast.makeText(requireContext(), getString(R.string.success_panda_disable_totp, user.getDisplayName()), Toast.LENGTH_LONG).show();
-                    }, throwable -> {
-                        Log.e(TAG, "resetUserTotp: resetting two factor code for user failed", throwable);
-                        val bambooException = (BambooException) throwable;
-                        var errorMessage = R.string.error_panda_disable_totp_failed;
-                        if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
-                            errorMessage = R.string.error_panda_disable_totp_insufficient_rights;
-                        } else if (bambooException.getErrorType() == ErrorType.Validation) {
-                            errorMessage = R.string.error_panda_disable_totp_validation;
-                        }
-                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
-                    });
-                })
+                .setPositiveButton(R.string.action_reset_two_factor, (dialog, which) -> bambooApi.resetUserTotp(user.getId()).subscribe(() -> {
+                    val adapter = (PandasAdapter) binding.pandaList.getAdapter();
+                    user.setAppTotpEnabled(false);
+                    assert adapter != null;
+                    adapter.updatePanda(position, user);
+                    Toast.makeText(requireContext(), getString(R.string.success_panda_disable_totp, user.getDisplayName()), Toast.LENGTH_LONG).show();
+                }, throwable -> {
+                    Log.e(TAG, "resetUserTotp: resetting two factor code for user failed", throwable);
+                    val bambooException = (BambooException) throwable;
+                    var errorMessage = R.string.error_panda_disable_totp_failed;
+                    if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
+                        errorMessage = R.string.error_panda_disable_totp_insufficient_rights;
+                    } else if (bambooException.getErrorType() == ErrorType.Validation) {
+                        errorMessage = R.string.error_panda_disable_totp_validation;
+                    }
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
+                }))
                 .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();
     }
 
-    private void resetPassword(int position, User user) {
+    private void resetPassword(User user) {
+        //noinspection ResultOfMethodCallIgnored
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.action_reset_password)
                 .setMessage(getString(R.string.action_reset_password_message, user.getDisplayName()))
-                .setPositiveButton(R.string.action_reset_password, (dialog, which) -> {
-                    bambooApi.changePassword(user.getId()).subscribe(() -> {
-                        Toast.makeText(requireContext(), getString(R.string.success_panda_change_password, user.getDisplayName()), Toast.LENGTH_LONG).show();
-                    }, throwable -> {
-                        Log.e(TAG, "changePassword: reset password failed", throwable);
-                        val bambooException = (BambooException) throwable;
-                        var errorMessage = getString(R.string.error_panda_change_password_failed, user.getDisplayName());
-                        if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
-                            errorMessage = getString(R.string.error_panda_change_password_insufficient_rights);
-                        } else if (bambooException.getErrorType() == ErrorType.Validation) {
-                            errorMessage = getString(R.string.error_panda_change_password_validation);
-                        }
-                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
-                    });
-                })
+                .setPositiveButton(R.string.action_reset_password, (dialog, which) -> bambooApi.changePassword(user.getId()).subscribe(() -> Toast.makeText(requireContext(), getString(R.string.success_panda_change_password, user.getDisplayName()), Toast.LENGTH_LONG).show(), throwable -> {
+                    Log.e(TAG, "changePassword: reset password failed", throwable);
+                    val bambooException = (BambooException) throwable;
+                    var errorMessage = getString(R.string.error_panda_change_password_failed, user.getDisplayName());
+                    if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
+                        errorMessage = getString(R.string.error_panda_change_password_insufficient_rights);
+                    } else if (bambooException.getErrorType() == ErrorType.Validation) {
+                        errorMessage = getString(R.string.error_panda_change_password_validation);
+                    }
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
+                }))
                 .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();
     }
 
     private void delete(int position, User panda) {
+        //noinspection ResultOfMethodCallIgnored
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.action_delete_panda)
                 .setMessage(getString(R.string.action_delete_panda_message, panda.getDisplayName()))
-                .setPositiveButton(R.string.action_delete_panda, (dialog, which) -> {
-                    bambooApi.deleteUser(panda.getId()).subscribe(() -> {
-                        val adapter = (PandasAdapter) binding.pandaList.getAdapter();
-                        adapter.removePanda(position);
-                        Toast.makeText(requireContext(), getString(R.string.success_panda_delete, panda.getDisplayName()), Toast.LENGTH_LONG).show();
-                    }, throwable -> {
-                        Log.e(TAG, "deleteUser: deleting user failed", throwable);
-                        val bambooException = (BambooException) throwable;
-                        var errorMessage = getString(R.string.error_panda_delete_failed, panda.getDisplayName());
-                        if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
-                            errorMessage = getString(R.string.error_panda_delete_insufficient_rights);
-                        } else if (bambooException.getErrorType() == ErrorType.Validation) {
-                            errorMessage = getString(R.string.error_panda_delete_validation);
-                        }
-                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
-                    });
-                })
+                .setPositiveButton(R.string.action_delete_panda, (dialog, which) -> bambooApi.deleteUser(panda.getId()).subscribe(() -> {
+                    val adapter = (PandasAdapter) binding.pandaList.getAdapter();
+                    assert adapter != null;
+                    adapter.removePanda(position);
+                    Toast.makeText(requireContext(), getString(R.string.success_panda_delete, panda.getDisplayName()), Toast.LENGTH_LONG).show();
+                }, throwable -> {
+                    Log.e(TAG, "deleteUser: deleting user failed", throwable);
+                    val bambooException = (BambooException) throwable;
+                    var errorMessage = getString(R.string.error_panda_delete_failed, panda.getDisplayName());
+                    if (bambooException.getErrorType() == ErrorType.InsufficientRights) {
+                        errorMessage = getString(R.string.error_panda_delete_insufficient_rights);
+                    } else if (bambooException.getErrorType() == ErrorType.Validation) {
+                        errorMessage = getString(R.string.error_panda_delete_validation);
+                    }
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show();
+                }))
                 .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     void loadData() {
         binding.getViewModel().isLoading.setValue(true);
         binding.pullToRefreshPandaList.setRefreshing(true);
+        //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .getUsers()
                 .subscribe(users -> {
                     val adapter = (PandasAdapter) binding.pandaList.getAdapter();
-                    adapter.setPandas(users);
+                    Objects.requireNonNull(adapter).setPandas(users);
                     adapter.notifyDataSetChanged();
                     binding.getViewModel().isLoading.setValue(false);
                     binding.pullToRefreshPandaList.setRefreshing(false);
@@ -248,9 +249,7 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         viewModel.isLoading.setValue(true);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.addPanda.setOnClickListener(v -> {
-            navigator.navigate(R.id.action_fragment_pandas_to_add_panda_dialog);
-        });
+        binding.addPanda.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_pandas_to_add_panda_dialog));
         binding.pullToRefreshPandaList.setOnRefreshListener(this::loadData);
         loadData();
     }

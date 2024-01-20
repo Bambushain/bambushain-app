@@ -99,6 +99,18 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
         notifyItemRemoved(position);
     }
 
+    public interface OnEditCharacterListener {
+        void onEdit(int position, Character character);
+    }
+
+    public interface OnDeleteCharacterListener {
+        void onDelete(int position, Character character);
+    }
+
+    public interface OnCharacterDetailsListener {
+        void onDetails(Character character);
+    }
+
     @Getter
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final CharactersCardBinding binding;
@@ -119,17 +131,5 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
             }
         }
 
-    }
-
-    public interface OnEditCharacterListener {
-        void onEdit(int position, Character character);
-    }
-
-    public interface OnDeleteCharacterListener {
-        void onDelete(int position, Character character);
-    }
-
-    public interface OnCharacterDetailsListener {
-        void onDetails(Character character);
     }
 }

@@ -1,6 +1,5 @@
 <resources>
     <color name="seed">#598c79</color>
-    <color name="ic_launcher_background">#598c79</color>
     <color name="md_theme_primary">#63DBB5</color>
     <color name="md_theme_onPrimary">#00382A</color>
     <color name="md_theme_primaryContainer">#00513E</color>
@@ -27,8 +26,4 @@
     <color name="md_theme_inverseOnSurface">#191C1B</color>
     <color name="md_theme_inverseSurface">#E1E3E0</color>
     <color name="md_theme_inversePrimary">#006C53</color>
-    <color name="md_theme_shadow">#000000</color>
-    <color name="md_theme_surfaceTint">#63DBB5</color>
-    <color name="md_theme_outlineVariant">#404944</color>
-    <color name="md_theme_scrim">#000000</color>
 </resources>

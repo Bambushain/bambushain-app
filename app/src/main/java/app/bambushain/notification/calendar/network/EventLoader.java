@@ -25,6 +25,7 @@ public class EventLoader {
     }
 
     public void fetchEvents() {
+        //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .getEvents(LocalDate.now(), LocalDate.now().plusYears(1))
                 .subscribeOn(Schedulers.io())
@@ -35,13 +36,12 @@ public class EventLoader {
                             .stream()
                             .map(Event::fromEvent)
                             .collect(Collectors.toList());
+                    //noinspection ResultOfMethodCallIgnored
                     eventDao
                             .cleanDatabase()
                             .subscribe(() -> eventDao
                                     .createOrUpdateEvents(evts)
                                     .subscribe(() -> Log.d(TAG, "fetchEvents: Successfully fetched events"), throwable -> Log.e(TAG, "fetchEvents: Error fetching events", throwable)), throwable -> Log.e(TAG, "fetchEvents: Error cleaning database", throwable));
-                }, throwable -> {
-                    Log.e(TAG, "fetchEvents: Failed to load events for the next year", throwable);
-                });
+                }, throwable -> Log.e(TAG, "fetchEvents: Failed to load events for the next year", throwable));
     }
 }

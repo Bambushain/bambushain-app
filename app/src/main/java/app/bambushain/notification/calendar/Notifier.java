@@ -41,7 +41,7 @@ public class Notifier {
                 .Builder(context, context.getString(R.string.service_notification_channel_id))
                 .setContentTitle(context.getString(R.string.service_title))
                 .setContentText(message)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setChannelId(context.getString(R.string.service_notification_channel_id))
                 .setOngoing(true)
                 .setSilent(true)

@@ -29,13 +29,13 @@ import java.util.*;
 @AndroidEntryPoint
 public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeCharacterDialogBinding> {
     private final static String TAG = ChangeCharacterDialog.class.getName();
+    private final Map<String, Set<String>> customFieldValues = new HashMap<>();
     @Inject
     BambooApi bambooApi;
+    Snackbar snackbar;
     private List<FreeCompany> freeCompanies;
-    private final Map<String, Set<String>> customFieldValues = new HashMap<>();
     private boolean isCreate = true;
     private int id = 0;
-    Snackbar snackbar;
     private int editPosition = 0;
 
     @Override
@@ -67,6 +67,7 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
             viewModel.setRace(CharacterRace.LALAFELL);
         }
 
+        //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .getFreeCompanies()
                 .subscribe(freeCompanies -> {
@@ -80,6 +81,7 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
                     Log.e(TAG, "onViewCreated: getFreeCompanies failed", throwable);
                     showSnackbar(R.string.error_character_free_company_loading_failed);
                 });
+        //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .getCustomFields()
                 .subscribe(customCharacterFields -> {
@@ -103,7 +105,7 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
                 customFields.add(new CustomField(customFieldValue.getKey(), customFieldValue.getValue()));
             }
 
-            val character = new Character(id, getRaceFromText(viewModel.race.getValue()), viewModel.name.getValue(), viewModel.world.getValue(), customFields, freeCompany);
+            val character = new Character(id, getRaceFromText(Objects.requireNonNull(viewModel.race.getValue())), viewModel.name.getValue(), viewModel.world.getValue(), customFields, freeCompany);
             if (isCreate) {
                 createCharacter(character);
             } else {
@@ -135,11 +137,12 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
     }
 
     private void updateCharacter(Character character) {
+        //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .updateCharacter(id, character)
                 .subscribe(() -> {
                     Log.i(TAG, "onViewCreated: character updated " + character);
-                    val stateHandle = navigator.getPreviousBackStackEntry().getSavedStateHandle();
+                    val stateHandle = Objects.requireNonNull(navigator.getPreviousBackStackEntry()).getSavedStateHandle();
                     stateHandle.set("position", editPosition);
                     stateHandle.set("updatedCharacter", character);
                     navigator.popBackStack();
@@ -155,11 +158,12 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
     }
 
     private void createCharacter(Character character) {
+        //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .createCharacter(character)
                 .subscribe(c -> {
                     Log.i(TAG, "onViewCreated: character created " + character);
-                    val stateHandle = navigator.getPreviousBackStackEntry().getSavedStateHandle();
+                    val stateHandle = Objects.requireNonNull(navigator.getPreviousBackStackEntry()).getSavedStateHandle();
                     stateHandle.set("createdCharacter", c);
                     navigator.popBackStack();
                 }, throwable -> {
@@ -199,7 +203,7 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
 
             for (val option : field.getOptions()) {
                 val checkbox = new MaterialCheckBox(requireContext());
-                checkbox.setChecked(customFieldValues.getOrDefault(field.getLabel(), new HashSet<>()).contains(option.getLabel()));
+                checkbox.setChecked(Objects.requireNonNull(customFieldValues.getOrDefault(field.getLabel(), new HashSet<>())).contains(option.getLabel()));
                 checkbox.setText(option.getLabel());
                 checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     var entry = customFieldValues.getOrDefault(field.getLabel(), new HashSet<>());

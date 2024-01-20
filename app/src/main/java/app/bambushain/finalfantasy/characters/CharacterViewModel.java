@@ -12,22 +12,21 @@ import javax.inject.Inject;
 
 @HiltViewModel
 public class CharacterViewModel extends ViewModel {
-    public MutableLiveData<Integer> id = new MutableLiveData<>(0);
-    public MutableLiveData<String> name = new MutableLiveData<>("");
-    public MutableLiveData<String> race = new MutableLiveData<>("");
-    public MutableLiveData<String> world = new MutableLiveData<>("");
-    public MutableLiveData<String> freeCompany = new MutableLiveData<>("");
+    public final MutableLiveData<Integer> id = new MutableLiveData<>(0);
+    public final MutableLiveData<String> name = new MutableLiveData<>("");
+    public final MutableLiveData<String> race = new MutableLiveData<>("");
+    public final MutableLiveData<String> world = new MutableLiveData<>("");
+    public final MutableLiveData<String> freeCompany = new MutableLiveData<>("");
 
-    public MutableLiveData<Boolean> nameIsValid = new MutableLiveData<>(false);
-    public MutableLiveData<Boolean> worldIsValid = new MutableLiveData<>(false);
+    public final MutableLiveData<Boolean> nameIsValid = new MutableLiveData<>(false);
+    public final MutableLiveData<Boolean> worldIsValid = new MutableLiveData<>(false);
+    @Inject
+    @ApplicationContext
+    Context context;
 
     @Inject
     public CharacterViewModel() {
     }
-
-    @Inject
-    @ApplicationContext
-    Context context;
 
     public void setRace(CharacterRace race) {
         if (race == CharacterRace.HYUR) {
