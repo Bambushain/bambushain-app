@@ -43,7 +43,7 @@
                     android:id="@+id/pullToRefreshPandaList"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginVertical="@dimen/margin"
+                    android:layout_marginVertical="@dimen/activity_vertical_margin"
                     android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
@@ -57,7 +57,7 @@
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/fab_margin"
                     android:id="@+id/addPanda"
                     android:visibility="@{viewModel.canCreate ? android.view.View.VISIBLE : android.view.View.GONE}"
                     android:src="@drawable/ic_add"
