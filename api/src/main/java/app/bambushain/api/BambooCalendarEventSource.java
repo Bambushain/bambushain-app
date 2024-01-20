@@ -56,16 +56,16 @@ public class BambooCalendarEventSource {
                     .map(messageEvent -> {
                         val name = messageEvent.getEventName();
                         Log.d(TAG, "onMessage: Got a new message " + name);
-                        switch (name) {
-                            case "created":
-                                return new CalendarEventAction(Action.Created, gson.fromJson(messageEvent.getDataReader(), Event.class));
-                            case "updated":
-                                return new CalendarEventAction(Action.Updated, gson.fromJson(messageEvent.getDataReader(), Event.class));
-                            case "deleted":
-                                return new CalendarEventAction(Action.Deleted, gson.fromJson(messageEvent.getDataReader(), Event.class));
-                        }
+                        return switch (name) {
+                            case "created" ->
+                                    new CalendarEventAction(Action.Created, gson.fromJson(messageEvent.getDataReader(), Event.class));
+                            case "updated" ->
+                                    new CalendarEventAction(Action.Updated, gson.fromJson(messageEvent.getDataReader(), Event.class));
+                            case "deleted" ->
+                                    new CalendarEventAction(Action.Deleted, gson.fromJson(messageEvent.getDataReader(), Event.class));
+                            default -> throw new Exception();
+                        };
 
-                        throw new Exception();
                     })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.newThread())

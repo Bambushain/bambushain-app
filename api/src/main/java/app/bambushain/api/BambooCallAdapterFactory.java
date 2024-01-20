@@ -84,8 +84,7 @@ public class BambooCallAdapterFactory extends CallAdapter.Factory {
         }
 
         private BambooException asBambooException(Throwable throwable) {
-            if (throwable instanceof HttpException) {
-                val httpException = (HttpException) throwable;
+            if (throwable instanceof HttpException httpException) {
                 val response = httpException.response();
                 assert response != null;
                 assert response.errorBody() != null;
