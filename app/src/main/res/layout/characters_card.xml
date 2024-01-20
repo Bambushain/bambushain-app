@@ -14,8 +14,7 @@
             app:layout_constraintTop_toBottomOf="@id/toolbarLayout">
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp">
+                android:layout_height="wrap_content">
             <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -48,10 +47,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:id="@+id/labelCharacterFreeCompany"
-                    android:text="@string/label_character_freecompany"
+                    android:text="@{viewModel.freeCompany == null ? @string/character_no_free_company : @string/label_character_freecompany}"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:visibility="@{viewModel.freeCompany.empty ? android.view.View.GONE : android.view.View.VISIBLE}"
                     app:layout_constraintStart_toStartOf="@id/characterRace"
                     app:layout_constraintTop_toBottomOf="@id/characterRace"/>
             <TextView
@@ -60,9 +58,9 @@
                     android:layout_marginTop="16dp"
                     android:id="@+id/characterFreeCompany"
                     android:text="@{viewModel.freeCompany}"
+                    android:visibility="@{viewModel.freeCompany.empty ? android.view.View.GONE : android.view.View.VISIBLE}"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:visibility="@{viewModel.freeCompany.empty ? android.view.View.GONE : android.view.View.VISIBLE}"
                     app:layout_constraintStart_toEndOf="@id/labelCharacterFreeCompany"
                     app:layout_constraintTop_toBottomOf="@id/characterRace"/>
             <TextView
@@ -73,9 +71,8 @@
                     android:text="@string/label_character_world"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary"
-                    android:visibility="@{viewModel.world.empty ? android.view.View.GONE : android.view.View.VISIBLE}"
-                    app:layout_constraintStart_toStartOf="@id/labelCharacterFreeCompany"
-                    app:layout_constraintTop_toBottomOf="@id/labelCharacterFreeCompany"/>
+                    app:layout_constraintStart_toStartOf="@id/characterName"
+                    app:layout_constraintTop_toBottomOf="@id/characterFreeCompany"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -86,6 +83,47 @@
                     android:textColor="?android:attr/textColorSecondary"
                     app:layout_constraintStart_toEndOf="@id/labelCharacterWorld"
                     app:layout_constraintTop_toBottomOf="@id/labelCharacterFreeCompany"/>
+            <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/showDetails"
+                    android:contentDescription="@string/action_character_details"
+                    app:icon="@drawable/ic_character_details"
+                    app:iconSize="28dp"
+                    app:layout_constraintTop_toBottomOf="@id/characterWorld"
+                    app:layout_constraintEnd_toStartOf="@id/showFighter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    style="@style/Widget.Material3.Button.IconButton"/>
+            <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/showFighter"
+                    android:contentDescription="@string/action_character_fighter"
+                    app:icon="@drawable/ic_fighter"
+                    app:iconSize="28dp"
+                    app:layout_constraintEnd_toStartOf="@id/showCrafter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    style="@style/Widget.Material3.Button.IconButton"/>
+            <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/showCrafter"
+                    android:contentDescription="@string/action_character_crafter"
+                    app:icon="@drawable/ic_crafter"
+                    app:iconSize="28dp"
+                    app:layout_constraintEnd_toStartOf="@id/showHousing"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    style="@style/Widget.Material3.Button.IconButton"/>
+            <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/showHousing"
+                    android:contentDescription="@string/action_character_housing"
+                    app:icon="@drawable/ic_housing"
+                    app:iconSize="28dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    style="@style/Widget.Material3.Button.IconButton"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

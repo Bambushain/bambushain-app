@@ -17,7 +17,7 @@
     <string name="label_character_freecompany">"In freier Gesellschaft "</string>
     <string name="label_character_world">"In der Welt "</string>
     <string name="action_edit_character">Charakter bearbeiten</string>
-    <string name="action_character_details">Charakterdetails</string>
+    <string name="action_character_details">Details</string>
     <string name="action_delete_character">Charakter löschen</string>
     <string name="error_characters_loading_failed">Beim Laden der Charaktere ist einn Fehler aufgetreten</string>
     <string name="action_delete_character_message">Soll der Charakter %1$s wirklich gelöscht werden?</string>
@@ -36,6 +36,10 @@
         werden
     </string>
     <string name="character_no_free_company">Keine Freie Gesellschaft</string>
+    <string name="action_character_fighter">Kämpfer</string>
+    <string name="action_character_crafter">Crafter</string>
+    <string name="action_character_housing">Unterkünfte</string>
+    <string name="character_custom_fields_values">%1$s und %2$s</string>
 
     <string-array name="character_races">
         <item>@string/character_race_hyur</item>

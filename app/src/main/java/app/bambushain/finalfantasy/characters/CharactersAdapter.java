@@ -31,6 +31,8 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
     private OnEditCharacterListener onEditCharacterListener;
     @Setter
     private OnDeleteCharacterListener onDeleteCharacterListener;
+    @Setter
+    private OnCharacterDetailsListener onCharacterDetailsListener;
 
     public CharactersAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner) {
         this.viewModelProvider = viewModelProvider;
@@ -58,13 +60,18 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
             popupMenu.inflate(R.menu.characters_card_menu);
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == R.id.action_edit_character && onEditCharacterListener != null) {
-                    onEditCharacterListener.onEditCharacterListener(position, character);
+                    onEditCharacterListener.onEdit(position, character);
                 } else if (item.getItemId() == R.id.action_delete_character && onDeleteCharacterListener != null) {
-                    onDeleteCharacterListener.onDeleteCharacter(position, character);
+                    onDeleteCharacterListener.onDelete(position, character);
                 }
                 return true;
             });
             popupMenu.show();
+        });
+        viewHolder.binding.showDetails.setOnClickListener(v -> {
+            if (onCharacterDetailsListener != null) {
+                onCharacterDetailsListener.onDetails(character);
+            }
         });
     }
 
@@ -115,10 +122,14 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
     }
 
     public interface OnEditCharacterListener {
-        void onEditCharacterListener(int position, Character character);
+        void onEdit(int position, Character character);
     }
 
     public interface OnDeleteCharacterListener {
-        void onDeleteCharacter(int position, Character character);
+        void onDelete(int position, Character character);
+    }
+
+    public interface OnCharacterDetailsListener {
+        void onDetails(Character character);
     }
 }

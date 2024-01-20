@@ -186,7 +186,7 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
     }
 
     private void renderCustomFields(List<CustomCharacterField> customCharacterFields) {
-        val layout = binding.characterFreeCompany;
+        val layout = binding.characterCustomFields;
         val layoutParams = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         for (val field : customCharacterFields) {
             val customFieldLayout = new LinearLayout(requireContext());

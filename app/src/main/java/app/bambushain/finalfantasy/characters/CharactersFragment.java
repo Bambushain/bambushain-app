@@ -55,6 +55,11 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         });
 
         adapter.setOnDeleteCharacterListener(this::delete);
+        adapter.setOnCharacterDetailsListener(character -> {
+            val bundle = new Bundle();
+            bundle.putSerializable("character", character);
+            navigator.navigate(R.id.action_fragment_characters_to_character_details_dialog, bundle);
+        });
 
         val stateHandle = navigator
                 .getCurrentBackStackEntry()
