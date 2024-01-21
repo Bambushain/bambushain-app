@@ -5,28 +5,6 @@
     <string name="label_fighter_no_level">Kein Level angegeben</string>
     <string name="label_fighter_gear_score">"Gear Score "</string>
     <string name="label_fighter_no_gear_score">Kein Gear Score angegeben</string>
-
-    <string name="fighter_job_paladin">Paladin</string>
-    <string name="fighter_job_warrior">Krieger</string>
-    <string name="fighter_job_darkknight">Dunkelritter</string>
-    <string name="fighter_job_gunbreaker">Revolverklinge</string>
-    <string name="fighter_job_whitemage">Weißmagier</string>
-    <string name="fighter_job_scholar">Gelehrter</string>
-    <string name="fighter_job_astrologian">Astrologe</string>
-    <string name="fighter_job_sage">Weiser</string>
-    <string name="fighter_job_monk">Mönch</string>
-    <string name="fighter_job_dragoon">Dragoon</string>
-    <string name="fighter_job_ninja">Ninja</string>
-    <string name="fighter_job_samurai">Samurai</string>
-    <string name="fighter_job_reaper">Schnitter</string>
-    <string name="fighter_job_bard">Barde</string>
-    <string name="fighter_job_machinist">Maschinist</string>
-    <string name="fighter_job_dancer">Tänzer</string>
-    <string name="fighter_job_blackmage">Schwarzmagier</string>
-    <string name="fighter_job_summoner">Beschwörer</string>
-    <string name="fighter_job_redmage">Rotmagier</string>
-    <string name="fighter_job_bluemage">Blaumagier</string>
-
     <string name="action_edit_fighter">Kämpfer bearbeiten</string>
     <string name="action_delete_fighter">Kämpfer löschen</string>
     <string name="error_fighters_loading_failed">Die Kämpfer konnten leider nicht geladen werden</string>

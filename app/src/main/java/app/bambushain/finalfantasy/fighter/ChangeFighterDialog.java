@@ -52,10 +52,10 @@ public class ChangeFighterDialog extends BindingDialogFragment<FragmentChangeFig
                 .getStringArrayList("jobs")
                 .stream()
                 .map(FighterJob::fromValue)
-                .map(this::getFighterJobLabel)
+                .map(fighterJob -> fighterJob.getTranslated(requireContext()))
                 .collect(Collectors.toList());
         isCreate = editPosition == -1;
-        var selectedJob = getFighterJobFromText(availableJobs.get(0));
+        var selectedJob = FighterJob.getFromTranslated(requireContext(), availableJobs.get(0));
 
         if (!isCreate) {
             val fighter = BundleUtils.getSerializable(args, "fighter", Fighter.class);
@@ -68,7 +68,7 @@ public class ChangeFighterDialog extends BindingDialogFragment<FragmentChangeFig
 
         binding.actionSaveFighter.setText(isCreate ? R.string.action_add_fighter : R.string.action_update_fighter);
         binding.actionSaveFighter.setOnClickListener(v -> {
-            val savedFighter = new Fighter(id, getFighterJobFromText(binding.fighterJobDropdown.getText().toString()), viewModel.level.getValue(), viewModel.gearScore.getValue(), character.getId());
+            val savedFighter = new Fighter(id, FighterJob.getFromTranslated(requireContext(), binding.fighterJobDropdown.getText().toString()), viewModel.level.getValue(), viewModel.gearScore.getValue(), character.getId());
             if (isCreate) {
                 createFighter(savedFighter);
             } else {
@@ -80,32 +80,7 @@ public class ChangeFighterDialog extends BindingDialogFragment<FragmentChangeFig
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         binding.fighterJobDropdown.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.select_dialog_item, availableJobs));
-        binding.fighterJobDropdown.setText(getFighterJobLabel(selectedJob), false);
-    }
-
-    private String getFighterJobLabel(FighterJob fighterJob) {
-        return getString(switch (fighterJob) {
-            case PALADIN -> R.string.fighter_job_paladin;
-            case WARRIOR -> R.string.fighter_job_warrior;
-            case DARKKNIGHT -> R.string.fighter_job_darkknight;
-            case GUNBREAKER -> R.string.fighter_job_gunbreaker;
-            case WHITEMAGE -> R.string.fighter_job_whitemage;
-            case SCHOLAR -> R.string.fighter_job_scholar;
-            case ASTROLOGIAN -> R.string.fighter_job_astrologian;
-            case SAGE -> R.string.fighter_job_sage;
-            case MONK -> R.string.fighter_job_monk;
-            case DRAGOON -> R.string.fighter_job_dragoon;
-            case NINJA -> R.string.fighter_job_ninja;
-            case SAMURAI -> R.string.fighter_job_samurai;
-            case REAPER -> R.string.fighter_job_reaper;
-            case BARD -> R.string.fighter_job_bard;
-            case MACHINIST -> R.string.fighter_job_machinist;
-            case DANCER -> R.string.fighter_job_dancer;
-            case BLACKMAGE -> R.string.fighter_job_blackmage;
-            case SUMMONER -> R.string.fighter_job_summoner;
-            case REDMAGE -> R.string.fighter_job_redmage;
-            case BLUEMAGE -> R.string.fighter_job_bluemage;
-        });
+        binding.fighterJobDropdown.setText(selectedJob.getTranslated(requireContext()), false);
     }
 
     private void updateFighter(Fighter fighter) {
@@ -161,67 +136,5 @@ public class ChangeFighterDialog extends BindingDialogFragment<FragmentChangeFig
                 .setBackgroundTint(getColor(R.color.md_theme_error))
                 .setTextColor(getColor(R.color.md_theme_onError))
                 .show();
-    }
-
-    private FighterJob getFighterJobFromText(String text) {
-        if (text.equals(getString(R.string.fighter_job_paladin))) {
-            return FighterJob.PALADIN;
-        }
-        if (text.equals(getString(R.string.fighter_job_warrior))) {
-            return FighterJob.WARRIOR;
-        }
-        if (text.equals(getString(R.string.fighter_job_darkknight))) {
-            return FighterJob.DARKKNIGHT;
-        }
-        if (text.equals(getString(R.string.fighter_job_gunbreaker))) {
-            return FighterJob.GUNBREAKER;
-        }
-        if (text.equals(getString(R.string.fighter_job_whitemage))) {
-            return FighterJob.WHITEMAGE;
-        }
-        if (text.equals(getString(R.string.fighter_job_scholar))) {
-            return FighterJob.SCHOLAR;
-        }
-        if (text.equals(getString(R.string.fighter_job_astrologian))) {
-            return FighterJob.ASTROLOGIAN;
-        }
-        if (text.equals(getString(R.string.fighter_job_sage))) {
-            return FighterJob.SAGE;
-        }
-        if (text.equals(getString(R.string.fighter_job_monk))) {
-            return FighterJob.MONK;
-        }
-        if (text.equals(getString(R.string.fighter_job_dragoon))) {
-            return FighterJob.DRAGOON;
-        }
-        if (text.equals(getString(R.string.fighter_job_ninja))) {
-            return FighterJob.NINJA;
-        }
-        if (text.equals(getString(R.string.fighter_job_samurai))) {
-            return FighterJob.SAMURAI;
-        }
-        if (text.equals(getString(R.string.fighter_job_reaper))) {
-            return FighterJob.REAPER;
-        }
-        if (text.equals(getString(R.string.fighter_job_bard))) {
-            return FighterJob.BARD;
-        }
-        if (text.equals(getString(R.string.fighter_job_machinist))) {
-            return FighterJob.MACHINIST;
-        }
-        if (text.equals(getString(R.string.fighter_job_dancer))) {
-            return FighterJob.DANCER;
-        }
-        if (text.equals(getString(R.string.fighter_job_blackmage))) {
-            return FighterJob.BLACKMAGE;
-        }
-        if (text.equals(getString(R.string.fighter_job_summoner))) {
-            return FighterJob.SUMMONER;
-        }
-        if (text.equals(getString(R.string.fighter_job_redmage))) {
-            return FighterJob.REDMAGE;
-        }
-
-        return FighterJob.BLUEMAGE;
     }
 }
