@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="viewModel" type="app.bambushain.finalfantasy.crafter.CrafterViewModel"/>
+        <variable name="viewModel" type="app.bambushain.finalfantasy.fighter.FighterViewModel"/>
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -31,33 +31,47 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/margin"
-                            android:id="@+id/crafterJob"
-                            android:hint="@string/crafter_job"
+                            android:id="@+id/fighterJob"
+                            android:hint="@string/fighter_job"
                             app:layout_constraintTop_toTopOf="parent"
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="none"
-                                android:id="@+id/crafterJobDropdown"/>
+                                android:id="@+id/fighterJobDropdown"/>
                     </com.google.android.material.textfield.TextInputLayout>
                     <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/margin"
-                            android:id="@+id/crafterLevel"
-                            app:layout_constraintTop_toBottomOf="@id/crafterJob">
+                            android:id="@+id/fighterLevel"
+                            app:layout_constraintTop_toBottomOf="@id/fighterJob">
                         <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="text"
                                 android:text="@={viewModel.level}"
                                 android:singleLine="true"
-                                android:hint="@string/crafter_level"/>
+                                android:hint="@string/fighter_level"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="@dimen/margin"
+                            android:id="@+id/fighterGearScore"
+                            app:layout_constraintTop_toBottomOf="@id/fighterLevel">
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:text="@={viewModel.gearScore}"
+                                android:singleLine="true"
+                                android:hint="@string/fighter_gear_score"/>
                     </com.google.android.material.textfield.TextInputLayout>
                     <com.google.android.material.button.MaterialButton
-                            android:id="@+id/action_save_crafter"
-                            app:layout_constraintTop_toBottomOf="@id/crafterLevel"
+                            android:id="@+id/action_save_fighter"
+                            app:layout_constraintTop_toBottomOf="@id/fighterGearScore"
                             app:layout_constraintEnd_toEndOf="parent"
                             style="@style/Theme.Bambushain.BottomSheetButton"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>

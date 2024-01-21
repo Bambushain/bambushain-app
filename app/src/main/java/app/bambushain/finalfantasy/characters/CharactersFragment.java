@@ -67,6 +67,12 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
             bundle.putSerializable("character", character);
             navigator.navigate(R.id.action_fragment_characters_to_fragment_character_details, bundle);
         });
+        adapter.setOnFighterClickListener(character -> {
+            val bundle = new Bundle();
+            bundle.putInt("activeTab", CharacterDetailsFragment.TAB_FIGHTER);
+            bundle.putSerializable("character", character);
+            navigator.navigate(R.id.action_fragment_characters_to_fragment_character_details, bundle);
+        });
 
         val stateHandle = Objects.requireNonNull(navigator.getCurrentBackStackEntry())
                 .getSavedStateHandle();

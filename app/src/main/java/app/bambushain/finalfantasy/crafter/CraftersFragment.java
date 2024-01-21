@@ -32,7 +32,7 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
 
     private final Character character;
 
-    private List<Crafter> crafters;
+    private List<CrafterJob> usedJobs = new ArrayList<>();
 
     public CraftersFragment(BambooApi bambooApi, Character character) {
         this.bambooApi = bambooApi;
@@ -66,9 +66,8 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
         adapter.setOnDeleteCrafterListener(this::delete);
 
         binding.addCrafter.setOnClickListener(v -> {
-            val currentUsedJobs = crafters
+            val currentUsedJobs = usedJobs
                     .stream()
-                    .map(Crafter::getJob)
                     .map(CrafterJob::getValue)
                     .collect(Collectors.toList());
             val jobs = Arrays
@@ -88,6 +87,8 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
         stateHandle.getLiveData("createdCrafter", (Crafter) null).observe(getViewLifecycleOwner(), crafter -> {
             if (crafter != null) {
                 adapter.addCrafter(crafter);
+                usedJobs.add(crafter.getJob());
+                checkIfAddEnabled();
             }
         });
         stateHandle.getLiveData("updatedCrafter", (Crafter) null).observe(getViewLifecycleOwner(), crafter -> {
@@ -120,16 +121,19 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
             Objects.requireNonNull(adapter).setCrafters(crafters);
             adapter.notifyDataSetChanged();
             binding.pullToRefreshCrafterList.setRefreshing(false);
-            this.crafters = crafters;
-            checkIfAddEnabled(crafters);
+            usedJobs = crafters
+                    .stream()
+                    .map(Crafter::getJob)
+                    .collect(Collectors.toList());
+            checkIfAddEnabled();
         }, throwable -> {
             Log.e(TAG, "loadData: failed to load crafter", throwable);
             Toast.makeText(requireContext(), R.string.error_crafters_loading_failed, Toast.LENGTH_LONG).show();
         });
     }
 
-    private void checkIfAddEnabled(List<Crafter> crafters) {
-        if (crafters.size() == CrafterJob.values().length) {
+    private void checkIfAddEnabled() {
+        if (usedJobs.size() == CrafterJob.values().length) {
             binding.addCrafter.setVisibility(View.GONE);
         } else {
             binding.addCrafter.setVisibility(View.VISIBLE);
@@ -141,7 +145,7 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
 
         //noinspection ResultOfMethodCallIgnored
         new MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.action_delete_character)
+                .setTitle(R.string.action_delete_crafter)
                 .setMessage(getString(R.string.action_delete_crafter_message, jobLabel))
                 .setPositiveButton(R.string.action_delete_crafter, (dialog, which) -> bambooApi
                         .deleteCrafter(crafter.getCharacterId(), crafter.getId())
@@ -149,6 +153,8 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
                             val adapter = (CraftersAdapter) binding.crafterList.getAdapter();
                             assert adapter != null;
                             adapter.removeCrafter(position);
+                            usedJobs.remove(crafter.getJob());
+                            checkIfAddEnabled();
                             Toast.makeText(requireContext(), getString(R.string.success_crafter_delete, jobLabel), Toast.LENGTH_LONG).show();
                         }, throwable -> {
                             Log.e(TAG, "delete: deleting character failed", throwable);

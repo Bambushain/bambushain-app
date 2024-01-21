@@ -77,9 +77,14 @@
         >
             <action android:id="@+id/action_fragment_character_details_to_change_crafter_dialog"
                     app:destination="@id/change_crafter_dialog"/>
+            <action android:id="@+id/action_fragment_character_details_to_change_fighter_dialog"
+                    app:destination="@id/change_fighter_dialog"/>
         </fragment>
         <dialog android:id="@+id/change_crafter_dialog"
                 android:name="app.bambushain.finalfantasy.crafter.ChangeCrafterDialog"
                 android:label="ChangeCrafterDialog"/>
+        <dialog android:id="@+id/change_fighter_dialog"
+                android:name="app.bambushain.finalfantasy.fighter.ChangeFighterDialog"
+                android:label="ChangeFighterDialog"/>
     </navigation>
 </navigation>
