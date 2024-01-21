@@ -57,6 +57,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/deleteCrafter"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:icon="@drawable/ic_edit"
+                app:iconSize="@dimen/card_icon_size"
                 style="@style/Widget.Material3.Button.IconButton"/>
         <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
@@ -67,6 +68,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:icon="@drawable/ic_delete"
+                app:iconSize="@dimen/card_icon_size"
                 style="@style/Widget.Material3.Button.IconButton"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

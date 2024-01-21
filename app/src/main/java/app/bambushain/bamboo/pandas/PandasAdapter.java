@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import app.bambushain.R;
-import app.bambushain.databinding.PandasCardBinding;
+import app.bambushain.databinding.PandaCardBinding;
 import app.bambushain.models.bamboo.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,7 +49,7 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NotNull ViewGroup viewGroup, int viewType) {
-        val binding = PandasCardBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
+        val binding = PandaCardBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
         binding.setLifecycleOwner(lifecycleOwner);
 
         return new ViewHolder(binding);
@@ -61,19 +61,20 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
         val viewModel = viewModelProvider.get(panda.getId().toString(), PandaViewModel.class);
         viewModel.canEdit.setValue(iAmMod && panda.getId() != myId);
         viewHolder.binding.setViewModel(viewModel);
+        viewHolder.binding.editPanda.setOnClickListener(v -> {
+            if (onEditUserListener != null) {
+                onEditUserListener.onEditUser(position, panda);
+            }
+        });
+        viewHolder.binding.deletePanda.setOnClickListener(v -> {
+            if (onDeleteUserListener != null) {
+                onDeleteUserListener.onDeleteUser(position, panda);
+            }
+        });
         viewHolder.setPanda(panda);
         viewHolder.binding.actionMore.setOnClickListener(v -> {
                     val popupMenu = new PopupMenu(v.getContext(), v);
                     val menu = popupMenu.getMenu();
-                    menu
-                            .add(R.string.action_edit_panda)
-                            .setOnMenuItemClickListener(item -> {
-                                if (onEditUserListener != null) {
-                                    onEditUserListener.onEditUser(position, panda);
-                                }
-
-                                return true;
-                            });
                     if (panda.getIsMod()) {
                         menu
                                 .add(R.string.action_revoke_mod_status)
@@ -111,15 +112,6 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
                             .setOnMenuItemClickListener(item -> {
                                 if (onResetPasswordListener != null) {
                                     onResetPasswordListener.onResetPassword(position, panda);
-                                }
-
-                                return true;
-                            });
-                    menu
-                            .add(R.string.action_delete_panda)
-                            .setOnMenuItemClickListener(item -> {
-                                if (onDeleteUserListener != null) {
-                                    onDeleteUserListener.onDeleteUser(position, panda);
                                 }
 
                                 return true;
@@ -196,9 +188,9 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
 
     @Getter
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final PandasCardBinding binding;
+        private final PandaCardBinding binding;
 
-        public ViewHolder(PandasCardBinding binding) {
+        public ViewHolder(PandaCardBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
