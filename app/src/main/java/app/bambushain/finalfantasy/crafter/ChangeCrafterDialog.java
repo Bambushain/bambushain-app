@@ -52,10 +52,10 @@ public class ChangeCrafterDialog extends BindingDialogFragment<FragmentChangeCra
                 .getStringArrayList("jobs")
                 .stream()
                 .map(CrafterJob::fromValue)
-                .map(this::getCrafterJobLabel)
+                .map(crafterJob -> crafterJob.getTranslated(requireContext()))
                 .collect(Collectors.toList());
         isCreate = editPosition == -1;
-        var selectedJob = getCrafterJobFromText(availableJobs.get(0));
+        var selectedJob = CrafterJob.getFromTranslated(requireContext(), availableJobs.get(0));
 
         if (!isCreate) {
             val crafter = BundleUtils.getSerializable(args, "crafter", Crafter.class);
@@ -67,7 +67,7 @@ public class ChangeCrafterDialog extends BindingDialogFragment<FragmentChangeCra
 
         binding.actionSaveCrafter.setText(isCreate ? R.string.action_add_crafter : R.string.action_update_crafter);
         binding.actionSaveCrafter.setOnClickListener(v -> {
-            val savedCrafter = new Crafter(id, getCrafterJobFromText(binding.crafterJobDropdown.getText().toString()), viewModel.level.getValue(), character.getId());
+            val savedCrafter = new Crafter(id, CrafterJob.getFromTranslated(requireContext(), binding.crafterJobDropdown.getText().toString()), viewModel.level.getValue(), character.getId());
             if (isCreate) {
                 createCrafter(savedCrafter);
             } else {
@@ -79,23 +79,7 @@ public class ChangeCrafterDialog extends BindingDialogFragment<FragmentChangeCra
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         binding.crafterJobDropdown.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.select_dialog_item, availableJobs));
-        binding.crafterJobDropdown.setText(getCrafterJobLabel(selectedJob), false);
-    }
-
-    private String getCrafterJobLabel(CrafterJob crafterJob) {
-        return getString(switch (crafterJob) {
-            case CARPENTER -> R.string.crafter_job_carpenter;
-            case BLACKSMITH -> R.string.crafter_job_blacksmith;
-            case ARMORER -> R.string.crafter_job_armorer;
-            case GOLDSMITH -> R.string.crafter_job_goldsmith;
-            case LEATHERWORKER -> R.string.crafter_job_leatherworker;
-            case WEAVER -> R.string.crafter_job_weaver;
-            case ALCHEMIST -> R.string.crafter_job_alchemist;
-            case CULINARIAN -> R.string.crafter_job_culinarian;
-            case MINER -> R.string.crafter_job_miner;
-            case BOTANIST -> R.string.crafter_job_botanist;
-            case FISHER -> R.string.crafter_job_fisher;
-        });
+        binding.crafterJobDropdown.setText(selectedJob.getTranslated(requireContext()), false);
     }
 
     private void updateCrafter(Crafter crafter) {
@@ -151,43 +135,5 @@ public class ChangeCrafterDialog extends BindingDialogFragment<FragmentChangeCra
                 .setBackgroundTint(getColor(R.color.md_theme_error))
                 .setTextColor(getColor(R.color.md_theme_onError))
                 .show();
-    }
-
-    private CrafterJob getCrafterJobFromText(String text) {
-        if (text.equals(getString(R.string.crafter_job_carpenter))) {
-            return CrafterJob.CARPENTER;
-        }
-        if (text.equals(getString(R.string.crafter_job_blacksmith))) {
-            return CrafterJob.BLACKSMITH;
-        }
-        if (text.equals(getString(R.string.crafter_job_armorer))) {
-            return CrafterJob.ARMORER;
-        }
-        if (text.equals(getString(R.string.crafter_job_goldsmith))) {
-            return CrafterJob.GOLDSMITH;
-        }
-        if (text.equals(getString(R.string.crafter_job_leatherworker))) {
-            return CrafterJob.LEATHERWORKER;
-        }
-        if (text.equals(getString(R.string.crafter_job_weaver))) {
-            return CrafterJob.WEAVER;
-        }
-        if (text.equals(getString(R.string.crafter_job_alchemist))) {
-            return CrafterJob.ALCHEMIST;
-        }
-        if (text.equals(getString(R.string.crafter_job_culinarian))) {
-            return CrafterJob.CULINARIAN;
-        }
-        if (text.equals(getString(R.string.crafter_job_miner))) {
-            return CrafterJob.MINER;
-        }
-        if (text.equals(getString(R.string.crafter_job_botanist))) {
-            return CrafterJob.BOTANIST;
-        }
-        if (text.equals(getString(R.string.crafter_job_fisher))) {
-            return CrafterJob.FISHER;
-        }
-
-        return CrafterJob.WEAVER;
     }
 }

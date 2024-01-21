@@ -141,7 +141,7 @@ public class FightersFragment extends BindingFragment<FragmentFightersBinding> {
     }
 
     private void delete(int position, Fighter fighter) {
-        val jobLabel = getFighterJobLabel(fighter.getJob());
+        val jobLabel = fighter.getJob().getTranslated(requireContext());
 
         //noinspection ResultOfMethodCallIgnored
         new MaterialAlertDialogBuilder(requireContext())
@@ -165,30 +165,5 @@ public class FightersFragment extends BindingFragment<FragmentFightersBinding> {
                 .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();
-    }
-
-    private String getFighterJobLabel(FighterJob fighterJob) {
-        return getString(switch (fighterJob) {
-            case PALADIN -> R.string.fighter_job_paladin;
-            case WARRIOR -> R.string.fighter_job_warrior;
-            case DARKKNIGHT -> R.string.fighter_job_darkknight;
-            case GUNBREAKER -> R.string.fighter_job_gunbreaker;
-            case WHITEMAGE -> R.string.fighter_job_whitemage;
-            case SCHOLAR -> R.string.fighter_job_scholar;
-            case ASTROLOGIAN -> R.string.fighter_job_astrologian;
-            case SAGE -> R.string.fighter_job_sage;
-            case MONK -> R.string.fighter_job_monk;
-            case DRAGOON -> R.string.fighter_job_dragoon;
-            case NINJA -> R.string.fighter_job_ninja;
-            case SAMURAI -> R.string.fighter_job_samurai;
-            case REAPER -> R.string.fighter_job_reaper;
-            case BARD -> R.string.fighter_job_bard;
-            case MACHINIST -> R.string.fighter_job_machinist;
-            case DANCER -> R.string.fighter_job_dancer;
-            case BLACKMAGE -> R.string.fighter_job_blackmage;
-            case SUMMONER -> R.string.fighter_job_summoner;
-            case REDMAGE -> R.string.fighter_job_redmage;
-            case BLUEMAGE -> R.string.fighter_job_bluemage;
-        });
     }
 }

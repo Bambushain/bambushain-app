@@ -141,7 +141,7 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
     }
 
     private void delete(int position, Crafter crafter) {
-        val jobLabel = getCrafterJobLabel(crafter.getJob());
+        val jobLabel = crafter.getJob().getTranslated(requireContext());
 
         //noinspection ResultOfMethodCallIgnored
         new MaterialAlertDialogBuilder(requireContext())
@@ -165,21 +165,5 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
                 .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();
-    }
-
-    private String getCrafterJobLabel(CrafterJob crafterJob) {
-        return getString(switch (crafterJob) {
-            case CARPENTER -> R.string.crafter_job_carpenter;
-            case BLACKSMITH -> R.string.crafter_job_blacksmith;
-            case ARMORER -> R.string.crafter_job_armorer;
-            case GOLDSMITH -> R.string.crafter_job_goldsmith;
-            case LEATHERWORKER -> R.string.crafter_job_leatherworker;
-            case WEAVER -> R.string.crafter_job_weaver;
-            case ALCHEMIST -> R.string.crafter_job_alchemist;
-            case CULINARIAN -> R.string.crafter_job_culinarian;
-            case MINER -> R.string.crafter_job_miner;
-            case BOTANIST -> R.string.crafter_job_botanist;
-            case FISHER -> R.string.crafter_job_fisher;
-        });
     }
 }

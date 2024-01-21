@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="label_housing_plot">Nr.</string>
-    <string name="error_housing_delete_failed">Die Unterkunft konnte leider nicht gelöscht werden</string>
-</resources>

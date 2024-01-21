@@ -14,12 +14,14 @@
     <string name="error_housing_create_failed">Die Unterkunft konnte leider nicht gespeichert werden</string>
     <string name="error_housing_create_exists">Eine Unterkunft an dieser Adresse existiert bereits</string>
     <string name="label_housing_ward">"Bezirk "</string>
+    <string name="label_housing_plot">"Nr. "</string>
     <string name="action_delete_housing">Unterkunft löschen</string>
     <string name="action_edit_housing">Unterkunft bearbeiten</string>
     <string name="error_housings_loading_failed">Die Unterkünfte konnten leider nicht geladen werden</string>
     <string name="action_delete_housing_message">Soll die Unterkunft in %1$s im Bezirk %2$s mit der Nummer %3$s wirklich
         gelöscht werden?
     </string>
+    <string name="error_housing_delete_failed">Die Unterkunft konnte leider nicht gelöscht werden</string>
     <string name="success_housing_delete">Die Unterkunft wurde erfolgreich gelöscht</string>
 
     <string-array name="housing_wards">
