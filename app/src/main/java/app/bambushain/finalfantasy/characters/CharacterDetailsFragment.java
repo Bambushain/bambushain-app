@@ -5,7 +5,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
@@ -27,14 +26,10 @@ public class CharacterDetailsFragment extends BindingFragment<FragmentCharacterD
     public final static int TAB_CRAFTER = 1;
     public final static int TAB_HOUSING = 2;
 
-    protected NavController tabNavigator;
-
     @Inject
     BambooApi bambooApi;
 
     Character character;
-
-    private CharacterDetailsFragmentTabsAdapter characterDetailsFragmentTabsAdapter;
 
     @Override
     protected FragmentCharacterDetailsBinding getViewBinding() {

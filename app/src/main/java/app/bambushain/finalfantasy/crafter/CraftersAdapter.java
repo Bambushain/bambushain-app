@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CraftersAdapter extends RecyclerView.Adapter<CraftersAdapter.ViewHolder> {
-    private static final String TAG = CraftersAdapter.class.getName();
     private final ViewModelProvider viewModelProvider;
     private final LifecycleOwner lifecycleOwner;
     @Setter
