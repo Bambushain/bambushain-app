@@ -15,14 +15,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/action_more"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:icon="@drawable/ic_dots_vertical"
-                    style="?attr/materialIconButtonStyle"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -89,9 +81,9 @@
                     android:id="@+id/showDetails"
                     android:contentDescription="@string/action_character_details"
                     app:icon="@drawable/ic_character_details"
-                    app:iconSize="28dp"
+                    app:iconSize="@dimen/card_icon_size"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/characterWorld"
-                    app:layout_constraintEnd_toStartOf="@id/showFighter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     style="@style/Widget.Material3.Button.IconButton"/>
             <com.google.android.material.button.MaterialButton
@@ -100,8 +92,8 @@
                     android:id="@+id/showFighter"
                     android:contentDescription="@string/action_character_fighter"
                     app:icon="@drawable/ic_fighter"
-                    app:iconSize="28dp"
-                    app:layout_constraintEnd_toStartOf="@id/showCrafter"
+                    app:iconSize="@dimen/card_icon_size"
+                    app:layout_constraintStart_toEndOf="@id/showDetails"
                     app:layout_constraintBottom_toBottomOf="parent"
                     style="@style/Widget.Material3.Button.IconButton"/>
             <com.google.android.material.button.MaterialButton
@@ -110,8 +102,8 @@
                     android:id="@+id/showCrafter"
                     android:contentDescription="@string/action_character_crafter"
                     app:icon="@drawable/ic_crafter"
-                    app:iconSize="28dp"
-                    app:layout_constraintEnd_toStartOf="@id/showHousing"
+                    app:iconSize="@dimen/card_icon_size"
+                    app:layout_constraintStart_toEndOf="@id/showFighter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     style="@style/Widget.Material3.Button.IconButton"/>
             <com.google.android.material.button.MaterialButton
@@ -120,7 +112,27 @@
                     android:id="@+id/showHousing"
                     android:contentDescription="@string/action_character_housing"
                     app:icon="@drawable/ic_housing"
-                    app:iconSize="28dp"
+                    app:iconSize="@dimen/card_icon_size"
+                    app:layout_constraintStart_toEndOf="@id/showCrafter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    style="@style/Widget.Material3.Button.IconButton"/>
+            <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editCharacter"
+                    android:contentDescription="@string/action_edit_character"
+                    app:icon="@drawable/ic_edit"
+                    app:iconSize="@dimen/card_icon_size"
+                    app:layout_constraintEnd_toStartOf="@id/deleteCharacter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    style="@style/Widget.Material3.Button.IconButton"/>
+            <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/deleteCharacter"
+                    android:contentDescription="@string/action_delete_character"
+                    app:icon="@drawable/ic_delete"
+                    app:iconSize="@dimen/card_icon_size"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     style="@style/Widget.Material3.Button.IconButton"/>

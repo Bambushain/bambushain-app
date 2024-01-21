@@ -4,13 +4,13 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-import app.bambushain.R;
-import app.bambushain.databinding.CharactersCardBinding;
+import app.bambushain.base.listener.OnDeleteListener;
+import app.bambushain.base.listener.OnEditListener;
+import app.bambushain.databinding.CharacterCardBinding;
 import app.bambushain.models.finalfantasy.Character;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,11 +28,13 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
     @Setter
     private List<Character> characters = new ArrayList<>();
     @Setter
-    private OnEditCharacterListener onEditCharacterListener;
+    private OnEditListener<Character> onEditCharacterListener;
     @Setter
-    private OnDeleteCharacterListener onDeleteCharacterListener;
+    private OnDeleteListener<Character> onDeleteCharacterListener;
     @Setter
     private OnCharacterDetailsListener onCharacterDetailsListener;
+    @Setter
+    private OnCrafterClickListener onCrafterClickListener;
 
     public CharactersAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner) {
         this.viewModelProvider = viewModelProvider;
@@ -42,7 +44,7 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NotNull ViewGroup viewGroup, int i) {
-        val binding = CharactersCardBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
+        val binding = CharacterCardBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
         binding.setLifecycleOwner(lifecycleOwner);
 
         return new CharactersAdapter.ViewHolder(binding);
@@ -55,22 +57,24 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
         val viewModel = viewModelProvider.get(character.getId().toString(), CharacterViewModel.class);
         viewHolder.binding.setViewModel(viewModel);
         viewHolder.setCharacter(character);
-        viewHolder.binding.actionMore.setOnClickListener(v -> {
-            val popupMenu = new PopupMenu(v.getContext(), v);
-            popupMenu.inflate(R.menu.characters_card_menu);
-            popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getItemId() == R.id.action_edit_character && onEditCharacterListener != null) {
-                    onEditCharacterListener.onEdit(position, character);
-                } else if (item.getItemId() == R.id.action_delete_character && onDeleteCharacterListener != null) {
-                    onDeleteCharacterListener.onDelete(position, character);
-                }
-                return true;
-            });
-            popupMenu.show();
+        viewHolder.binding.editCharacter.setOnClickListener(v -> {
+            if (onEditCharacterListener != null) {
+                onEditCharacterListener.onEdit(position, character);
+            }
+        });
+        viewHolder.binding.deleteCharacter.setOnClickListener(v -> {
+            if (onDeleteCharacterListener != null) {
+                onDeleteCharacterListener.onDelete(position, character);
+            }
         });
         viewHolder.binding.showDetails.setOnClickListener(v -> {
             if (onCharacterDetailsListener != null) {
                 onCharacterDetailsListener.onDetails(character);
+            }
+        });
+        viewHolder.binding.showCrafter.setOnClickListener(v -> {
+            if (onCrafterClickListener != null) {
+                onCrafterClickListener.onCrafter(character);
             }
         });
     }
@@ -99,23 +103,19 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
         notifyItemRemoved(position);
     }
 
-    public interface OnEditCharacterListener {
-        void onEdit(int position, Character character);
-    }
-
-    public interface OnDeleteCharacterListener {
-        void onDelete(int position, Character character);
-    }
-
     public interface OnCharacterDetailsListener {
         void onDetails(Character character);
     }
 
+    public interface OnCrafterClickListener {
+        void onCrafter(Character character);
+    }
+
     @Getter
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final CharactersCardBinding binding;
+        private final CharacterCardBinding binding;
 
-        public ViewHolder(CharactersCardBinding binding) {
+        public ViewHolder(CharacterCardBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -130,6 +130,5 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
                 binding.getViewModel().freeCompany.setValue(character.getFreeCompany().getName());
             }
         }
-
     }
 }

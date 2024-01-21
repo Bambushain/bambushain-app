@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_add_crafter">Crafter hinzufügen</string>
+    <string name="label_crafter_level">"Level "</string>
+
+    <string name="crafter_job_carpenter">Zimmerer</string>
+    <string name="crafter_job_blacksmith">Grobschmied</string>
+    <string name="crafter_job_armorer">Plattner</string>
+    <string name="crafter_job_goldsmith">Goldschmied</string>
+    <string name="crafter_job_leatherworker">Gerber</string>
+    <string name="crafter_job_weaver">Weber</string>
+    <string name="crafter_job_alchemist">Alchemist</string>
+    <string name="crafter_job_culinarian">Gourmet</string>
+    <string name="crafter_job_miner">Minenarbeiter</string>
+    <string name="crafter_job_botanist">Gärtner</string>
+    <string name="crafter_job_fisher">Fischer</string>
+    <string name="action_edit_crafter">Bearbeiten</string>
+    <string name="action_delete_crafter">Löschen</string>
+    <string name="error_crafters_loading_failed">Die Crafter konnten leider nicht geladen werden</string>
+    <string name="crafter_level">Level</string>
+    <string name="crafter_job">Job</string>
+    <string name="action_update_crafter">Crafter speichern</string>
+    <string name="error_crafter_update_failed">Leider konnte der Crafter nicht gespeichert werden</string>
+    <string name="error_crafter_update_exists">Ein Crafter mit diesem Job existiert bereits</string>
+    <string name="error_crafter_create_failed">Leider konnte der Crafter nicht erstellt werden</string>
+    <string name="error_crafter_create_exists">Ein Crafter mit diesem Job existiert bereits</string>
+    <string name="action_delete_crafter_message">Soll der Crafter %1$s wirklich gelöscht werden?</string>
+    <string name="success_crafter_delete">Der Crafter %1$s wurde erfolgreich gelöscht</string>
+    <string name="error_crafter_delete_failed">Der Crafter %1$s konnte leider nicht gelöscht werden</string>
+</resources>

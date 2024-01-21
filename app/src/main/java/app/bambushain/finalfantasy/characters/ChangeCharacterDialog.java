@@ -52,15 +52,15 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
         if (args != null) {
             isCreate = false;
             editPosition = args.getInt("position");
-            val ch = BundleUtils.getSerializable(args, "character", Character.class);
-            id = ch.getId();
-            viewModel.name.setValue(ch.getName());
-            viewModel.setRace(ch.getRace());
-            viewModel.world.setValue(ch.getWorld());
-            if (ch.getFreeCompany() != null) {
-                viewModel.freeCompany.setValue(ch.getFreeCompany().getName());
+            val character = BundleUtils.getSerializable(args, "character", Character.class);
+            id = character.getId();
+            viewModel.name.setValue(character.getName());
+            viewModel.setRace(character.getRace());
+            viewModel.world.setValue(character.getWorld());
+            if (character.getFreeCompany() != null) {
+                viewModel.freeCompany.setValue(character.getFreeCompany().getName());
             }
-            for (val customField : ch.getCustomFields()) {
+            for (val customField : character.getCustomFields()) {
                 customFieldValues.put(customField.getLabel(), customField.getValues());
             }
         } else {
@@ -244,5 +244,4 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
 
         return CharacterRace.LALAFELL;
     }
-
 }

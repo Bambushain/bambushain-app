@@ -52,7 +52,7 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
             val bundle = new Bundle();
             bundle.putSerializable("character", character);
             bundle.putInt("position", position);
-            navigator.navigate(R.id.action_fragment_characters_to_add_character_dialog, bundle);
+            navigator.navigate(R.id.action_fragment_characters_to_change_character_dialog, bundle);
         });
 
         adapter.setOnDeleteCharacterListener(this::delete);
@@ -60,6 +60,12 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
             val bundle = new Bundle();
             bundle.putSerializable("character", character);
             navigator.navigate(R.id.action_fragment_characters_to_character_details_dialog, bundle);
+        });
+        adapter.setOnCrafterClickListener(character -> {
+            val bundle = new Bundle();
+            bundle.putInt("activeTab", CharacterDetailsFragment.TAB_CRAFTER);
+            bundle.putSerializable("character", character);
+            navigator.navigate(R.id.action_fragment_characters_to_fragment_character_details, bundle);
         });
 
         val stateHandle = Objects.requireNonNull(navigator.getCurrentBackStackEntry())
@@ -80,7 +86,6 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         return view;
     }
 
-
     @SuppressLint("NotifyDataSetChanged")
     void loadData() {
         binding.pullToRefreshCharacterList.setRefreshing(true);
@@ -89,7 +94,6 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
             val adapter = (CharactersAdapter) binding.characterList.getAdapter();
             Objects.requireNonNull(adapter).setCharacters(characters);
             adapter.notifyDataSetChanged();
-            binding.getViewModel().isLoading.setValue(false);
             binding.pullToRefreshCharacterList.setRefreshing(false);
         }, throwable -> {
             Log.e(TAG, "loadData: failed to load characters", throwable);
@@ -100,12 +104,9 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        val viewModel = new ViewModelProvider(this).get(CharacterListViewModel.class);
-        viewModel.isLoading.setValue(true);
-        binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        binding.addCharacter.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_characters_to_add_character_dialog));
+        binding.addCharacter.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_characters_to_change_character_dialog));
         binding.pullToRefreshCharacterList.setOnRefreshListener(this::loadData);
 
         loadData();

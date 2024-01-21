@@ -2,9 +2,6 @@
 <layout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
-    <data>
-        <variable name="viewModel" type="app.bambushain.bamboo.pandas.PandaListViewModel"/>
-    </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -12,43 +9,27 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            <com.google.android.material.appbar.AppBarLayout
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:id="@+id/toolbarLayout"
-                    app:layout_constraintTop_toTopOf="parent">
-                    <com.google.android.material.appbar.MaterialToolbar
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
-                            android:id="@+id/toolbar"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent">
-                    </com.google.android.material.appbar.MaterialToolbar>
-            </com.google.android.material.appbar.AppBarLayout>
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:id="@+id/pullToRefreshPandaList"
+                    android:id="@+id/pullToRefreshCrafterList"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginVertical="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent">
                 <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/pandaList">
-                </androidx.recyclerview.widget.RecyclerView>
+                        android:id="@+id/crafterList"/>
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/fab_margin"
-                    android:id="@+id/addPanda"
-                    android:visibility="@{viewModel.canCreate ? android.view.View.VISIBLE : android.view.View.GONE}"
+                    android:id="@+id/addCrafter"
                     android:src="@drawable/ic_add"
-                    android:contentDescription="@string/action_add_panda"
+                    android:contentDescription="@string/action_add_crafter"
+                    android:layout_margin="@dimen/fab_margin"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>

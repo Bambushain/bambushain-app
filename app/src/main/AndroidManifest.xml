@@ -15,7 +15,11 @@
             android:screenOrientation="sensorPortrait"
             android:supportsRtl="false"
             android:theme="@style/Theme.Bambushain">
-        <meta-data android:name="io.sentry.enabled" android:value="false"/>
+
+        <meta-data
+                android:name="io.sentry.enabled"
+                android:value="false"/>
+
         <receiver
                 android:name=".notification.calendar.receiver.NotifyTodayReceiver"
                 android:enabled="true"
