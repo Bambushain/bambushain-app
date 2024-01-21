@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+import app.bambushain.base.listener.OnDeleteListener;
+import app.bambushain.base.listener.OnEditListener;
 import app.bambushain.databinding.CharacterCardBinding;
 import app.bambushain.models.finalfantasy.Character;
 import lombok.Getter;
@@ -26,9 +28,9 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
     @Setter
     private List<Character> characters = new ArrayList<>();
     @Setter
-    private OnEditCharacterListener onEditCharacterListener;
+    private OnEditListener<Character> onEditCharacterListener;
     @Setter
-    private OnDeleteCharacterListener onDeleteCharacterListener;
+    private OnDeleteListener<Character> onDeleteCharacterListener;
     @Setter
     private OnCharacterDetailsListener onCharacterDetailsListener;
     @Setter
@@ -99,14 +101,6 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
     public void removeCharacter(int position) {
         characters.remove(position);
         notifyItemRemoved(position);
-    }
-
-    public interface OnEditCharacterListener {
-        void onEdit(int position, Character character);
-    }
-
-    public interface OnDeleteCharacterListener {
-        void onDelete(int position, Character character);
     }
 
     public interface OnCharacterDetailsListener {

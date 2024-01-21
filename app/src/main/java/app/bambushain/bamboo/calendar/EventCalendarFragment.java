@@ -60,7 +60,7 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
         val view = super.onCreateView(inflater, container, savedInstanceState);
         val adapter = new CalendarViewAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), new ArrayList<>(), LocalDate.now().getMonth(), LocalDate.now().getYear());
         adapter.setOnEventDeleteListener(this::openDelete);
-        adapter.setOnEventUpdateListener(event -> {
+        adapter.setOnEventUpdateListener((position, event) -> {
             val args = new Bundle();
             args.putSerializable("event", event);
             navigator.navigate(R.id.action_fragment_event_calendar_to_edit_event_dialog, args);
@@ -73,7 +73,7 @@ public class EventCalendarFragment extends BindingFragment<FragmentEventCalendar
         return view;
     }
 
-    private void openDelete(Event event) {
+    private void openDelete(int position, Event event) {
         //noinspection ResultOfMethodCallIgnored
         new MaterialAlertDialogBuilder(activity)
                 .setPositiveButton(R.string.action_delete_calendar_event_confirm, (dialog, which) -> bambooApi.deleteEvent(event.getId()).subscribe(() -> Log.d(TAG, "openDelete: Successfully deleted event " + event.getTitle()), throwable -> {

@@ -10,6 +10,8 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import app.bambushain.R;
+import app.bambushain.base.listener.OnDeleteListener;
+import app.bambushain.base.listener.OnEditListener;
 import app.bambushain.databinding.CalendarDayBinding;
 import app.bambushain.databinding.CalendarEventBinding;
 import app.bambushain.models.bamboo.Event;
@@ -34,9 +36,9 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
     private Month month;
     private int year;
     @Setter
-    private OnEventUpdateListener onEventUpdateListener;
+    private OnEditListener<Event> onEventUpdateListener;
     @Setter
-    private OnEventDeleteListener onEventDeleteListener;
+    private OnDeleteListener<Event> onEventDeleteListener;
 
     public CalendarViewAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner, List<Event> events, Month month, int year) {
         this.viewModelProvider = viewModelProvider;
@@ -118,9 +120,9 @@ public class CalendarViewAdapter extends RecyclerView.Adapter<CalendarViewAdapte
         popup.inflate(R.menu.calendar_event_more_menu);
         popup.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.actionDeleteEvent && onEventDeleteListener != null) {
-                onEventDeleteListener.onEventDelete(event);
+                onEventDeleteListener.onDelete(0, event);
             } else if (item.getItemId() == R.id.actionEditEvent && onEventUpdateListener != null) {
-                onEventUpdateListener.onEventUpdate(event);
+                onEventUpdateListener.onEdit(0, event);
             }
 
             return true;

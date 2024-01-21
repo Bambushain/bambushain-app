@@ -8,6 +8,8 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import app.bambushain.R;
+import app.bambushain.base.listener.OnDeleteListener;
+import app.bambushain.base.listener.OnEditListener;
 import app.bambushain.databinding.PandaCardBinding;
 import app.bambushain.models.bamboo.User;
 import lombok.Getter;
@@ -34,9 +36,9 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
     @Setter
     private OnResetPasswordListener onResetPasswordListener;
     @Setter
-    private OnDeleteUserListener onDeleteUserListener;
+    private OnDeleteListener<User> onDeleteUserListener;
     @Setter
-    private OnEditUserListener onEditUserListener;
+    private OnEditListener<User> onEditUserListener;
 
     public PandasAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner, boolean iAmMod, int myId, List<User> pandas) {
         this.viewModelProvider = viewModelProvider;
@@ -63,12 +65,12 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
         viewHolder.binding.setViewModel(viewModel);
         viewHolder.binding.editPanda.setOnClickListener(v -> {
             if (onEditUserListener != null) {
-                onEditUserListener.onEditUser(position, panda);
+                onEditUserListener.onEdit(position, panda);
             }
         });
         viewHolder.binding.deletePanda.setOnClickListener(v -> {
             if (onDeleteUserListener != null) {
-                onDeleteUserListener.onDeleteUser(position, panda);
+                onDeleteUserListener.onDelete(position, panda);
             }
         });
         viewHolder.setPanda(panda);
@@ -176,14 +178,6 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
 
     public interface OnResetPasswordListener {
         void onResetPassword(int position, User user);
-    }
-
-    public interface OnDeleteUserListener {
-        void onDeleteUser(int position, User user);
-    }
-
-    public interface OnEditUserListener {
-        void onEditUser(int position, User user);
     }
 
     @Getter

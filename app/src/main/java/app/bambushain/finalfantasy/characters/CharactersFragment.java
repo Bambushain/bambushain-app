@@ -52,7 +52,7 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
             val bundle = new Bundle();
             bundle.putSerializable("character", character);
             bundle.putInt("position", position);
-            navigator.navigate(R.id.action_fragment_characters_to_add_character_dialog, bundle);
+            navigator.navigate(R.id.action_fragment_characters_to_change_character_dialog, bundle);
         });
 
         adapter.setOnDeleteCharacterListener(this::delete);
@@ -106,7 +106,7 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         super.onViewCreated(view, savedInstanceState);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        binding.addCharacter.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_characters_to_add_character_dialog));
+        binding.addCharacter.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_characters_to_change_character_dialog));
         binding.pullToRefreshCharacterList.setOnRefreshListener(this::loadData);
 
         loadData();

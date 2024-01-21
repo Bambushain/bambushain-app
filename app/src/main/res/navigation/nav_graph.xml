@@ -59,14 +59,14 @@
         <fragment android:id="@+id/fragment_characters"
                   android:name="app.bambushain.finalfantasy.characters.CharactersFragment"
                   android:label="@string/label_characters">
-            <action android:id="@+id/action_fragment_characters_to_add_character_dialog"
-                    app:destination="@id/add_character_dialog" app:popUpTo="@id/fragment_characters"/>
+            <action android:id="@+id/action_fragment_characters_to_change_character_dialog"
+                    app:destination="@id/change_character_dialog" app:popUpTo="@id/fragment_characters"/>
             <action android:id="@+id/action_fragment_characters_to_character_details_dialog"
                     app:destination="@id/character_details_dialog"/>
             <action android:id="@+id/action_fragment_characters_to_fragment_character_details"
                     app:destination="@id/fragment_character_details"/>
         </fragment>
-        <dialog android:id="@+id/add_character_dialog"
+        <dialog android:id="@+id/change_character_dialog"
                 android:name="app.bambushain.finalfantasy.characters.ChangeCharacterDialog"
                 android:label="@string/label_add_character"/>
         <dialog android:id="@+id/character_details_dialog"
@@ -74,6 +74,12 @@
                 android:label="@string/action_character_details"/>
         <fragment android:id="@+id/fragment_character_details"
                   android:name="app.bambushain.finalfantasy.characters.CharacterDetailsFragment"
-                  android:label="CharacterDetailsFragment"/>
+        >
+            <action android:id="@+id/action_fragment_character_details_to_change_crafter_dialog"
+                    app:destination="@id/change_crafter_dialog"/>
+        </fragment>
+        <dialog android:id="@+id/change_crafter_dialog"
+                android:name="app.bambushain.finalfantasy.crafter.ChangeCrafterDialog"
+                android:label="ChangeCrafterDialog"/>
     </navigation>
 </navigation>
