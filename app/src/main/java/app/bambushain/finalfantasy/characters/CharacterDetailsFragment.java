@@ -11,6 +11,7 @@ import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentCharacterDetailsBinding;
 import app.bambushain.finalfantasy.crafter.CraftersFragment;
+import app.bambushain.finalfantasy.fighter.FightersFragment;
 import app.bambushain.models.finalfantasy.Character;
 import app.bambushain.utils.BundleUtils;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -73,7 +74,7 @@ public class CharacterDetailsFragment extends BindingFragment<FragmentCharacterD
                 return new CraftersFragment(bambooApi, character);
             }
 
-            return new CraftersFragment(bambooApi, character);
+            return new FightersFragment(bambooApi, character);
         }
 
         @Override
