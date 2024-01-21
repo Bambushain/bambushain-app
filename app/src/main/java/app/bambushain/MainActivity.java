@@ -24,6 +24,7 @@ import app.bambushain.navigation.NavigationViewModel;
 import app.bambushain.notification.calendar.EventNotificationService;
 import app.bambushain.notification.calendar.database.EventDao;
 import dagger.hilt.android.AndroidEntryPoint;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.val;
 
 import javax.inject.Inject;
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
             binding.drawerLayout.closeDrawers();
 
-            eventDao.cleanDatabase().subscribe();
+            Schedulers.io().scheduleDirect(() -> eventDao.cleanDatabase().subscribe());
             val logoutServiceIntent = new Intent(this, EventNotificationService.class);
             logoutServiceIntent.setAction(getString(R.string.service_intent_stop_listening));
 

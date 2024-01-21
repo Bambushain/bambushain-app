@@ -224,7 +224,6 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
 
     @SuppressLint("NotifyDataSetChanged")
     void loadData() {
-        binding.getViewModel().isLoading.setValue(true);
         binding.pullToRefreshPandaList.setRefreshing(true);
         //noinspection ResultOfMethodCallIgnored
         bambooApi
@@ -233,7 +232,6 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
                     val adapter = (PandasAdapter) binding.pandaList.getAdapter();
                     Objects.requireNonNull(adapter).setPandas(users);
                     adapter.notifyDataSetChanged();
-                    binding.getViewModel().isLoading.setValue(false);
                     binding.pullToRefreshPandaList.setRefreshing(false);
                 }, throwable -> {
                     Log.e(TAG, "onViewCreated: Failed to load users", throwable);
@@ -246,7 +244,6 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         super.onViewCreated(view, savedInstanceState);
         val viewModel = new ViewModelProvider(this).get(PandaListViewModel.class);
         viewModel.canCreate.setValue(activity.headerViewModel.isMod.getValue());
-        viewModel.isLoading.setValue(true);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.addPanda.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_pandas_to_add_panda_dialog));

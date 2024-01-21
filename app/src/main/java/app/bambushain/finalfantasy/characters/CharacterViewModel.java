@@ -29,22 +29,15 @@ public class CharacterViewModel extends ViewModel {
     }
 
     public void setRace(CharacterRace race) {
-        if (race == CharacterRace.HYUR) {
-            this.race.setValue(context.getString(R.string.character_race_hyur));
-        } else if (race == CharacterRace.ELEZEN) {
-            this.race.setValue(context.getString(R.string.character_race_elezen));
-        } else if (race == CharacterRace.LALAFELL) {
-            this.race.setValue(context.getString(R.string.character_race_lalafell));
-        } else if (race == CharacterRace.MIQOTE) {
-            this.race.setValue(context.getString(R.string.character_race_minqote));
-        } else if (race == CharacterRace.ROEGADYN) {
-            this.race.setValue(context.getString(R.string.character_race_roegadyn));
-        } else if (race == CharacterRace.AURA) {
-            this.race.setValue(context.getString(R.string.character_race_aura));
-        } else if (race == CharacterRace.HROTHGAR) {
-            this.race.setValue(context.getString(R.string.character_race_hrothgar));
-        } else if (race == CharacterRace.VIERA) {
-            this.race.setValue(context.getString(R.string.character_race_viera));
-        }
+        this.race.setValue(context.getString(switch (race) {
+            case HYUR -> R.string.character_race_hyur;
+            case ELEZEN -> R.string.character_race_elezen;
+            case LALAFELL -> R.string.character_race_lalafell;
+            case MIQOTE -> R.string.character_race_minqote;
+            case ROEGADYN -> R.string.character_race_roegadyn;
+            case AURA -> R.string.character_race_aura;
+            case HROTHGAR -> R.string.character_race_hrothgar;
+            case VIERA -> R.string.character_race_viera;
+        }));
     }
 }

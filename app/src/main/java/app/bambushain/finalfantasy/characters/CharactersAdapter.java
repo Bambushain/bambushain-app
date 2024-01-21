@@ -33,6 +33,8 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
     private OnDeleteCharacterListener onDeleteCharacterListener;
     @Setter
     private OnCharacterDetailsListener onCharacterDetailsListener;
+    @Setter
+    private OnCrafterClickListener onCrafterClickListener;
 
     public CharactersAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner) {
         this.viewModelProvider = viewModelProvider;
@@ -73,6 +75,11 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
                 onCharacterDetailsListener.onDetails(character);
             }
         });
+        viewHolder.binding.showCrafter.setOnClickListener(v -> {
+            if (onCrafterClickListener != null) {
+                onCrafterClickListener.onCrafter(character);
+            }
+        });
     }
 
     @Override
@@ -111,6 +118,10 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
         void onDetails(Character character);
     }
 
+    public interface OnCrafterClickListener {
+        void onCrafter(Character character);
+    }
+
     @Getter
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final CharactersCardBinding binding;
@@ -130,6 +141,5 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
                 binding.getViewModel().freeCompany.setValue(character.getFreeCompany().getName());
             }
         }
-
     }
 }
