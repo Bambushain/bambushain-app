@@ -118,11 +118,9 @@ public class HousingFragment extends BindingFragment<FragmentHousingBinding> {
                             assert adapter != null;
                             adapter.removeHousing(position);
                             Toast.makeText(requireContext(), R.string.success_housing_delete, Toast.LENGTH_LONG).show();
-                        }, throwable -> {
-                            Toast
-                                    .makeText(requireContext(), R.string.error_housing_delete_failed, Toast.LENGTH_LONG)
-                                    .show();
-                        }))
+                        }, throwable -> Toast
+                                .makeText(requireContext(), R.string.error_housing_delete_failed, Toast.LENGTH_LONG)
+                                .show()))
                 .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel())
                 .create()
                 .show();

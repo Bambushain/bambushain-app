@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="housing_district">Gebiet</string>
     <string name="housing_ward">Bezirk</string>
     <string name="housing_plot">Nummer</string>
@@ -18,7 +18,8 @@
     <string name="action_delete_housing">Unterkunft löschen</string>
     <string name="action_edit_housing">Unterkunft bearbeiten</string>
     <string name="error_housings_loading_failed">Die Unterkünfte konnten leider nicht geladen werden</string>
-    <string name="action_delete_housing_message">Soll die Unterkunft in %1$s im Bezirk %2$s mit der Nummer %3$s wirklich
+    <string name="action_delete_housing_message" tools:ignore="PluralsCandidate">Soll die Unterkunft in %1$s im Bezirk
+        %2$d mit der Nummer %3$d wirklich
         gelöscht werden?
     </string>
     <string name="error_housing_delete_failed">Die Unterkunft konnte leider nicht gelöscht werden</string>
