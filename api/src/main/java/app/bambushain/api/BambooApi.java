@@ -508,6 +508,77 @@ public interface BambooApi {
     );
 
     /**
+     * Creates a new housing for the current user
+     * Creates a new housing for the current user
+     *
+     * @param characterId (required)
+     * @param housing     The housing to create (required)
+     * @return Observable&lt;Housing&gt;
+     */
+    @Headers({
+            "Content-Type:application/json"
+    })
+    @POST("api/final-fantasy/character/{character_id}/housing")
+    Observable<CharacterHousing> createHousing(
+            @retrofit2.http.Path("character_id") long characterId, @retrofit2.http.Body CharacterHousing housing
+    );
+
+    /**
+     * Delete the given housing
+     * Deletes the given housing
+     *
+     * @param characterId The id of the character (required)
+     * @param id          The id of the housing (required)
+     * @return Completable
+     */
+    @DELETE("api/final-fantasy/character/{character_id}/housing/{id}")
+    Completable deleteHousing(
+            @retrofit2.http.Path("character_id") long characterId, @retrofit2.http.Path("id") long id
+    );
+
+    /**
+     * Get a housing by job
+     * Gets the housing with the given job
+     *
+     * @param characterId The id of the character (required)
+     * @param id          The id of the housing (required)
+     * @return Observable&lt;Housing&gt;
+     */
+    @GET("api/final-fantasy/character/{character_id}/housing/{id}")
+    Observable<CharacterHousing> getHousing(
+            @retrofit2.http.Path("character_id") long characterId, @retrofit2.http.Path("id") long id
+    );
+
+    /**
+     * Get list of housing
+     * Gets a list of all housings the current user has configured
+     *
+     * @param characterId (required)
+     * @return Observable&lt;List&lt;Housing&gt;&gt;
+     */
+    @GET("api/final-fantasy/character/{character_id}/housing")
+    Observable<List<CharacterHousing>> getHousings(
+            @retrofit2.http.Path("character_id") long characterId
+    );
+
+    /**
+     * Updates the given housing
+     * Updates the given housing with the new values
+     *
+     * @param characterId The id of the character (required)
+     * @param id          The id of the housing (required)
+     * @param housing     The housing data to update to (required)
+     * @return Completable
+     */
+    @Headers({
+            "Content-Type:application/json"
+    })
+    @PUT("api/final-fantasy/character/{character_id}/housing/{id}")
+    Completable updateHousing(
+            @retrofit2.http.Path("character_id") long characterId, @retrofit2.http.Path("id") long id, @retrofit2.http.Body CharacterHousing housing
+    );
+
+    /**
      * Changes the current users password
      * Changes the current users password, while checking if the old password is valid
      *

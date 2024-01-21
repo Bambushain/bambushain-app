@@ -79,6 +79,8 @@
                     app:destination="@id/change_crafter_dialog"/>
             <action android:id="@+id/action_fragment_character_details_to_change_fighter_dialog"
                     app:destination="@id/change_fighter_dialog"/>
+            <action android:id="@+id/action_fragment_character_details_to_change_housing_dialog"
+                    app:destination="@id/change_housing_dialog"/>
         </fragment>
         <dialog android:id="@+id/change_crafter_dialog"
                 android:name="app.bambushain.finalfantasy.crafter.ChangeCrafterDialog"
@@ -86,5 +88,8 @@
         <dialog android:id="@+id/change_fighter_dialog"
                 android:name="app.bambushain.finalfantasy.fighter.ChangeFighterDialog"
                 android:label="ChangeFighterDialog"/>
+        <dialog android:id="@+id/change_housing_dialog"
+                android:name="app.bambushain.finalfantasy.housing.ChangeHousingDialog"
+                android:label="ChangeHousingDialog"/>
     </navigation>
 </navigation>

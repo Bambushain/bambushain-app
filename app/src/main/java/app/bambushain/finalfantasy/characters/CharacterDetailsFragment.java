@@ -12,6 +12,7 @@ import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentCharacterDetailsBinding;
 import app.bambushain.finalfantasy.crafter.CraftersFragment;
 import app.bambushain.finalfantasy.fighter.FightersFragment;
+import app.bambushain.finalfantasy.housing.HousingFragment;
 import app.bambushain.models.finalfantasy.Character;
 import app.bambushain.utils.BundleUtils;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -72,6 +73,9 @@ public class CharacterDetailsFragment extends BindingFragment<FragmentCharacterD
         public Fragment createFragment(int i) {
             if (i == TAB_CRAFTER) {
                 return new CraftersFragment(bambooApi, character);
+            }
+            if (i == TAB_HOUSING) {
+                return new HousingFragment(bambooApi, character);
             }
 
             return new FightersFragment(bambooApi, character);
