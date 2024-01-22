@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "requestPermissionLauncher: Permission for notifications was rejected");
                 }
             });
+
     public ActivityMainBinding binding;
     public NavigationViewModel headerViewModel;
     public NavController navigator;
@@ -133,6 +134,14 @@ public class MainActivity extends AppCompatActivity {
                     val startListeningIntent = new Intent(this, EventNotificationService.class);
                     startListeningIntent.setAction(getString(R.string.service_intent_start_listening));
                     startForegroundService(startListeningIntent);
+
+                    if (getIntent() != null) {
+                        val intent = getIntent();
+                        val targetRoute = intent.getIntExtra("targetRoute", 0);
+                        if (targetRoute != 0) {
+                            navigator.navigate(targetRoute);
+                        }
+                    }
                 }, throwable -> {
                     Log.e(TAG, "loadProfile: Failed to load profile", throwable);
                     navigator.navigate(R.id.action_global_fragment_login);
