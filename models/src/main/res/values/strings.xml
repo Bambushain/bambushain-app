@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="character_race_hyur">Hyuran</string>
+    <string name="character_race_elezen">Elezen</string>
+    <string name="character_race_aura">Au Ra</string>
+    <string name="character_race_lalafell">Lalafell</string>
+    <string name="character_race_minqote">Minqo\'te</string>
+    <string name="character_race_roegadyn">Roegadyn</string>
+    <string name="character_race_hrothgar">Hrothgar</string>
+    <string name="character_race_viera">Viera</string>
+
     <string name="housing_type_private">Private Unterkunft</string>
     <string name="housing_type_freecompany">Unterkunft einer Freie Gesellschaft</string>
     <string name="housing_type_sharedapartment">Wohngemeinschaft</string>

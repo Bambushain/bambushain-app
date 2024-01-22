@@ -25,6 +25,7 @@ import lombok.val;
 
 import javax.inject.Inject;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @AndroidEntryPoint
 public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeCharacterDialogBinding> {
@@ -76,7 +77,7 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
                     freeCompaniesForDropdown.add(new FreeCompany(0, getString(R.string.character_no_free_company)));
                     freeCompaniesForDropdown.addAll(freeCompanies);
                     binding.characterFreeCompanyDropdown.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.select_dialog_item, freeCompaniesForDropdown));
-                    binding.characterRaceDropdown.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.select_dialog_item, getResources().getStringArray(R.array.character_races)));
+                    binding.characterRaceDropdown.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.select_dialog_item, Arrays.stream(CharacterRace.values()).map(characterRace -> characterRace.getTranslated(requireContext())).collect(Collectors.toList())));
                 }, throwable -> {
                     Log.e(TAG, "onViewCreated: getFreeCompanies failed", throwable);
                     showSnackbar(R.string.error_character_free_company_loading_failed);
@@ -105,7 +106,7 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
                 customFields.add(new CustomField(customFieldValue.getKey(), customFieldValue.getValue()));
             }
 
-            val character = new Character(id, getRaceFromText(Objects.requireNonNull(viewModel.race.getValue())), viewModel.name.getValue(), viewModel.world.getValue(), customFields, freeCompany);
+            val character = new Character(id, CharacterRace.getFromTranslated(requireContext(), Objects.requireNonNull(viewModel.race.getValue())), viewModel.name.getValue(), viewModel.world.getValue(), customFields, freeCompany);
             if (isCreate) {
                 createCharacter(character);
             } else {
@@ -222,26 +223,5 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
 
             layout.addView(customFieldLayout);
         }
-    }
-
-    private CharacterRace getRaceFromText(String text) {
-        val context = requireContext();
-        if (text.equals(context.getString(R.string.character_race_hyur))) {
-            return CharacterRace.HYUR;
-        } else if (text.equals(context.getString(R.string.character_race_elezen))) {
-            return CharacterRace.ELEZEN;
-        } else if (text.equals(context.getString(R.string.character_race_viera))) {
-            return CharacterRace.VIERA;
-        } else if (text.equals(context.getString(R.string.character_race_minqote))) {
-            return CharacterRace.MIQOTE;
-        } else if (text.equals(context.getString(R.string.character_race_roegadyn))) {
-            return CharacterRace.ROEGADYN;
-        } else if (text.equals(context.getString(R.string.character_race_aura))) {
-            return CharacterRace.AURA;
-        } else if (text.equals(context.getString(R.string.character_race_hrothgar))) {
-            return CharacterRace.HROTHGAR;
-        }
-
-        return CharacterRace.LALAFELL;
     }
 }

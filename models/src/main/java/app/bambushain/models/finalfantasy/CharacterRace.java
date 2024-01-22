@@ -1,5 +1,7 @@
 package app.bambushain.models.finalfantasy;
 
+import android.content.Context;
+import app.bambushain.models.R;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonReader;
@@ -48,6 +50,42 @@ public enum CharacterRace implements Serializable {
     @Override
     public String toString() {
         return String.valueOf(value);
+    }
+
+    public static CharacterRace getFromTranslated(Context context, String translated) {
+        if (translated.equals(context.getString(R.string.character_race_hyur))) {
+            return CharacterRace.HYUR;
+        } else if (translated.equals(context.getString(R.string.character_race_elezen))) {
+            return CharacterRace.ELEZEN;
+        } else if (translated.equals(context.getString(R.string.character_race_viera))) {
+            return CharacterRace.VIERA;
+        } else if (translated.equals(context.getString(R.string.character_race_minqote))) {
+            return CharacterRace.MIQOTE;
+        } else if (translated.equals(context.getString(R.string.character_race_roegadyn))) {
+            return CharacterRace.ROEGADYN;
+        } else if (translated.equals(context.getString(R.string.character_race_aura))) {
+            return CharacterRace.AURA;
+        } else if (translated.equals(context.getString(R.string.character_race_hrothgar))) {
+            return CharacterRace.HROTHGAR;
+        } else if (translated.equals(context.getString(R.string.character_race_lalafell))) {
+            return CharacterRace.LALAFELL;
+        }
+
+
+        throw new IllegalArgumentException("Unexpected value '" + translated + "'");
+    }
+
+    public String getTranslated(Context context) {
+        return context.getString(switch (this) {
+            case HYUR -> R.string.character_race_hyur;
+            case ELEZEN -> R.string.character_race_elezen;
+            case LALAFELL -> R.string.character_race_lalafell;
+            case MIQOTE -> R.string.character_race_minqote;
+            case ROEGADYN -> R.string.character_race_roegadyn;
+            case AURA -> R.string.character_race_aura;
+            case HROTHGAR -> R.string.character_race_hrothgar;
+            case VIERA -> R.string.character_race_viera;
+        });
     }
 
     public static class Adapter extends TypeAdapter<CharacterRace> {
