@@ -50,10 +50,10 @@ public class FightersFragment extends BindingFragment<FragmentFightersBinding> {
         val view = super.onCreateView(inflater, container, savedInstanceState);
         val adapter = new FightersAdapter(new ViewModelProvider(this), getViewLifecycleOwner());
 
-        binding.fighterList.setAdapter(adapter);
-        binding.fighterList.setLayoutManager(new LinearLayoutManager(requireContext()));
-        val dividerItemDecoration = new MaterialDividerItemDecoration(binding.fighterList.getContext(), LinearLayoutManager.VERTICAL);
-        binding.fighterList.addItemDecoration(dividerItemDecoration);
+        binding.itemList.setAdapter(adapter);
+        binding.itemList.setLayoutManager(new LinearLayoutManager(requireContext()));
+        val dividerItemDecoration = new MaterialDividerItemDecoration(binding.itemList.getContext(), LinearLayoutManager.VERTICAL);
+        binding.itemList.addItemDecoration(dividerItemDecoration);
 
         adapter.setOnEditFighterListener((position, fighter) -> {
             val bundle = new Bundle();
@@ -107,20 +107,20 @@ public class FightersFragment extends BindingFragment<FragmentFightersBinding> {
         super.onViewCreated(view, savedInstanceState);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        binding.pullToRefreshFighterList.setOnRefreshListener(this::loadData);
+        binding.pullToRefreshItemList.setOnRefreshListener(this::loadData);
 
         loadData();
     }
 
     @SuppressLint("NotifyDataSetChanged")
     void loadData() {
-        binding.pullToRefreshFighterList.setRefreshing(true);
+        binding.pullToRefreshItemList.setRefreshing(true);
         //noinspection ResultOfMethodCallIgnored
         bambooApi.getFighters(character.getId()).subscribe(fighters -> {
-            val adapter = (FightersAdapter) binding.fighterList.getAdapter();
+            val adapter = (FightersAdapter) binding.itemList.getAdapter();
             Objects.requireNonNull(adapter).setFighters(fighters);
             adapter.notifyDataSetChanged();
-            binding.pullToRefreshFighterList.setRefreshing(false);
+            binding.pullToRefreshItemList.setRefreshing(false);
             usedJobs = fighters
                     .stream()
                     .map(Fighter::getJob)
@@ -150,7 +150,7 @@ public class FightersFragment extends BindingFragment<FragmentFightersBinding> {
                 .setPositiveButton(R.string.action_delete_fighter, (dialog, which) -> bambooApi
                         .deleteFighter(fighter.getCharacterId(), fighter.getId())
                         .subscribe(() -> {
-                            val adapter = (FightersAdapter) binding.fighterList.getAdapter();
+                            val adapter = (FightersAdapter) binding.itemList.getAdapter();
                             assert adapter != null;
                             adapter.removeFighter(position);
                             usedJobs.remove(fighter.getJob());

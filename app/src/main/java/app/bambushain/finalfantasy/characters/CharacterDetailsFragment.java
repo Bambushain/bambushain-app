@@ -50,13 +50,19 @@ public class CharacterDetailsFragment extends BindingFragment<FragmentCharacterD
         new TabLayoutMediator(binding.tabs, binding.tabViewPager, (tab, position) -> {
             if (position == TAB_FIGHTER) {
                 tab.setText(R.string.action_character_fighter);
-                tab.setIcon(R.drawable.ic_fighter);
+                if (!getResources().getBoolean(R.bool.is_landscape)) {
+                    tab.setIcon(R.drawable.ic_fighter);
+                }
             } else if (position == TAB_CRAFTER) {
                 tab.setText(R.string.action_character_crafter);
-                tab.setIcon(R.drawable.ic_crafter);
+                if (!getResources().getBoolean(R.bool.is_landscape)) {
+                    tab.setIcon(R.drawable.ic_crafter);
+                }
             } else if (position == TAB_HOUSING) {
                 tab.setText(R.string.action_character_housing);
-                tab.setIcon(R.drawable.ic_housing);
+                if (!getResources().getBoolean(R.bool.is_landscape)) {
+                    tab.setIcon(R.drawable.ic_housing);
+                }
             }
         }).attach();
         binding.tabViewPager.setCurrentItem(activeTabIdx, false);

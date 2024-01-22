@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
@@ -45,8 +45,10 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         val view = super.onCreateView(inflater, container, savedInstanceState);
         val adapter = new CharactersAdapter(new ViewModelProvider(this), getViewLifecycleOwner());
 
-        binding.characterList.setAdapter(adapter);
-        binding.characterList.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.itemList.setAdapter(adapter);
+        binding.itemList.setLayoutManager(getLayoutManager());
+        binding.itemList.addItemDecoration(getGridDivider(GridLayoutManager.VERTICAL));
+        binding.itemList.addItemDecoration(getGridDivider(GridLayoutManager.HORIZONTAL));
 
         adapter.setOnEditCharacterListener((position, character) -> {
             val bundle = new Bundle();
@@ -100,13 +102,13 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
 
     @SuppressLint("NotifyDataSetChanged")
     void loadData() {
-        binding.pullToRefreshCharacterList.setRefreshing(true);
+        binding.pullToRefreshItemList.setRefreshing(true);
         //noinspection ResultOfMethodCallIgnored
         bambooApi.getCharacters().subscribe(characters -> {
-            val adapter = (CharactersAdapter) binding.characterList.getAdapter();
+            val adapter = (CharactersAdapter) binding.itemList.getAdapter();
             Objects.requireNonNull(adapter).setCharacters(characters);
             adapter.notifyDataSetChanged();
-            binding.pullToRefreshCharacterList.setRefreshing(false);
+            binding.pullToRefreshItemList.setRefreshing(false);
         }, throwable -> {
             Log.e(TAG, "loadData: failed to load characters", throwable);
             Toast.makeText(requireContext(), R.string.error_characters_loading_failed, Toast.LENGTH_LONG).show();
@@ -119,7 +121,7 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         binding.addCharacter.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_characters_to_change_character_dialog));
-        binding.pullToRefreshCharacterList.setOnRefreshListener(this::loadData);
+        binding.pullToRefreshItemList.setOnRefreshListener(this::loadData);
 
         loadData();
     }
@@ -132,7 +134,7 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
                 .setPositiveButton(R.string.action_delete_character, (dialog, which) -> bambooApi
                         .deleteCharacter(character.getId())
                         .subscribe(() -> {
-                            val adapter = (CharactersAdapter) binding.characterList.getAdapter();
+                            val adapter = (CharactersAdapter) binding.itemList.getAdapter();
                             assert adapter != null;
                             adapter.removeCharacter(position);
                             Toast.makeText(requireContext(), getString(R.string.success_character_delete, character.getName()), Toast.LENGTH_LONG).show();
