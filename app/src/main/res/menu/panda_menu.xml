@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
             android:id="@+id/action_add_panda"
-            android:contentDescription="@string/action_add_panda"
+            android:title="@string/action_add_panda"
             android:icon="@drawable/ic_add"
             app:showAsAction="ifRoom"/>
 </menu>

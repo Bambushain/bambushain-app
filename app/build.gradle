@@ -28,12 +28,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    packagingOptions {
-        jniLibs {
-            excludes += ['lib/armeabi-v7a/libsqlite3x.so', 'lib/x86/libsqlite3x.so', 'lib/x86_64/libsqlite3x.so']
-        }
-    }
-
 
     signingConfigs {
         release {
