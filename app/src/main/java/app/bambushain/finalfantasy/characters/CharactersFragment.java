@@ -120,7 +120,13 @@ public class CharactersFragment extends BindingFragment<FragmentCharactersBindin
         super.onViewCreated(view, savedInstanceState);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        binding.addCharacter.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_characters_to_change_character_dialog));
+        binding.toolbar.setOnMenuItemClickListener(menuItem -> {
+            if (menuItem.getItemId() == R.id.action_add_character) {
+                navigator.navigate(R.id.action_fragment_characters_to_change_character_dialog);
+            }
+
+            return true;
+        });
         binding.pullToRefreshItemList.setOnRefreshListener(this::loadData);
 
         loadData();

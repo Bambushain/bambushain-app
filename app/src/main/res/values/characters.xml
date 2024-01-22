@@ -35,7 +35,7 @@
     <string name="error_character_custom_fields_loading_failed">Deine eigenen Felder konnten leider nicht geladen
         werden
     </string>
-    <string name="character_no_free_company">Keine Freie Gesellschaft</string>
+    <string name="character_no_free_company">In keiner freien Gesellschaft</string>
     <string name="action_character_fighter">Kämpfer</string>
     <string name="action_character_crafter">Crafter</string>
     <string name="action_character_housing">Unterkünfte</string>

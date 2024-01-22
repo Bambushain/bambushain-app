@@ -15,27 +15,20 @@
             <com.google.android.material.appbar.MaterialToolbar
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:id="@+id/toolbar">
+                    android:id="@+id/toolbar"
+                    app:menu="@menu/character_menu">
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/pullToRefreshItemList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
             <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/itemList"/>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                android:id="@+id/addCharacter"
-                android:src="@drawable/ic_add"
-                android:contentDescription="@string/action_add_character"
-                android:layout_gravity="bottom|end"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

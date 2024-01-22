@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentHousingBinding;
+import app.bambushain.finalfantasy.characters.CharacterDetailsFragment;
 import app.bambushain.models.finalfantasy.Character;
 import app.bambushain.models.finalfantasy.CharacterHousing;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -59,12 +61,6 @@ public class HousingFragment extends BindingFragment<FragmentHousingBinding> {
         });
         adapter.setOnDeleteHousingListener(this::delete);
 
-        binding.addHousing.setOnClickListener(v -> {
-            val bundle = new Bundle();
-            bundle.putSerializable("character", character);
-            navigator.navigate(R.id.action_fragment_character_details_to_change_housing_dialog, bundle);
-        });
-
         val stateHandle = Objects.requireNonNull(navigator.getCurrentBackStackEntry())
                 .getSavedStateHandle();
         stateHandle.getLiveData("createdHousing", (CharacterHousing) null).observe(getViewLifecycleOwner(), housing -> {
@@ -91,6 +87,35 @@ public class HousingFragment extends BindingFragment<FragmentHousingBinding> {
         binding.pullToRefreshItemList.setOnRefreshListener(this::loadData);
 
         loadData();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        setupToolbar();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupToolbar();
+    }
+
+    private void setupToolbar() {
+        val parent = (CharacterDetailsFragment) getParentFragment();
+        assert parent != null;
+        parent.getToolbar().getMenu().clear();
+        parent.getToolbar().getMenu()
+                .add(R.string.action_add_housing)
+                .setIcon(R.drawable.ic_add)
+                .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+                .setOnMenuItemClickListener(item -> {
+                    val bundle = new Bundle();
+                    bundle.putSerializable("character", character);
+                    navigator.navigate(R.id.action_fragment_character_details_to_change_housing_dialog, bundle);
+
+                    return true;
+                });
     }
 
     @SuppressLint("NotifyDataSetChanged")

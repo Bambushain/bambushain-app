@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import app.bambushain.R;
@@ -17,6 +18,7 @@ import app.bambushain.models.finalfantasy.Character;
 import app.bambushain.utils.BundleUtils;
 import com.google.android.material.tabs.TabLayoutMediator;
 import dagger.hilt.android.AndroidEntryPoint;
+import lombok.Getter;
 import lombok.val;
 
 import javax.inject.Inject;
@@ -33,6 +35,10 @@ public class CharacterDetailsFragment extends BindingFragment<FragmentCharacterD
 
     Character character;
 
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
+
     @Override
     protected FragmentCharacterDetailsBinding getViewBinding() {
         return FragmentCharacterDetailsBinding.inflate(getLayoutInflater());
@@ -48,6 +54,7 @@ public class CharacterDetailsFragment extends BindingFragment<FragmentCharacterD
         binding.toolbar.setTitle(character.getName());
         binding.tabViewPager.setAdapter(new CharacterDetailsFragmentTabsAdapter(this));
         new TabLayoutMediator(binding.tabs, binding.tabViewPager, (tab, position) -> {
+            binding.toolbar.getMenu().clear();
             if (position == TAB_FIGHTER) {
                 tab.setText(R.string.action_character_fighter);
                 if (!getResources().getBoolean(R.bool.is_landscape)) {
@@ -68,23 +75,27 @@ public class CharacterDetailsFragment extends BindingFragment<FragmentCharacterD
         binding.tabViewPager.setCurrentItem(activeTabIdx, false);
     }
 
+    @Getter
     public class CharacterDetailsFragmentTabsAdapter extends FragmentStateAdapter {
 
         public CharacterDetailsFragmentTabsAdapter(@NonNull Fragment fragment) {
             super(fragment);
         }
 
+        private Fragment currentFragment;
+
         @NonNull
         @Override
         public Fragment createFragment(int i) {
             if (i == TAB_CRAFTER) {
-                return new CraftersFragment(bambooApi, character);
-            }
-            if (i == TAB_HOUSING) {
-                return new HousingFragment(bambooApi, character);
+                currentFragment = new CraftersFragment(bambooApi, character);
+            } else if (i == TAB_HOUSING) {
+                currentFragment = new HousingFragment(bambooApi, character);
+            } else if (i == TAB_FIGHTER) {
+                currentFragment = new FightersFragment(bambooApi, character);
             }
 
-            return new FightersFragment(bambooApi, character);
+            return currentFragment;
         }
 
         @Override

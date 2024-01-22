@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentFightersBinding;
+import app.bambushain.finalfantasy.characters.CharacterDetailsFragment;
 import app.bambushain.models.finalfantasy.Character;
 import app.bambushain.models.finalfantasy.Fighter;
 import app.bambushain.models.finalfantasy.FighterJob;
@@ -65,30 +67,13 @@ public class FightersFragment extends BindingFragment<FragmentFightersBinding> {
         });
         adapter.setOnDeleteFighterListener(this::delete);
 
-        binding.addFighter.setOnClickListener(v -> {
-            val currentUsedJobs = usedJobs
-                    .stream()
-                    .map(FighterJob::getValue)
-                    .collect(Collectors.toList());
-            val jobs = Arrays
-                    .stream(FighterJob.values())
-                    .map(FighterJob::getValue)
-                    .filter(fighterJob -> !currentUsedJobs.contains(fighterJob))
-                    .collect(Collectors.toList());
-
-            val bundle = new Bundle();
-            bundle.putSerializable("character", character);
-            bundle.putStringArrayList("jobs", new ArrayList<>(jobs));
-            navigator.navigate(R.id.action_fragment_character_details_to_change_fighter_dialog, bundle);
-        });
-
         val stateHandle = Objects.requireNonNull(navigator.getCurrentBackStackEntry())
                 .getSavedStateHandle();
         stateHandle.getLiveData("createdFighter", (Fighter) null).observe(getViewLifecycleOwner(), fighter -> {
             if (fighter != null) {
                 adapter.addFighter(fighter);
                 usedJobs.add(fighter.getJob());
-                checkIfAddEnabled();
+                setupToolbar();
             }
         });
         stateHandle.getLiveData("updatedFighter", (Fighter) null).observe(getViewLifecycleOwner(), fighter -> {
@@ -102,18 +87,46 @@ public class FightersFragment extends BindingFragment<FragmentFightersBinding> {
         return view;
     }
 
+    public void addFighter() {
+        val currentUsedJobs = usedJobs
+                .stream()
+                .map(FighterJob::getValue)
+                .collect(Collectors.toList());
+        val jobs = Arrays
+                .stream(FighterJob.values())
+                .map(FighterJob::getValue)
+                .filter(fighterJob -> !currentUsedJobs.contains(fighterJob))
+                .collect(Collectors.toList());
+
+        val bundle = new Bundle();
+        bundle.putSerializable("character", character);
+        bundle.putStringArrayList("jobs", new ArrayList<>(jobs));
+        navigator.navigate(R.id.action_fragment_character_details_to_change_fighter_dialog, bundle);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         binding.pullToRefreshItemList.setOnRefreshListener(this::loadData);
-
         loadData();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        setupToolbar();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupToolbar();
+    }
+
     @SuppressLint("NotifyDataSetChanged")
-    void loadData() {
+    public void loadData() {
         binding.pullToRefreshItemList.setRefreshing(true);
         //noinspection ResultOfMethodCallIgnored
         bambooApi.getFighters(character.getId()).subscribe(fighters -> {
@@ -125,18 +138,27 @@ public class FightersFragment extends BindingFragment<FragmentFightersBinding> {
                     .stream()
                     .map(Fighter::getJob)
                     .collect(Collectors.toList());
-            checkIfAddEnabled();
+            setupToolbar();
         }, throwable -> {
             Log.e(TAG, "loadData: failed to load fighter", throwable);
             Toast.makeText(requireContext(), R.string.error_fighters_loading_failed, Toast.LENGTH_LONG).show();
         });
     }
 
-    private void checkIfAddEnabled() {
-        if (usedJobs.size() == FighterJob.values().length) {
-            binding.addFighter.setVisibility(View.GONE);
-        } else {
-            binding.addFighter.setVisibility(View.VISIBLE);
+    private void setupToolbar() {
+        val parent = (CharacterDetailsFragment) getParentFragment();
+        assert parent != null;
+        parent.getToolbar().getMenu().clear();
+        if (usedJobs.size() != FighterJob.values().length) {
+            parent.getToolbar().getMenu()
+                    .add(R.string.action_add_fighter)
+                    .setIcon(R.drawable.ic_add)
+                    .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+                    .setOnMenuItemClickListener(item -> {
+                        addFighter();
+
+                        return true;
+                    });
         }
     }
 
@@ -154,7 +176,7 @@ public class FightersFragment extends BindingFragment<FragmentFightersBinding> {
                             assert adapter != null;
                             adapter.removeFighter(position);
                             usedJobs.remove(fighter.getJob());
-                            checkIfAddEnabled();
+                            setupToolbar();
                             Toast.makeText(requireContext(), getString(R.string.success_fighter_delete, jobLabel), Toast.LENGTH_LONG).show();
                         }, throwable -> {
                             Log.e(TAG, "delete: deleting character failed", throwable);

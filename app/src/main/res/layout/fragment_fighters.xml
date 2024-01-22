@@ -17,13 +17,5 @@
                     android:layout_height="match_parent"
                     android:id="@+id/itemList"/>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/addFighter"
-                android:src="@drawable/ic_add"
-                android:contentDescription="@string/action_add_fighter"
-                android:layout_margin="@dimen/fab_margin"
-                android:layout_gravity="bottom|end"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

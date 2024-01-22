@@ -64,7 +64,7 @@ public abstract class BindingFragment<T extends ViewBinding> extends Fragment {
     @SuppressLint("UseCompatLoadingForDrawables")
     protected RecyclerView.ItemDecoration getGridDivider(int orientation) {
         val divider = new DividerItemDecoration(requireContext(), orientation);
-        divider.setDrawable(requireContext().getDrawable(R.drawable.empty_16dp_divider));
+        divider.setDrawable(requireContext().getDrawable(R.drawable.grid_divider));
 
         return divider;
     }

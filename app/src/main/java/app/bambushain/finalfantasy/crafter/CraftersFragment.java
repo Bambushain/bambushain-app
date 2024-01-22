@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentCraftersBinding;
+import app.bambushain.finalfantasy.characters.CharacterDetailsFragment;
 import app.bambushain.models.finalfantasy.Character;
 import app.bambushain.models.finalfantasy.Crafter;
 import app.bambushain.models.finalfantasy.CrafterJob;
@@ -65,30 +67,13 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
         });
         adapter.setOnDeleteCrafterListener(this::delete);
 
-        binding.addCrafter.setOnClickListener(v -> {
-            val currentUsedJobs = usedJobs
-                    .stream()
-                    .map(CrafterJob::getValue)
-                    .collect(Collectors.toList());
-            val jobs = Arrays
-                    .stream(CrafterJob.values())
-                    .map(CrafterJob::getValue)
-                    .filter(crafterJob -> !currentUsedJobs.contains(crafterJob))
-                    .collect(Collectors.toList());
-
-            val bundle = new Bundle();
-            bundle.putSerializable("character", character);
-            bundle.putStringArrayList("jobs", new ArrayList<>(jobs));
-            navigator.navigate(R.id.action_fragment_character_details_to_change_crafter_dialog, bundle);
-        });
-
         val stateHandle = Objects.requireNonNull(navigator.getCurrentBackStackEntry())
                 .getSavedStateHandle();
         stateHandle.getLiveData("createdCrafter", (Crafter) null).observe(getViewLifecycleOwner(), crafter -> {
             if (crafter != null) {
                 adapter.addCrafter(crafter);
                 usedJobs.add(crafter.getJob());
-                checkIfAddEnabled();
+                setupToolbar();
             }
         });
         stateHandle.getLiveData("updatedCrafter", (Crafter) null).observe(getViewLifecycleOwner(), crafter -> {
@@ -102,6 +87,23 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
         return view;
     }
 
+    public void addCrafter() {
+        val currentUsedJobs = usedJobs
+                .stream()
+                .map(CrafterJob::getValue)
+                .collect(Collectors.toList());
+        val jobs = Arrays
+                .stream(CrafterJob.values())
+                .map(CrafterJob::getValue)
+                .filter(crafterJob -> !currentUsedJobs.contains(crafterJob))
+                .collect(Collectors.toList());
+
+        val bundle = new Bundle();
+        bundle.putSerializable("character", character);
+        bundle.putStringArrayList("jobs", new ArrayList<>(jobs));
+        navigator.navigate(R.id.action_fragment_character_details_to_change_crafter_dialog, bundle);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -112,8 +114,20 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
         loadData();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        setupToolbar();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupToolbar();
+    }
+
     @SuppressLint("NotifyDataSetChanged")
-    void loadData() {
+    public void loadData() {
         binding.pullToRefreshItemList.setRefreshing(true);
         //noinspection ResultOfMethodCallIgnored
         bambooApi.getCrafters(character.getId()).subscribe(crafters -> {
@@ -125,18 +139,28 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
                     .stream()
                     .map(Crafter::getJob)
                     .collect(Collectors.toList());
-            checkIfAddEnabled();
+            setupToolbar();
         }, throwable -> {
             Log.e(TAG, "loadData: failed to load crafter", throwable);
             Toast.makeText(requireContext(), R.string.error_crafters_loading_failed, Toast.LENGTH_LONG).show();
         });
     }
 
-    private void checkIfAddEnabled() {
-        if (usedJobs.size() == CrafterJob.values().length) {
-            binding.addCrafter.setVisibility(View.GONE);
-        } else {
-            binding.addCrafter.setVisibility(View.VISIBLE);
+    private void setupToolbar() {
+        val parent = (CharacterDetailsFragment) getParentFragment();
+        assert parent != null;
+        parent.getToolbar().getMenu().clear();
+        if (usedJobs.size() != CrafterJob.values().length) {
+            parent.getToolbar().getMenu().clear();
+            parent.getToolbar().getMenu()
+                    .add(R.string.action_add_crafter)
+                    .setIcon(R.drawable.ic_add)
+                    .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+                    .setOnMenuItemClickListener(item -> {
+                        addCrafter();
+
+                        return true;
+                    });
         }
     }
 
@@ -154,7 +178,7 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
                             assert adapter != null;
                             adapter.removeCrafter(position);
                             usedJobs.remove(crafter.getJob());
-                            checkIfAddEnabled();
+                            setupToolbar();
                             Toast.makeText(requireContext(), getString(R.string.success_crafter_delete, jobLabel), Toast.LENGTH_LONG).show();
                         }, throwable -> {
                             Log.e(TAG, "delete: deleting character failed", throwable);

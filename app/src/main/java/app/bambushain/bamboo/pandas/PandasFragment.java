@@ -246,7 +246,16 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         viewModel.canCreate.setValue(activity.headerViewModel.isMod.getValue());
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.addPanda.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_pandas_to_add_panda_dialog));
+        binding.toolbar.setOnMenuItemClickListener(menuItem -> {
+            if (menuItem.getItemId() == R.id.action_add_panda) {
+                navigator.navigate(R.id.action_fragment_pandas_to_add_panda_dialog);
+            }
+
+            return true;
+        });
+        if (!viewModel.canCreate.getValue()) {
+            binding.toolbar.getMenu().clear();
+        }
         binding.pullToRefreshItemList.setOnRefreshListener(this::loadData);
         loadData();
     }
