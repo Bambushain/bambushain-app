@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
@@ -48,12 +48,12 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         val view = super.onCreateView(inflater, container, savedInstanceState);
         val adapter = getPandasAdapter();
 
-        binding.pandaList.setAdapter(adapter);
-        binding.pandaList.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.itemList.setAdapter(adapter);
+        binding.itemList.setLayoutManager(getLayoutManager());
+        binding.itemList.addItemDecoration(getGridDivider(GridLayoutManager.VERTICAL));
+        binding.itemList.addItemDecoration(getGridDivider(GridLayoutManager.HORIZONTAL));
 
-        val stateHandle = Objects.requireNonNull(navigator
-                        .getCurrentBackStackEntry())
-                .getSavedStateHandle();
+        val stateHandle = Objects.requireNonNull(navigator.getCurrentBackStackEntry()).getSavedStateHandle();
         stateHandle
                 .getLiveData("updatedUser", (User) null)
                 .observe(getViewLifecycleOwner(), user -> {
@@ -98,7 +98,7 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
                 .setTitle(R.string.action_give_mod_status)
                 .setMessage(getString(R.string.action_give_mod_status_message, user.getDisplayName()))
                 .setPositiveButton(R.string.action_give_mod_status, (dialog, which) -> bambooApi.makeUserMod(user.getId()).subscribe(() -> {
-                    val adapter = (PandasAdapter) binding.pandaList.getAdapter();
+                    val adapter = (PandasAdapter) binding.itemList.getAdapter();
                     user.setIsMod(true);
                     assert adapter != null;
                     adapter.updatePanda(position, user);
@@ -126,7 +126,7 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
                 .setTitle(R.string.action_revoke_mod_status)
                 .setMessage(getString(R.string.action_revoke_mod_status_message, user.getDisplayName()))
                 .setPositiveButton(R.string.action_revoke_mod_status, (dialog, which) -> bambooApi.revokeUserModRights(user.getId()).subscribe(() -> {
-                    val adapter = (PandasAdapter) binding.pandaList.getAdapter();
+                    val adapter = (PandasAdapter) binding.itemList.getAdapter();
                     user.setIsMod(false);
                     assert adapter != null;
                     adapter.updatePanda(position, user);
@@ -154,7 +154,7 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
                 .setTitle(R.string.action_reset_two_factor)
                 .setMessage(getString(R.string.action_reset_two_factor_message, user.getDisplayName()))
                 .setPositiveButton(R.string.action_reset_two_factor, (dialog, which) -> bambooApi.resetUserTotp(user.getId()).subscribe(() -> {
-                    val adapter = (PandasAdapter) binding.pandaList.getAdapter();
+                    val adapter = (PandasAdapter) binding.itemList.getAdapter();
                     user.setAppTotpEnabled(false);
                     assert adapter != null;
                     adapter.updatePanda(position, user);
@@ -202,7 +202,7 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
                 .setTitle(R.string.action_delete_panda)
                 .setMessage(getString(R.string.action_delete_panda_message, panda.getDisplayName()))
                 .setPositiveButton(R.string.action_delete_panda, (dialog, which) -> bambooApi.deleteUser(panda.getId()).subscribe(() -> {
-                    val adapter = (PandasAdapter) binding.pandaList.getAdapter();
+                    val adapter = (PandasAdapter) binding.itemList.getAdapter();
                     assert adapter != null;
                     adapter.removePanda(position);
                     Toast.makeText(requireContext(), getString(R.string.success_panda_delete, panda.getDisplayName()), Toast.LENGTH_LONG).show();
@@ -224,18 +224,18 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
 
     @SuppressLint("NotifyDataSetChanged")
     void loadData() {
-        binding.pullToRefreshPandaList.setRefreshing(true);
+        binding.pullToRefreshItemList.setRefreshing(true);
         //noinspection ResultOfMethodCallIgnored
         bambooApi
                 .getUsers()
                 .subscribe(users -> {
-                    val adapter = (PandasAdapter) binding.pandaList.getAdapter();
+                    val adapter = (PandasAdapter) binding.itemList.getAdapter();
                     Objects.requireNonNull(adapter).setPandas(users);
                     adapter.notifyDataSetChanged();
-                    binding.pullToRefreshPandaList.setRefreshing(false);
+                    binding.pullToRefreshItemList.setRefreshing(false);
                 }, throwable -> {
                     Log.e(TAG, "onViewCreated: Failed to load users", throwable);
-                    binding.pullToRefreshPandaList.setRefreshing(false);
+                    binding.pullToRefreshItemList.setRefreshing(false);
                 });
     }
 
@@ -247,7 +247,7 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.addPanda.setOnClickListener(v -> navigator.navigate(R.id.action_fragment_pandas_to_add_panda_dialog));
-        binding.pullToRefreshPandaList.setOnRefreshListener(this::loadData);
+        binding.pullToRefreshItemList.setOnRefreshListener(this::loadData);
         loadData();
     }
 }

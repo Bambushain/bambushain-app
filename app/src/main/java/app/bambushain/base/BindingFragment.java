@@ -1,5 +1,6 @@
 package app.bambushain.base;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import app.bambushain.MainActivity;
 import app.bambushain.R;
@@ -51,5 +55,17 @@ public abstract class BindingFragment<T extends ViewBinding> extends Fragment {
 
     protected @ColorInt int getColor(@ColorRes int id) {
         return getResources().getColor(id, null);
+    }
+
+    protected RecyclerView.LayoutManager getLayoutManager() {
+        return new GridLayoutManager(requireContext(), getResources().getInteger(R.integer.grid_span_count));
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    protected RecyclerView.ItemDecoration getGridDivider(int orientation) {
+        val divider = new DividerItemDecoration(requireContext(), orientation);
+        divider.setDrawable(requireContext().getDrawable(R.drawable.empty_16dp_divider));
+
+        return divider;
     }
 }

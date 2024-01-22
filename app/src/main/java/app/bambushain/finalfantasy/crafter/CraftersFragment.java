@@ -50,10 +50,10 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
         val view = super.onCreateView(inflater, container, savedInstanceState);
         val adapter = new CraftersAdapter(new ViewModelProvider(this), getViewLifecycleOwner());
 
-        binding.crafterList.setAdapter(adapter);
-        binding.crafterList.setLayoutManager(new LinearLayoutManager(requireContext()));
-        val dividerItemDecoration = new MaterialDividerItemDecoration(binding.crafterList.getContext(), LinearLayoutManager.VERTICAL);
-        binding.crafterList.addItemDecoration(dividerItemDecoration);
+        binding.itemList.setAdapter(adapter);
+        binding.itemList.setLayoutManager(new LinearLayoutManager(requireContext()));
+        val dividerItemDecoration = new MaterialDividerItemDecoration(binding.itemList.getContext(), LinearLayoutManager.VERTICAL);
+        binding.itemList.addItemDecoration(dividerItemDecoration);
 
         adapter.setOnEditCrafterListener((position, crafter) -> {
             val bundle = new Bundle();
@@ -107,20 +107,20 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
         super.onViewCreated(view, savedInstanceState);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        binding.pullToRefreshCrafterList.setOnRefreshListener(this::loadData);
+        binding.pullToRefreshItemList.setOnRefreshListener(this::loadData);
 
         loadData();
     }
 
     @SuppressLint("NotifyDataSetChanged")
     void loadData() {
-        binding.pullToRefreshCrafterList.setRefreshing(true);
+        binding.pullToRefreshItemList.setRefreshing(true);
         //noinspection ResultOfMethodCallIgnored
         bambooApi.getCrafters(character.getId()).subscribe(crafters -> {
-            val adapter = (CraftersAdapter) binding.crafterList.getAdapter();
+            val adapter = (CraftersAdapter) binding.itemList.getAdapter();
             Objects.requireNonNull(adapter).setCrafters(crafters);
             adapter.notifyDataSetChanged();
-            binding.pullToRefreshCrafterList.setRefreshing(false);
+            binding.pullToRefreshItemList.setRefreshing(false);
             usedJobs = crafters
                     .stream()
                     .map(Crafter::getJob)
@@ -150,7 +150,7 @@ public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
                 .setPositiveButton(R.string.action_delete_crafter, (dialog, which) -> bambooApi
                         .deleteCrafter(crafter.getCharacterId(), crafter.getId())
                         .subscribe(() -> {
-                            val adapter = (CraftersAdapter) binding.crafterList.getAdapter();
+                            val adapter = (CraftersAdapter) binding.itemList.getAdapter();
                             assert adapter != null;
                             adapter.removeCrafter(position);
                             usedJobs.remove(crafter.getJob());

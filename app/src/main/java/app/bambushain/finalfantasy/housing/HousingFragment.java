@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
@@ -45,8 +45,10 @@ public class HousingFragment extends BindingFragment<FragmentHousingBinding> {
         val view = super.onCreateView(inflater, container, savedInstanceState);
         val adapter = new HousingAdapter(new ViewModelProvider(this), getViewLifecycleOwner());
 
-        binding.housingList.setAdapter(adapter);
-        binding.housingList.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.itemList.setAdapter(adapter);
+        binding.itemList.setLayoutManager(getLayoutManager());
+        binding.itemList.addItemDecoration(getGridDivider(GridLayoutManager.VERTICAL));
+        binding.itemList.addItemDecoration(getGridDivider(GridLayoutManager.HORIZONTAL));
 
         adapter.setOnEditHousingListener((position, housing) -> {
             val bundle = new Bundle();
@@ -86,20 +88,20 @@ public class HousingFragment extends BindingFragment<FragmentHousingBinding> {
         super.onViewCreated(view, savedInstanceState);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        binding.pullToRefreshHousingList.setOnRefreshListener(this::loadData);
+        binding.pullToRefreshItemList.setOnRefreshListener(this::loadData);
 
         loadData();
     }
 
     @SuppressLint("NotifyDataSetChanged")
     void loadData() {
-        binding.pullToRefreshHousingList.setRefreshing(true);
+        binding.pullToRefreshItemList.setRefreshing(true);
         //noinspection ResultOfMethodCallIgnored
         bambooApi.getHousings(character.getId()).subscribe(housings -> {
-            val adapter = (HousingAdapter) binding.housingList.getAdapter();
+            val adapter = (HousingAdapter) binding.itemList.getAdapter();
             Objects.requireNonNull(adapter).setHousings(housings);
             adapter.notifyDataSetChanged();
-            binding.pullToRefreshHousingList.setRefreshing(false);
+            binding.pullToRefreshItemList.setRefreshing(false);
         }, throwable -> {
             Log.e(TAG, "loadData: failed to load housing", throwable);
             Toast.makeText(requireContext(), R.string.error_housings_loading_failed, Toast.LENGTH_LONG).show();
@@ -114,7 +116,7 @@ public class HousingFragment extends BindingFragment<FragmentHousingBinding> {
                 .setPositiveButton(R.string.action_delete_housing, (dialog, which) -> bambooApi
                         .deleteHousing(housing.getCharacterId(), housing.getId())
                         .subscribe(() -> {
-                            val adapter = (HousingAdapter) binding.housingList.getAdapter();
+                            val adapter = (HousingAdapter) binding.itemList.getAdapter();
                             assert adapter != null;
                             adapter.removeHousing(position);
                             Toast.makeText(requireContext(), R.string.success_housing_delete, Toast.LENGTH_LONG).show();

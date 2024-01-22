@@ -9,55 +9,38 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/layout">
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/toolbarLayout">
+            <com.google.android.material.appbar.MaterialToolbar
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:id="@+id/toolbarLayout"
-                    app:layout_constraintTop_toTopOf="parent">
-                <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                    <com.google.android.material.appbar.MaterialToolbar
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
-                            android:id="@+id/toolbar"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:menu="@menu/my_profile_menu">
-                    </com.google.android.material.appbar.MaterialToolbar>
-                    <com.google.android.material.progressindicator.LinearProgressIndicator
-                            android:id="@+id/progress_indicator"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:indeterminate="true"
-                            android:visibility="@{viewModel.isLoading ? android.view.View.VISIBLE : android.view.View.GONE}"
-                            app:hideAnimationBehavior="inward"
-                            app:showAnimationBehavior="outward"/>
-                </FrameLayout>
-            </com.google.android.material.appbar.AppBarLayout>
+                    android:id="@+id/toolbar"
+                    app:menu="@menu/my_profile_menu">
+            </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
             <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/margin"
-                    android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/toolbarLayout">
+                    android:layout_marginHorizontal="@dimen/activity_horizontal_margin">
                 <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="match_parent">
                     <ImageView
                             android:layout_width="match_parent"
-                            android:layout_height="194dp"
+                            android:layout_height="0dp"
                             android:id="@+id/bambooGroveImage"
                             android:scaleType="centerCrop"
                             android:contentDescription="@string/bambooGroveImage"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintHeight_max="@dimen/card_header"
                             app:srcCompat="@drawable/bamboo_grove"/>
                     <TextView
                             android:layout_width="wrap_content"
@@ -110,6 +93,6 @@
                             app:layout_constraintBottom_toBottomOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

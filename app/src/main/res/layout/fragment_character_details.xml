@@ -6,41 +6,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/layout">
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/toolbarLayout"
+                app:liftOnScrollTargetViewId="@id/itemList"
+                app:liftOnScroll="true">
+            <com.google.android.material.appbar.MaterialToolbar
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:id="@+id/toolbarLayout"
-                    app:layout_constraintTop_toTopOf="parent">
-                <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                    <com.google.android.material.appbar.MaterialToolbar
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
-                            android:id="@+id/toolbar"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent">
-                    </com.google.android.material.appbar.MaterialToolbar>
-                </FrameLayout>
-            </com.google.android.material.appbar.AppBarLayout>
+                    android:id="@+id/toolbar">
+            </com.google.android.material.appbar.MaterialToolbar>
             <com.google.android.material.tabs.TabLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/tabs"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
-                    app:tabMode="fixed">
+                    app:tabMode="auto"
+                    app:liftOnScrollTargetViewId="@id/itemList"
+                    app:liftOnScroll="true"
+                    style="@style/Widget.Material3.TabLayout.OnSurface">
             </com.google.android.material.tabs.TabLayout>
-            <androidx.viewpager2.widget.ViewPager2
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:id="@+id/tabViewPager"
-                    app:layout_constraintTop_toBottomOf="@id/tabs"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.viewpager2.widget.ViewPager2
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/tabViewPager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
