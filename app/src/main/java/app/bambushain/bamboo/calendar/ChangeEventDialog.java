@@ -42,7 +42,7 @@ public abstract class ChangeEventDialog<T extends ViewBinding> extends BindingDi
                 .builder()
                 .context(requireContext())
                 .title(getString(R.string.choose_event_color))
-                .color(getViewModel().color.getValue())
+                .color(getViewModel().color.getValue().toLowerCase())
                 .onColorPickedListener(col -> getViewModel().color.setValue(col))
                 .build()
                 .show();
