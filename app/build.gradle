@@ -96,7 +96,7 @@ dependencies {
     //noinspection AnnotationProcessorOnCompilePath
     implementation 'org.projectlombok:lombok:1.18.30'
 
-    annotationProcessor 'androidx.databinding:databinding-compiler:8.2.1'
+    annotationProcessor 'androidx.databinding:databinding-compiler:8.2.2'
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
     annotationProcessor 'com.google.dagger:hilt-compiler:2.50'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
