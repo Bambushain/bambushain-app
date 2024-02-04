@@ -2,6 +2,7 @@ package app.bambushain.bamboo.pandas;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import androidx.lifecycle.LifecycleOwner;
@@ -122,6 +123,11 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
                     popupMenu.show();
                 }
         );
+        if (panda.getId() == myId) {
+            viewHolder.binding.actionMore.setVisibility(View.GONE);
+        } else {
+            viewHolder.binding.actionMore.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
