@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
+import app.bambushain.api.ProfilePictureLoader;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentPandasBinding;
 import app.bambushain.models.bamboo.User;
@@ -32,6 +33,9 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
     private static final String TAG = PandasFragment.class.getName();
     @Inject
     BambooApi bambooApi;
+
+    @Inject
+    ProfilePictureLoader profilePictureLoader;
 
     @Inject
     public PandasFragment() {
@@ -77,7 +81,7 @@ public class PandasFragment extends BindingFragment<FragmentPandasBinding> {
         val isMod = activity.headerViewModel.isMod.getValue();
         val myId = activity.headerViewModel.id.getValue();
         //noinspection DataFlowIssue
-        val adapter = new PandasAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), Boolean.TRUE.equals(isMod), myId, new ArrayList<>());
+        val adapter = new PandasAdapter(new ViewModelProvider(this), getViewLifecycleOwner(), Boolean.TRUE.equals(isMod), myId, profilePictureLoader, new ArrayList<>());
         adapter.setOnEditUserListener((position, user) -> {
             val bundle = new Bundle();
             bundle.putSerializable("user", user);

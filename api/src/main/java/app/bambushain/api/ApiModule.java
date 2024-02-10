@@ -2,6 +2,9 @@ package app.bambushain.api;
 
 import android.content.Context;
 import androidx.preference.PreferenceManager;
+import coil.ComponentRegistry;
+import coil.ImageLoader;
+import coil.decode.SvgDecoder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dagger.Module;
@@ -25,7 +28,7 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpBuilder(@ApplicationContext Context context) {
+    public OkHttpClient provideOkHttpBuilder(@ApplicationContext Context context) {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         return new OkHttpClient.Builder()
@@ -67,5 +70,24 @@ public class ApiModule {
         return new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, adapter)
                 .create();
+    }
+
+    @Provides
+    @Singleton
+    ImageLoader provideImageLoader(OkHttpClient client, @ApplicationContext Context context) {
+        return new ImageLoader
+                .Builder(context)
+                .okHttpClient(client)
+                .components(new ComponentRegistry
+                        .Builder()
+                        .add(new SvgDecoder.Factory())
+                        .build())
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    public ProfilePictureLoader provideProfilePictureLoader(ImageLoader imageLoader, @ApplicationContext Context context) {
+        return new ProfilePictureLoader(imageLoader, context);
     }
 }

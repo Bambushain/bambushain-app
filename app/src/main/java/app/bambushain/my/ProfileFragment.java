@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import app.bambushain.R;
+import app.bambushain.api.ProfilePictureLoader;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentProfileBinding;
 import dagger.hilt.android.AndroidEntryPoint;
@@ -18,6 +19,9 @@ import java.util.Objects;
 public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {
 
     ProfileViewModel viewModel;
+
+    @Inject
+    ProfilePictureLoader profilePictureLoader;
 
     @Inject
     public ProfileFragment() {
@@ -53,8 +57,9 @@ public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {
             return true;
         });
 
-        Objects.requireNonNull(navigator
-                        .getCurrentBackStackEntry())
+        profilePictureLoader.loadProfilePicture(headerViewModel.id.getValue(), binding.profilePicture);
+
+        Objects.requireNonNull(navigator.getCurrentBackStackEntry())
                 .getSavedStateHandle()
                 .getLiveData("currentUser", viewModel)
                 .observe(getViewLifecycleOwner(), user -> {

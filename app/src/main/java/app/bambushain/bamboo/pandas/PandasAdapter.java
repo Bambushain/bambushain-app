@@ -9,6 +9,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import app.bambushain.R;
+import app.bambushain.api.ProfilePictureLoader;
 import app.bambushain.base.listener.OnDeleteListener;
 import app.bambushain.base.listener.OnEditListener;
 import app.bambushain.databinding.PandaCardBinding;
@@ -26,6 +27,7 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
     private final LifecycleOwner lifecycleOwner;
     private final boolean iAmMod;
     private final int myId;
+    private static ProfilePictureLoader profilePictureLoader;
     @Setter
     private List<User> pandas;
     @Setter
@@ -41,11 +43,12 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
     @Setter
     private OnEditListener<User> onEditUserListener;
 
-    public PandasAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner, boolean iAmMod, int myId, List<User> pandas) {
+    public PandasAdapter(ViewModelProvider viewModelProvider, LifecycleOwner lifecycleOwner, boolean iAmMod, int myId, ProfilePictureLoader profilePictureLoader, List<User> pandas) {
         this.viewModelProvider = viewModelProvider;
         this.lifecycleOwner = lifecycleOwner;
         this.iAmMod = iAmMod;
         this.myId = myId;
+        PandasAdapter.profilePictureLoader = profilePictureLoader;
         this.pandas = pandas;
     }
 
@@ -202,6 +205,7 @@ public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder
             binding.getViewModel().id.setValue(panda.getId());
             binding.getViewModel().isMod.setValue(panda.getIsMod());
             binding.getViewModel().appTotpEnabled.setValue(panda.getAppTotpEnabled());
+            profilePictureLoader.loadProfilePicture(panda.getId(), binding.profilePicture);
         }
     }
 }
