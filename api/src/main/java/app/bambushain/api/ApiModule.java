@@ -5,6 +5,7 @@ import androidx.preference.PreferenceManager;
 import coil.ComponentRegistry;
 import coil.ImageLoader;
 import coil.decode.SvgDecoder;
+import coil.request.CachePolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dagger.Module;
@@ -82,6 +83,8 @@ public class ApiModule {
                         .Builder()
                         .add(new SvgDecoder.Factory())
                         .build())
+                .memoryCachePolicy(CachePolicy.DISABLED)
+                .diskCachePolicy(CachePolicy.DISABLED)
                 .build();
     }
 

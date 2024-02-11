@@ -13,6 +13,7 @@ import app.bambushain.models.my.UpdateMyProfile;
 import app.bambushain.models.pandas.UpdateUserProfile;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
+import okhttp3.RequestBody;
 import retrofit2.http.*;
 
 import java.time.LocalDate;
@@ -142,44 +143,6 @@ public interface BambooApi {
     );
 
     /**
-     * Creates a new character custom field
-     *
-     * @param modifyCustomCharacterFieldRequest (optional)
-     * @return Observable&lt;CustomCharacterField&gt;
-     */
-    @Headers({
-            "Content-Type:application/json"
-    })
-    @POST("api/final-fantasy/character/custom-field")
-    Observable<CustomCharacterField> createCustomField(
-            @retrofit2.http.Body ModifyCustomCharacterFieldRequest modifyCustomCharacterFieldRequest
-    );
-
-    /**
-     * Creates a new option for the given custom field
-     *
-     * @param fieldId The id of the custom field (required)
-     * @param body    (optional)
-     * @return Completable
-     */
-    @Headers({
-            "Content-Type:application/json"
-    })
-    @POST("api/final-fantasy/character/custom-field/{field_id}/option")
-    Completable createCustomFieldOption(
-            @retrofit2.http.Path("field_id") long fieldId, @retrofit2.http.Body String body
-    );
-
-    /**
-     * Creates a new free company
-     *
-     * @return Observable&lt;FreeCompany&gt;
-     */
-    @POST("api/final-fantasy/free-company")
-    Observable<FreeCompany> createFreeCompany();
-
-
-    /**
      * Deletes the given character
      *
      * @param id The id of the character (required)
@@ -191,79 +154,12 @@ public interface BambooApi {
     );
 
     /**
-     * Deletes the given custom field
-     *
-     * @param id The id of the custom field (required)
-     * @return Completable
-     */
-    @DELETE("api/final-fantasy/character/custom-field/{id}")
-    Completable deleteCustomField(
-            @retrofit2.http.Path("id") long id
-    );
-
-    /**
-     * Deletes the given option
-     *
-     * @param fieldId The id of the custom field (required)
-     * @param id      The id of the custom field option (required)
-     * @return Completable
-     */
-    @DELETE("api/final-fantasy/character/custom-field/{field_id}/option/{id}")
-    Completable deleteCustomFieldOption(
-            @retrofit2.http.Path("field_id") long fieldId, @retrofit2.http.Path("id") long id
-    );
-
-    /**
-     * Deletes the given free company
-     *
-     * @param id The id of the free company (required)
-     * @return Completable
-     */
-    @DELETE("api/final-fantasy/free-company/{id}")
-    Completable deleteFreeCompany(
-            @retrofit2.http.Path("id") long id
-    );
-
-    /**
-     * Gets the character by id
-     *
-     * @param id The id of the character (required)
-     * @return Observable&lt;Character&gt;
-     */
-    @GET("api/final-fantasy/character/{id}")
-    Observable<Character> getCharacterById(
-            @retrofit2.http.Path("id") long id
-    );
-
-    /**
      * Get a list of all characters for the current user
      *
      * @return Observable&lt;List&lt;Character&gt;&gt;
      */
     @GET("api/final-fantasy/character")
     Observable<List<Character>> getCharacters();
-
-    /**
-     * Gets the custom field with the given id
-     *
-     * @param id The id of the custom field (required)
-     * @return Observable&lt;CustomCharacterField&gt;
-     */
-    @GET("api/final-fantasy/character/custom-field/{id}")
-    Observable<CustomCharacterField> getCustomFieldById(
-            @retrofit2.http.Path("id") long id
-    );
-
-    /**
-     * Gets all options for the given custom field
-     *
-     * @param fieldId The id of the custom field (required)
-     * @return Observable&lt;List&lt;CustomCharacterFieldOption&gt;&gt;
-     */
-    @GET("api/final-fantasy/character/custom-field/{field_id}/option")
-    Observable<List<CustomCharacterFieldOption>> getCustomFieldOptions(
-            @retrofit2.http.Path("field_id") long fieldId
-    );
 
     /**
      * Gets a list of all character custom fields
@@ -282,29 +178,6 @@ public interface BambooApi {
     Observable<List<FreeCompany>> getFreeCompanies();
 
     /**
-     * Get free company by id
-     *
-     * @param id The id of the free company (required)
-     * @return Observable&lt;FreeCompany&gt;
-     */
-    @GET("api/final-fantasy/free-company/{id}")
-    Observable<FreeCompany> getFreeCompanyById(
-            @retrofit2.http.Path("id") long id
-    );
-
-    /**
-     * Moves the given custom field to the new position
-     *
-     * @param id       The id of the custom field (required)
-     * @param position The new position (required)
-     * @return Completable
-     */
-    @PUT("api/final-fantasy/character/custom-field/{id}/{position}")
-    Completable moveCustomField(
-            @retrofit2.http.Path("id") long id, @retrofit2.http.Path("position") long position
-    );
-
-    /**
      * Updates the given character
      *
      * @param id        The id of the character (required)
@@ -317,52 +190,6 @@ public interface BambooApi {
     @PUT("api/final-fantasy/character/{id}")
     Completable updateCharacter(
             @retrofit2.http.Path("id") long id, @retrofit2.http.Body Character character
-    );
-
-    /**
-     * Updates the given custom field
-     *
-     * @param id                                The id of the custom field (required)
-     * @param modifyCustomCharacterFieldRequest (optional)
-     * @return Completable
-     */
-    @Headers({
-            "Content-Type:application/json"
-    })
-    @PUT("api/final-fantasy/character/custom-field/{id}")
-    Completable updateCustomField(
-            @retrofit2.http.Path("id") long id, @retrofit2.http.Body ModifyCustomCharacterFieldRequest modifyCustomCharacterFieldRequest
-    );
-
-    /**
-     * Updates the given option
-     *
-     * @param fieldId The id of the custom field (required)
-     * @param id      The id of the custom field option (required)
-     * @param body    (optional)
-     * @return Completable
-     */
-    @Headers({
-            "Content-Type:application/json"
-    })
-    @PUT("api/final-fantasy/character/custom-field/{field_id}/option/{id}")
-    Completable updateCustomFieldOption(
-            @retrofit2.http.Path("field_id") long fieldId, @retrofit2.http.Path("id") long id, @retrofit2.http.Body String body
-    );
-
-    /**
-     * Updates the given free company
-     *
-     * @param id          The id of the free company (required)
-     * @param freeCompany (optional)
-     * @return Completable
-     */
-    @Headers({
-            "Content-Type:application/json"
-    })
-    @PUT("api/final-fantasy/free-company/{id}")
-    Completable updateFreeCompany(
-            @retrofit2.http.Path("id") long id, @retrofit2.http.Body FreeCompany freeCompany
     );
 
     /**
@@ -391,19 +218,6 @@ public interface BambooApi {
      */
     @DELETE("api/final-fantasy/character/{character_id}/crafter/{id}")
     Completable deleteCrafter(
-            @retrofit2.http.Path("character_id") long characterId, @retrofit2.http.Path("id") long id
-    );
-
-    /**
-     * Get a crafter by job
-     * Gets the crafter with the given job
-     *
-     * @param characterId The id of the character (required)
-     * @param id          The id of the crafter (required)
-     * @return Observable&lt;Crafter&gt;
-     */
-    @GET("api/final-fantasy/character/{character_id}/crafter/{id}")
-    Observable<Crafter> getCrafter(
             @retrofit2.http.Path("character_id") long characterId, @retrofit2.http.Path("id") long id
     );
 
@@ -466,19 +280,6 @@ public interface BambooApi {
     );
 
     /**
-     * Get a fighter by job
-     * Gets the fighter with the given job
-     *
-     * @param characterId The id of the character (required)
-     * @param id          The id of the fighter (required)
-     * @return Observable&lt;Fighter&gt;
-     */
-    @GET("api/final-fantasy/character/{character_id}/fighter/{id}")
-    Observable<Fighter> getFighter(
-            @retrofit2.http.Path("character_id") long characterId, @retrofit2.http.Path("id") long id
-    );
-
-    /**
      * Get list of fighter
      * Gets a list of all fighters the current user has configured
      *
@@ -533,19 +334,6 @@ public interface BambooApi {
      */
     @DELETE("api/final-fantasy/character/{character_id}/housing/{id}")
     Completable deleteHousing(
-            @retrofit2.http.Path("character_id") long characterId, @retrofit2.http.Path("id") long id
-    );
-
-    /**
-     * Get a housing by job
-     * Gets the housing with the given job
-     *
-     * @param characterId The id of the character (required)
-     * @param id          The id of the housing (required)
-     * @return Observable&lt;Housing&gt;
-     */
-    @GET("api/final-fantasy/character/{character_id}/housing/{id}")
-    Observable<CharacterHousing> getHousing(
             @retrofit2.http.Path("character_id") long characterId, @retrofit2.http.Path("id") long id
     );
 
@@ -618,6 +406,16 @@ public interface BambooApi {
     );
 
     /**
+     * Updates the current users profile picture
+     * Updates the current users profile picture
+     *
+     * @param data The current users profile picture (required)
+     * @return Completable
+     */
+    @PUT("api/my/picture")
+    Completable updateMyProfilePicture(@retrofit2.http.Body RequestBody data);
+
+    /**
      * Changes the password for the given user
      * Changes the password for the given user. Cannot be used to changes the current users password
      *
@@ -656,18 +454,6 @@ public interface BambooApi {
      */
     @DELETE("api/user/{id}")
     Completable deleteUser(
-            @retrofit2.http.Path("id") long id
-    );
-
-    /**
-     * Gets the given user
-     * Gets the user by the given username
-     *
-     * @param id The id of the user (required)
-     * @return Observable&lt;User&gt;
-     */
-    @GET("api/user/{id}")
-    Observable<User> getUser(
             @retrofit2.http.Path("id") long id
     );
 
@@ -720,7 +506,7 @@ public interface BambooApi {
      * Update the profile
      * Updates the profile of the given user
      *
-     * @param id              The id of the user (required)
+     * @param id            The id of the user (required)
      * @param updateProfile The data to update the user with (required)
      * @return Completable
      */

@@ -67,6 +67,7 @@ public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {
                         viewModel.email.setValue(user.email.getValue());
                         viewModel.discordName.setValue(user.discordName.getValue());
                         viewModel.displayName.setValue(user.displayName.getValue());
+                        profilePictureLoader.loadProfilePicture(headerViewModel.id.getValue(), binding.profilePicture);
                     }
                 });
     }

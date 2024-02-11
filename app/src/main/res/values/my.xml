@@ -22,4 +22,6 @@
     <string name="error_change_my_password_failed">Dein Passwort konnte leider nicht geändert werden</string>
     <string name="error_change_my_password_old_password_empty">Das aktuelle Passwort ist erforderlich</string>
     <string name="error_change_my_password_new_password_empty">Das neue Passwort ist erforderlich</string>
+    <string name="choose_profile_picture">Profilbild wählen</string>
+    <string name="error_profile_picture_too_large">Dein ausgewähltes Profilbild ist zu groß</string>
 </resources>
