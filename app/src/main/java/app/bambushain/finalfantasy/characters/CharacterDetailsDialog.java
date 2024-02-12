@@ -75,12 +75,12 @@ public class CharacterDetailsDialog extends BindingDialogFragment<FragmentCharac
             customFieldLayout.setLayoutParams(layoutParams);
 
             val label = new TextView(requireContext());
-            label.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_TitleSmall);
+            label.setTextAppearance(R.style.TextAppearance_Bambushain_LabelMedium);
             label.setText(field.getLabel());
             customFieldLayout.addView(label);
 
             val options = new TextView(requireContext());
-            options.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyMedium);
+            options.setTextAppearance(R.style.TextAppearance_Bambushain_BodyMedium);
             options.setText(valuesText);
             customFieldLayout.addView(options);
 

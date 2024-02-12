@@ -198,7 +198,7 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
             customFieldLayout.setOrientation(LinearLayout.VERTICAL);
             customFieldLayout.setLayoutParams(layoutParams);
             val label = new TextView(requireContext());
-            label.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_TitleMedium);
+            label.setTextAppearance(R.style.TextAppearance_Bambushain_LabelMedium);
             label.setText(field.getLabel());
             customFieldLayout.addView(label);
 
@@ -206,6 +206,7 @@ public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeC
                 val checkbox = new MaterialCheckBox(requireContext());
                 checkbox.setChecked(Objects.requireNonNull(customFieldValues.getOrDefault(field.getLabel(), new HashSet<>())).contains(option.getLabel()));
                 checkbox.setText(option.getLabel());
+                checkbox.setTextAppearance(R.style.TextAppearance_Bambushain_LabelMedium);
                 checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     var entry = customFieldValues.getOrDefault(field.getLabel(), new HashSet<>());
                     if (entry == null) {
