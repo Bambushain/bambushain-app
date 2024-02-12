@@ -27,9 +27,20 @@
         <item name="colorOnSurfaceInverse">@color/md_theme_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_inversePrimary</item>
+        <item name="fontFamily">@font/albert_sans</item>
+
         <item name="android:colorBackground">@color/md_theme_background</item>
-        <item name="android:statusBarColor">@color/seed</item>
+        <item name="android:statusBarColor">@color/md_theme_primary</item>
+
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
+
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.Bambushain.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.Bambushain.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.Bambushain.TitleSmall</item>
+
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.Bambushain.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.Bambushain.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.Bambushain.LabelSmall</item>
     </style>
 
     <style name="Theme.Bambushain" parent="Base.Theme.Bambushain"/>
@@ -54,5 +65,35 @@
     <style name="Theme.Bambushain.ColorButton" parent="Widget.Material3.Button.IconButton.Filled">
         <item name="android:layout_height">48dp</item>
         <item name="android:layout_width">48dp</item>
+    </style>
+
+    <style name="TextAppearance.Bambushain.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/urbanist</item>
+        <item name="android:fontFamily">@font/urbanist</item>
+    </style>
+
+    <style name="TextAppearance.Bambushain.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/urbanist</item>
+        <item name="android:fontFamily">@font/urbanist</item>
+    </style>
+
+    <style name="TextAppearance.Bambushain.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="fontFamily">@font/urbanist</item>
+        <item name="android:fontFamily">@font/urbanist</item>
+    </style>
+
+    <style name="TextAppearance.Bambushain.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/urbanist</item>
+        <item name="android:fontFamily">@font/urbanist</item>
+    </style>
+
+    <style name="TextAppearance.Bambushain.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="fontFamily">@font/urbanist</item>
+        <item name="android:fontFamily">@font/urbanist</item>
+    </style>
+
+    <style name="TextAppearance.Bambushain.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="fontFamily">@font/urbanist</item>
+        <item name="android:fontFamily">@font/urbanist</item>
     </style>
 </resources>
