@@ -8,6 +8,8 @@
     key: $CI_PROJECT_NAME
     paths:
       - .gradle
+  tags:
+    - runner-amd64
 
 stages:
   - lint
