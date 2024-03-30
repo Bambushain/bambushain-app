@@ -45,6 +45,6 @@ dependencies {
     //noinspection AnnotationProcessorOnCompilePath
     implementation 'org.projectlombok:lombok:1.18.32'
 
-    annotationProcessor 'com.google.dagger:hilt-compiler:2.51'
+    annotationProcessor 'com.google.dagger:hilt-compiler:2.51.1'
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
 }
