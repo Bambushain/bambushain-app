@@ -51,4 +51,6 @@
     <string name="fighter_job_summoner">Beschwörer</string>
     <string name="fighter_job_redmage">Rotmagier</string>
     <string name="fighter_job_bluemage">Blaumagier</string>
+    <string name="fighter_job_viper">Viper</string>
+    <string name="fighter_job_pictomancer">Piktomant</string>
 </resources>
