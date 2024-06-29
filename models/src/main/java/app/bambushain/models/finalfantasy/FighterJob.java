@@ -53,7 +53,11 @@ public enum FighterJob implements Serializable {
 
     REDMAGE("RedMage"),
 
-    BLUEMAGE("BlueMage");
+    BLUEMAGE("BlueMage"),
+
+    VIPER("Viper"),
+
+    PICTOMANCER("Pictomancer");
 
     private final String value;
 
@@ -137,6 +141,12 @@ public enum FighterJob implements Serializable {
         if (translated.equals(context.getString(R.string.fighter_job_blackmage))) {
             return FighterJob.BLUEMAGE;
         }
+        if (translated.equals(context.getString(R.string.fighter_job_viper))) {
+            return FighterJob.VIPER;
+        }
+        if (translated.equals(context.getString(R.string.fighter_job_pictomancer))) {
+            return FighterJob.PICTOMANCER;
+        }
 
         throw new IllegalArgumentException("Unexpected value '" + translated + "'");
     }
@@ -163,6 +173,8 @@ public enum FighterJob implements Serializable {
             case SUMMONER -> R.string.fighter_job_summoner;
             case REDMAGE -> R.string.fighter_job_redmage;
             case BLUEMAGE -> R.string.fighter_job_bluemage;
+            case VIPER -> R.string.fighter_job_viper;
+            case PICTOMANCER -> R.string.fighter_job_pictomancer;
         });
     }
 
@@ -188,6 +200,8 @@ public enum FighterJob implements Serializable {
             case SUMMONER -> R.drawable.summoner;
             case REDMAGE -> R.drawable.redmage;
             case BLUEMAGE -> R.drawable.bluemage;
+            case VIPER -> R.drawable.viper;
+            case PICTOMANCER -> R.drawable.pictomancer;
         });
     }
 
