@@ -31,7 +31,9 @@ class MainActivity : ComponentActivity() {
 fun Login() {
     Column() {
         var loginSuccess by remember { mutableStateOf(false) }
-        var isError by remember { mutableStateOf(false) }
+        var isErrorCredentialsNeeded by remember { mutableStateOf(false) }
+        var isErrorCredentialsWrong by remember { mutableStateOf(false) }
+
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
             Text(text = stringResource(R.string.login_caption))
         }
@@ -40,10 +42,12 @@ fun Login() {
                 "",
                 label = { Text(text = stringResource(R.string.login_lable_email_or_name)) },
                 placeholder = { Text(text = stringResource(R.string.login_placeholder_email_or_name)) },
-                isError = isError,
+                isError = isErrorCredentialsNeeded || isErrorCredentialsWrong,
                 supportingText = {
-                    if (isError) {
+                    if (isErrorCredentialsNeeded) {
                         Text(text = stringResource(R.string.login_error_email_or_name))
+                    } else if (isErrorCredentialsWrong) {
+                        Text(text = stringResource(R.string.login_error_email_or_name_wrong))
                     }
                 },
                 onValueChange = {},
@@ -54,6 +58,14 @@ fun Login() {
                 value = "",
                 label = { Text(text = stringResource(R.string.login_lable_password)) },
                 placeholder = { Text(text = stringResource(R.string.login_placeholder_password)) },
+                isError = isErrorCredentialsNeeded || isErrorCredentialsWrong,
+                supportingText = {
+                    if (isErrorCredentialsNeeded) {
+                        Text(text = stringResource(R.string.login_error_email_or_name))
+                    } else if (isErrorCredentialsWrong) {
+                        Text(text = stringResource(R.string.login_error_email_or_name_wrong))
+                    }
+                },
                 onValueChange = {},
             )
         }

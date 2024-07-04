@@ -9,5 +9,6 @@
     <string name="login_placeholder_two_factor">Zwei Faktor Code</string>
     <string name="login_caption">Melde dich an</string>
     <string name="login_button">Anmelden</string>
-    <string name="login_error_email_or_name">Benutzername ist erforderlich</string>
+    <string name="login_error_email_or_name">Benutzername und Passwort erforderlich</string>
+    <string name="login_error_email_or_name_wrong">Benutzername oder Passwort falsch</string>
 </resources>
