@@ -2,13 +2,15 @@
     <string name="app_name">Bambushain</string>
     <string name="login_email_or_name">Email oder Name</string>
     <string name="login_password">Passwort</string>
-    <string name="login_lable_email_or_name">Email oder Name</string>
-    <string name="login_placeholder_email_or_name">example@bambushain.app</string>
-    <string name="login_lable_password">Passwort</string>
-    <string name="login_placeholder_password">**********</string>
+    <string name="login_label_email_or_name">Email oder Name</string>
+    <string name="login_placeholder_email_or_name">panda@bambushain.app</string>
+    <string name="login_label_password">Passwort</string>
     <string name="login_placeholder_two_factor">Zwei Faktor Code</string>
     <string name="login_caption">Melde dich an</string>
     <string name="login_button">Anmelden</string>
     <string name="login_error_email_or_name">Benutzername und Passwort erforderlich</string>
     <string name="login_error_email_or_name_wrong">Benutzername oder Passwort falsch</string>
+    <string name="login_label_two_factor_code">Zwei Faktor Code</string>
+    <string name="login_error_two_factor_request">Deine E-Mail oder dein Passwort sind falsch</string>
+    <string name="login_error_login">Dein Zwei Faktor Code ist falsch</string>
 </resources>
