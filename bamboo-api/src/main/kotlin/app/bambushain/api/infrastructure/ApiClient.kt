@@ -1,23 +1,21 @@
 package app.bambushain.api.infrastructure
 
 import app.bambushain.api.auth.ApiKeyAuth
-
+import app.bambushain.api.infrastructure.Serializer.kotlinxSerializationJson
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import okhttp3.Call
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
-import retrofit2.Retrofit
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
+import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
-
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import app.bambushain.api.infrastructure.Serializer.kotlinxSerializationJson
-import okhttp3.MediaType.Companion.toMediaType
 
 class ApiClient(
     private var baseUrl: String = defaultBasePath,
     private val okHttpClientBuilder: OkHttpClient.Builder? = null,
-    private val callFactory : Call.Factory? = null,
+    private val callFactory: Call.Factory? = null,
     private val converterFactory: Converter.Factory? = null,
 ) {
     private val apiAuthorizations = mutableMapOf<String, Interceptor>()
@@ -52,18 +50,12 @@ class ApiClient(
     }
 
     constructor(
+        apiKey: String?,
         baseUrl: String = defaultBasePath,
-        okHttpClientBuilder: OkHttpClient.Builder? = null,
-        
-        authNames: Array<String>
+        okHttpClientBuilder: OkHttpClient.Builder? = null
     ) : this(baseUrl, okHttpClientBuilder) {
-        authNames.forEach { authName ->
-            val auth = when (authName) {
-                "Panda" -> ApiKeyAuth("header", "Authorization")
-                else -> throw RuntimeException("auth name $authName not found in available auth names")
-            }
-            addAuthorization(authName, auth)
-        }
+        val auth = ApiKeyAuth("header", "Authorization", "Panda $apiKey")
+        addAuthorization("Panda", auth)
     }
 
     /**
@@ -99,7 +91,7 @@ class ApiClient(
 
     private inline fun <T, reified U> Iterable<T>.runOnFirst(callback: U.() -> Unit) {
         for (element in this) {
-            if (element is U)  {
+            if (element is U) {
                 callback.invoke(element)
                 break
             }
@@ -114,5 +106,7 @@ class ApiClient(
         val defaultBasePath: String by lazy {
             System.getProperties().getProperty(baseUrlKey, "https://pandas.bambushain.app")
         }
+
+        var apiKey: String = ""
     }
 }

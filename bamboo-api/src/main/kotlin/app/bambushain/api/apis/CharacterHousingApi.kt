@@ -25,7 +25,7 @@ interface CharacterHousingApi {
      * @return [CharacterHousing]
      */
     @POST("api/final-fantasy/character/{character_id}/housing")
-    suspend fun createHousing(@Path("character_id") characterId: java.math.BigDecimal, @Body characterHousing: CharacterHousing): Response<CharacterHousing>
+    suspend fun createHousing(@Path("character_id") characterId: Int, @Body characterHousing: CharacterHousing): Response<CharacterHousing>
 
     /**
      * Delete the given housing
@@ -41,7 +41,7 @@ interface CharacterHousingApi {
      * @return [Unit]
      */
     @DELETE("api/final-fantasy/character/{character_id}/housing/{id}")
-    suspend fun deleteHousing(@Path("character_id") characterId: java.math.BigDecimal, @Path("id") id: java.math.BigDecimal): Response<Unit>
+    suspend fun deleteHousing(@Path("character_id") characterId: Int, @Path("id") id: Int): Response<Unit>
 
     /**
      * Get a housing by job
@@ -57,7 +57,7 @@ interface CharacterHousingApi {
      * @return [CharacterHousing]
      */
     @GET("api/final-fantasy/character/{character_id}/housing/{id}")
-    suspend fun getHousing(@Path("character_id") characterId: java.math.BigDecimal, @Path("id") id: java.math.BigDecimal): Response<CharacterHousing>
+    suspend fun getHousing(@Path("character_id") characterId: Int, @Path("id") id: Int): Response<CharacterHousing>
 
     /**
      * Get list of housing
@@ -71,7 +71,7 @@ interface CharacterHousingApi {
      * @return [kotlin.collections.List<CharacterHousing>]
      */
     @GET("api/final-fantasy/character/{character_id}/housing")
-    suspend fun getHousings(@Path("character_id") characterId: java.math.BigDecimal): Response<kotlin.collections.List<CharacterHousing>>
+    suspend fun getHousings(@Path("character_id") characterId: Int): Response<kotlin.collections.List<CharacterHousing>>
 
     /**
      * Updates the given housing
@@ -90,6 +90,6 @@ interface CharacterHousingApi {
      * @return [Unit]
      */
     @PUT("api/final-fantasy/character/{character_id}/housing/{id}")
-    suspend fun updateHousing(@Path("character_id") characterId: java.math.BigDecimal, @Path("id") id: java.math.BigDecimal, @Body characterHousing: CharacterHousing): Response<Unit>
+    suspend fun updateHousing(@Path("character_id") characterId: Int, @Path("id") id: Int, @Body characterHousing: CharacterHousing): Response<Unit>
 
 }

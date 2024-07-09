@@ -117,6 +117,7 @@ dependencies {
     implementation("com.github.requery:sqlite-android:3.45.0")
     implementation("io.coil-kt:coil:2.6.0")
     implementation("io.coil-kt:coil-svg:2.6.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
 
     annotationProcessor("androidx.databinding:databinding-compiler:8.5.0")

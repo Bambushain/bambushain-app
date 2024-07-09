@@ -25,7 +25,7 @@ interface FighterApi {
      * @return [Fighter]
      */
     @POST("api/final-fantasy/character/{character_id}/fighter")
-    suspend fun createFighter(@Path("character_id") characterId: java.math.BigDecimal, @Body fighter: Fighter): Response<Fighter>
+    suspend fun createFighter(@Path("character_id") characterId: Int, @Body fighter: Fighter): Response<Fighter>
 
     /**
      * Delete the given fighter
@@ -41,7 +41,7 @@ interface FighterApi {
      * @return [Unit]
      */
     @DELETE("api/final-fantasy/character/{character_id}/fighter/{id}")
-    suspend fun deleteFighter(@Path("character_id") characterId: java.math.BigDecimal, @Path("id") id: java.math.BigDecimal): Response<Unit>
+    suspend fun deleteFighter(@Path("character_id") characterId: Int, @Path("id") id: Int): Response<Unit>
 
     /**
      * Get a fighter by job
@@ -57,7 +57,7 @@ interface FighterApi {
      * @return [Fighter]
      */
     @GET("api/final-fantasy/character/{character_id}/fighter/{id}")
-    suspend fun getFighter(@Path("character_id") characterId: java.math.BigDecimal, @Path("id") id: java.math.BigDecimal): Response<Fighter>
+    suspend fun getFighter(@Path("character_id") characterId: Int, @Path("id") id: Int): Response<Fighter>
 
     /**
      * Get list of fighter
@@ -71,7 +71,7 @@ interface FighterApi {
      * @return [kotlin.collections.List<Fighter>]
      */
     @GET("api/final-fantasy/character/{character_id}/fighter")
-    suspend fun getFighters(@Path("character_id") characterId: java.math.BigDecimal): Response<kotlin.collections.List<Fighter>>
+    suspend fun getFighters(@Path("character_id") characterId: Int): Response<kotlin.collections.List<Fighter>>
 
     /**
      * Updates the given fighter
@@ -90,6 +90,6 @@ interface FighterApi {
      * @return [Unit]
      */
     @PUT("api/final-fantasy/character/{character_id}/fighter/{id}")
-    suspend fun updateFighter(@Path("character_id") characterId: java.math.BigDecimal, @Path("id") id: java.math.BigDecimal, @Body fighter: Fighter): Response<Unit>
+    suspend fun updateFighter(@Path("character_id") characterId: Int, @Path("id") id: Int, @Body fighter: Fighter): Response<Unit>
 
 }

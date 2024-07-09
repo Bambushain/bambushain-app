@@ -38,7 +38,7 @@ interface CalendarApi {
      * @return [Unit]
      */
     @DELETE("api/bamboo-grove/event/{id}")
-    suspend fun deleteEvent(@Path("id") id: java.math.BigDecimal): Response<Unit>
+    suspend fun deleteEvent(@Path("id") id: Int): Response<Unit>
 
     /**
      * Gets all events for the given date range
@@ -70,6 +70,6 @@ interface CalendarApi {
      * @return [Unit]
      */
     @PUT("api/bamboo-grove/event/{id}")
-    suspend fun updateEvent(@Path("id") id: java.math.BigDecimal, @Body event: Event? = null): Response<Unit>
+    suspend fun updateEvent(@Path("id") id: Int, @Body event: Event? = null): Response<Unit>
 
 }

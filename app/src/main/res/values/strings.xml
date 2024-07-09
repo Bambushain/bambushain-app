@@ -13,4 +13,13 @@
     <string name="login_label_two_factor_code">Zwei Faktor Code</string>
     <string name="login_error_two_factor_request">Deine E-Mail oder dein Passwort sind falsch</string>
     <string name="login_error_login">Dein Zwei Faktor Code ist falsch</string>
+    <string name="login_button_forgot_password">Passwort vergessen</string>
+    <string name="login_error_password_request">Etwas ist schiefgelaufen. Bitte wende dich an einen Mod</string>
+    <string name="login_password_request">Ein Mod wurde informiert. Das neue Passwort wird dir zugeschickt.</string>
+    <string name="user_is_mod">%1$s ist ein Mod</string>
+    <string name="user_discord_name">Auf Discord bekannt als %1$s</string>
+    <string name="user_card_dropdown_redact_mod_status">Modrechte entziehen</string>
+    <string name="user_card_dropdown_reset_password">Passwort zurücksetzen</string>
+    <string name="user_card_edit">Bearbeiten</string>
+    <string name="user_card_delete_panda">Panda löschen</string>
 </resources>

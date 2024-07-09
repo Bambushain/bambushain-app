@@ -1,19 +1,15 @@
 package app.bambushain.viewModels.authentication
 
-import androidx.compose.material3.SnackbarResult
+import android.content.Context
 import androidx.compose.runtime.*
-import androidx.datastore.core.DataStore
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import app.bambushain.api.apis.AuthenticationApi
 import app.bambushain.api.models.LoginRequest
-import app.bambushain.settings.AuthenticationSettings
-import org.koin.compose.koinInject
+import app.bambushain.api.auth.AuthenticationSettings
 
 class LoginViewModel(
-    val authenticationApi: AuthenticationApi,
-    val authenticationSettings: DataStore<AuthenticationSettings>
+    private val authenticationApi: AuthenticationApi,
+    private val context: Context
 ) : ViewModel() {
     private var _twoFactor by mutableStateOf("")
 
@@ -52,14 +48,17 @@ class LoginViewModel(
         val response = authenticationApi.login(loginRequest)
         if (response.isSuccessful) {
             response.body()?.run {
-                authenticationSettings.updateData {
-                    AuthenticationSettings(user, token)
-                }
+                val authSettings = AuthenticationSettings(user, token)
+                authSettings.save(context)
             }
 
             onSuccess()
         } else {
             onError()
         }
+    }
+
+    suspend fun requestPassword(onSuccess: suspend () -> kotlin.Unit,onError: suspend () -> Unit) {
+
     }
 }

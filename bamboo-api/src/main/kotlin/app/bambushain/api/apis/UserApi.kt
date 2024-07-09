@@ -29,7 +29,7 @@ interface UserApi {
      * @return [Unit]
      */
     @PUT("api/user/{id}/password")
-    suspend fun changePassword(@Path("id") id: java.math.BigDecimal): Response<Unit>
+    suspend fun changePassword(@Path("id") id: Int): Response<Unit>
 
     /**
      * Creates a new user
@@ -63,7 +63,7 @@ interface UserApi {
      * @return [Unit]
      */
     @DELETE("api/user/{id}")
-    suspend fun deleteUser(@Path("id") id: java.math.BigDecimal): Response<Unit>
+    suspend fun deleteUser(@Path("id") id: Int): Response<Unit>
 
     /**
      * Reset totp
@@ -81,7 +81,7 @@ interface UserApi {
      * @return [Unit]
      */
     @DELETE("api/user/{id}/totp")
-    suspend fun disableTotp(@Path("id") id: java.math.BigDecimal): Response<Unit>
+    suspend fun disableTotp(@Path("id") id: Int): Response<Unit>
 
     /**
      * Gets the given user
@@ -96,7 +96,7 @@ interface UserApi {
      * @return [User]
      */
     @GET("api/user/{id}")
-    suspend fun getUser(@Path("id") id: java.math.BigDecimal): Response<User>
+    suspend fun getUser(@Path("id") id: Int): Response<User>
 
     /**
      * Get the profile picture
@@ -111,7 +111,7 @@ interface UserApi {
      * @return [ResponseBody]
      */
     @GET("api/user/{id}/picture")
-    suspend fun getUserProfilePicture(@Path("id") id: java.math.BigDecimal): Response<ResponseBody>
+    suspend fun getUserProfilePicture(@Path("id") id: Int): Response<ResponseBody>
 
     /**
      * Get a list of all users
@@ -141,7 +141,7 @@ interface UserApi {
      * @return [Unit]
      */
     @PUT("api/user/{id}/mod")
-    suspend fun makeUserMod(@Path("id") id: java.math.BigDecimal): Response<Unit>
+    suspend fun makeUserMod(@Path("id") id: Int): Response<Unit>
 
     /**
      * Revokes the mod rights for the given user
@@ -158,7 +158,7 @@ interface UserApi {
      * @return [Unit]
      */
     @DELETE("api/user/{id}/mod")
-    suspend fun revokeUserModRights(@Path("id") id: java.math.BigDecimal): Response<Unit>
+    suspend fun revokeUserModRights(@Path("id") id: Int): Response<Unit>
 
     /**
      * Update the profile
@@ -177,6 +177,6 @@ interface UserApi {
      * @return [Unit]
      */
     @PUT("api/user/{id}/profile")
-    suspend fun updateUserProfile(@Path("id") id: java.math.BigDecimal, @Body updateMyProfile: UpdateMyProfile): Response<Unit>
+    suspend fun updateUserProfile(@Path("id") id: Int, @Body updateMyProfile: UpdateMyProfile): Response<Unit>
 
 }
