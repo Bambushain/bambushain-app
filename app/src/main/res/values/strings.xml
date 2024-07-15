@@ -22,4 +22,6 @@
     <string name="user_card_dropdown_reset_password">Passwort zurücksetzen</string>
     <string name="user_card_edit">Bearbeiten</string>
     <string name="user_card_delete_panda">Panda löschen</string>
+    <string name="user_list_top_bar">Pandas</string>
+    <string name="user_list_add_user">Neuen Panda erstellen</string>
 </resources>
