@@ -90,17 +90,24 @@ fun UserCard(
                                 stringResource(R.string.user_card_dialog_redact_mod_status_text, user.displayName),
                                 stringResource(R.string.user_card_dialog_redact_mod_status_confirm),
                                 stringResource(R.string.user_card_dialog_redact_mod_status_dismiss),
-                                coroutineScope.launch {
-                                    vm.revokeUserModRights(
-                                        onSuccess = {
-                                            onShowSnackBar(stringResource(R.string.user_card_dialog_redact_mod_status_success, user.displayName))
-                                        },
-                                        onError = {
-                                            onShowSnackBar(stringResource(R.string.user_card_dialog_redact_mod_status_error))
-                                        }
-                                    )
+                                {
+                                    coroutineScope.launch {
+                                        vm.revokeUserModRights(
+                                            onSuccess = {
+                                                onShowSnackBar(
+                                                    stringResource(
+                                                        R.string.user_card_dialog_redact_mod_status_success,
+                                                        user.displayName
+                                                    )
+                                                )
+                                            },
+                                            onError = {
+                                                onShowSnackBar(stringResource(R.string.user_card_dialog_redact_mod_status_error))
+                                            }
+                                        )
+                                    }
                                 }
-                            ) {}
+                            )
                         })
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.user_card_dropdown_reset_password)) },
@@ -110,17 +117,19 @@ fun UserCard(
                                 stringResource(R.string.user_card_dialog_password_text, user.displayName),
                                 stringResource(R.string.user_card_dialog_password_confirm),
                                 stringResource(R.string.user_card_dialog_password_dismiss),
-                                coroutineScope.launch {
-                                    vm.resetPassword(
-                                        onSuccess = {
-                                            onShowSnackBar(stringResource(R.string.user_card_dialog_password_success))
-                                        },
-                                        onError = {
-                                            onShowSnackBar(stringResource(R.string.user_card_dialog_password_error))
-                                        }
-                                    )
+                                {
+                                    coroutineScope.launch {
+                                        vm.resetPassword(
+                                            onSuccess = {
+                                                onShowSnackBar(stringResource(R.string.user_card_dialog_password_success))
+                                            },
+                                            onError = {
+                                                onShowSnackBar(stringResource(R.string.user_card_dialog_password_error))
+                                            }
+                                        )
+                                    }
                                 }
-                            ) {}
+                            )
                         })
                 }
             }
@@ -194,17 +203,24 @@ fun UserCard(
                         stringResource(R.string.user_card_dialog_delete_panda_text, user.displayName),
                         stringResource(R.string.user_card_dialog_delete_panda_confirm),
                         stringResource(R.string.user_card_dialog_delete_panda_dismiss),
-                        coroutineScope.launch {
-                            vm.deleteUser(
-                                onSuccess = {
-                                    onShowSnackBar(stringResource(R.string.user_card_dialog_delete_panda_success, user.displayName))
-                                },
-                                onError = {
-                                    onShowSnackBar(stringResource(R.string.user_card_dialog_delete_panda_error))
-                                }
-                            )
+                        {
+                            coroutineScope.launch {
+                                vm.deleteUser(
+                                    onSuccess = {
+                                        onShowSnackBar(
+                                            stringResource(
+                                                R.string.user_card_dialog_delete_panda_success,
+                                                user.displayName
+                                            )
+                                        )
+                                    },
+                                    onError = {
+                                        onShowSnackBar(stringResource(R.string.user_card_dialog_delete_panda_error))
+                                    }
+                                )
+                            }
                         }
-                    ) {}
+                    )
                 }, modifier = Modifier.constrainAs(deleteButton) {
                     val linkTop = if (vm.user!!.isMod) {
                         mod
