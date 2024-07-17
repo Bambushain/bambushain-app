@@ -24,4 +24,22 @@
     <string name="user_card_delete_panda">Panda löschen</string>
     <string name="user_list_top_bar">Pandas</string>
     <string name="user_list_add_user">Neuen Panda erstellen</string>
+    <string name="user_card_dialog_password_title">Passwort zurücksetzen</string>
+    <string name="user_card_dialog_password_text">Soll das Passwort für %1$s zurückgesetzt werden?</string>
+    <string name="user_card_dialog_password_dismiss">Abbrechen</string>
+    <string name="user_card_dialog_password_confirm">Passwort zurücksetzen</string>
+    <string name="user_card_dialog_password_success">Ein Mod wurde benachrichtigt</string>
+    <string name="user_card_dialog_password_error">Etwas ist schiefgelaufen.</string>
+    <string name="user_card_dialog_redact_mod_status_title">Modrechte entziehen</string>
+    <string name="user_card_dialog_redact_mod_status_text">Sollen dem Panda %1$s wirklich die Modrechte entzogen werden?</string>
+    <string name="user_card_dialog_redact_mod_status_dismiss">Abbrechen</string>
+    <string name="user_card_dialog_redact_mod_status_confirm">Modrechte entziehen</string>
+    <string name="user_card_dialog_redact_mod_status_success">Dem Panda %1$s wurden die Modrechte entzogen</string>
+    <string name="user_card_dialog_redact_mod_status_error">Etwas ist schiefgelaufen.</string>
+    <string name="user_card_dialog_delete_panda_title">Aus dem Hain werfen</string>
+    <string name="user_card_dialog_delete_panda_text">Soll der Panda %1$s wirklich aus dem Hain geworfen werden?</string>
+    <string name="user_card_dialog_delete_panda_dismiss">Abbrechen</string>
+    <string name="user_card_dialog_delete_panda_confirm">Aus dem Hain werfen</string>
+    <string name="user_card_dialog_delete_panda_success">Der Panda %1$s wurden aus dem Hain geworfen</string>
+    <string name="user_card_dialog_delete_panda_error">Etwas ist schiefgelaufen.</string>
 </resources>

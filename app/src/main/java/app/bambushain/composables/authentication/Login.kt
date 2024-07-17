@@ -24,7 +24,6 @@ fun LoginScreen(navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-
     val loginTopBar = stringResource(R.string.login_caption)
     val loginLabelName = stringResource(R.string.login_label_email_or_name)
     val loginPlaceholderName = stringResource(R.string.login_placeholder_email_or_name)
@@ -109,7 +108,7 @@ fun LoginScreen(navController: NavController) {
                                 if (vm.twoFactorRequested) {
                                     vm.login(
                                         onSuccess = {
-                                            navController.navigate(Screens.LoginScreen.name)
+                                            navController.navigate(Screens.PandasScreen.name)
                                         },
                                         onError = {
                                             snackbarHostState.showSnackbar(loginErrorLogin)

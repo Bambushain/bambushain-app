@@ -1,5 +1,6 @@
 package app.bambushain.composables.user
 
+import android.content.Context
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,12 +16,20 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.bambushain.R
 import app.bambushain.api.apis.UserApi
+import app.bambushain.api.auth.AuthenticationSettings
 import app.bambushain.api.models.User
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
+
+enum class UserCardMessage {
+    ResetPassword,
+    Error
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserList(navController: NavController, userApi: UserApi = koinInject()) {
+fun UserList(navController: NavController, userApi: UserApi = koinInject(), context: Context = koinInject()) {
+    val coroutineScope = rememberCoroutineScope()
     var userListState by remember { mutableStateOf<List<User>>(listOf()) }
     var showBottomSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(
@@ -28,6 +37,8 @@ fun UserList(navController: NavController, userApi: UserApi = koinInject()) {
     )
 
     val snackbarHostState = remember { SnackbarHostState() }
+
+    val isMod = AuthenticationSettings.get(context)!!.user!!.isMod
 
     LaunchedEffect(userListState) {
         val response = userApi.getUsers()
@@ -58,7 +69,9 @@ fun UserList(navController: NavController, userApi: UserApi = koinInject()) {
         Surface(modifier = Modifier.padding(contentPadding)) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(userListState) { user ->
-                    UserCard(user, userApi)
+                    UserCard(user, isMod, userApi) {
+                        coroutineScope.launch { snackbarHostState.showSnackbar(it) }
+                    }
                 }
             }
             if (showBottomSheet) {

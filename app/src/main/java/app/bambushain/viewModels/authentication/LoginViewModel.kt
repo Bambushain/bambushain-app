@@ -51,7 +51,6 @@ class LoginViewModel(
                 val authSettings = AuthenticationSettings(user, token)
                 authSettings.save(context)
             }
-
             onSuccess()
         } else {
             onError()
