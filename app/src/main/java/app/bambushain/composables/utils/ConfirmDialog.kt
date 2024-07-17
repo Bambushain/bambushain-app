@@ -14,7 +14,7 @@ fun ConfirmDialog(
     cancelButtonText: String,
     onConfirm: Job,
     onDismiss: () -> Unit
-){
+) {
     AlertDialog(
         title = {
             Text(text = title)
@@ -25,7 +25,7 @@ fun ConfirmDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(
-                onClick = onConfirm
+                onClick = { onConfirm }
             ) {
                 Text(confirmButtonText)
             }
