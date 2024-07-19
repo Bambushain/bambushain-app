@@ -1,6 +1,7 @@
 package app.bambushain.viewModels
 
 import app.bambushain.viewModels.authentication.LoginViewModel
+import app.bambushain.viewModels.user.PandaViewModel
 import app.bambushain.viewModels.user.UserCardViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -11,4 +12,7 @@ val viewModelModule = module {
         LoginViewModel(get(), get())
     }
     viewModelOf(::UserCardViewModel)
+    viewModel {
+        PandaViewModel(get(), get())
+    }
 }

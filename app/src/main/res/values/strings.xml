@@ -42,4 +42,10 @@
     <string name="user_card_dialog_delete_panda_confirm">Aus dem Hain werfen</string>
     <string name="user_card_dialog_delete_panda_success">Der Panda %1$s wurden aus dem Hain geworfen</string>
     <string name="user_card_dialog_delete_panda_error">Etwas ist schiefgelaufen.</string>
+    <string name="create_panda_placeholder_email">panda@bambushain.app</string>
+    <string name="create_panda_email">Name</string>
+    <string name="create_panda_name">Name</string>
+    <string name="create_panda_placeholder_name">Name</string>
+    <string name="create_panda_placeholder_discord">Discord Name (optional)</string>
+    <string name="create_panda_isMod">Moderator</string>
 </resources>

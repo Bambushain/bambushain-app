@@ -42,6 +42,16 @@ fun UserCard(
     var model: ImageRequest? by remember { mutableStateOf(null) }
     val coroutineScope = rememberCoroutineScope()
     var expanded by remember { mutableStateOf(false) }
+    var showModDialog by remember { mutableStateOf(false) }
+    var showPasswordDialog by remember { mutableStateOf(false) }
+    var showDeletePandaDialog by remember { mutableStateOf(false) }
+
+    val modStatusSuccess = stringResource(R.string.user_card_dialog_redact_mod_status_success, user.displayName)
+    val modStatusError = stringResource(R.string.user_card_dialog_redact_mod_status_error)
+    val passwordResetSuccess = stringResource(R.string.user_card_dialog_password_success)
+    val passwordResetError = stringResource(R.string.user_card_dialog_password_error)
+    val deletePandaSuccess = stringResource(R.string.user_card_dialog_delete_panda_success, user.displayName)
+    val deletePandaError = stringResource(R.string.user_card_dialog_delete_panda_error)
 
     LaunchedEffect(model) {
         if (model == null) {
@@ -85,51 +95,13 @@ fun UserCard(
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.user_card_dropdown_redact_mod_status)) },
                         onClick = {
-                            ConfirmDialog(
-                                stringResource(R.string.user_card_dialog_redact_mod_status_title),
-                                stringResource(R.string.user_card_dialog_redact_mod_status_text, user.displayName),
-                                stringResource(R.string.user_card_dialog_redact_mod_status_confirm),
-                                stringResource(R.string.user_card_dialog_redact_mod_status_dismiss),
-                                {
-                                    coroutineScope.launch {
-                                        vm.revokeUserModRights(
-                                            onSuccess = {
-                                                onShowSnackBar(
-                                                    stringResource(
-                                                        R.string.user_card_dialog_redact_mod_status_success,
-                                                        user.displayName
-                                                    )
-                                                )
-                                            },
-                                            onError = {
-                                                onShowSnackBar(stringResource(R.string.user_card_dialog_redact_mod_status_error))
-                                            }
-                                        )
-                                    }
-                                }
-                            )
-                        })
+                            showModDialog = true
+                        }
+                    )
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.user_card_dropdown_reset_password)) },
                         onClick = {
-                            ConfirmDialog(
-                                stringResource(R.string.user_card_dialog_password_title),
-                                stringResource(R.string.user_card_dialog_password_text, user.displayName),
-                                stringResource(R.string.user_card_dialog_password_confirm),
-                                stringResource(R.string.user_card_dialog_password_dismiss),
-                                {
-                                    coroutineScope.launch {
-                                        vm.resetPassword(
-                                            onSuccess = {
-                                                onShowSnackBar(stringResource(R.string.user_card_dialog_password_success))
-                                            },
-                                            onError = {
-                                                onShowSnackBar(stringResource(R.string.user_card_dialog_password_error))
-                                            }
-                                        )
-                                    }
-                                }
-                            )
+                            showPasswordDialog = true
                         })
                 }
             }
@@ -198,29 +170,7 @@ fun UserCard(
                     )
                 }
                 IconButton(onClick = {
-                    ConfirmDialog(
-                        stringResource(R.string.user_card_dialog_delete_panda_title),
-                        stringResource(R.string.user_card_dialog_delete_panda_text, user.displayName),
-                        stringResource(R.string.user_card_dialog_delete_panda_confirm),
-                        stringResource(R.string.user_card_dialog_delete_panda_dismiss),
-                        {
-                            coroutineScope.launch {
-                                vm.deleteUser(
-                                    onSuccess = {
-                                        onShowSnackBar(
-                                            stringResource(
-                                                R.string.user_card_dialog_delete_panda_success,
-                                                user.displayName
-                                            )
-                                        )
-                                    },
-                                    onError = {
-                                        onShowSnackBar(stringResource(R.string.user_card_dialog_delete_panda_error))
-                                    }
-                                )
-                            }
-                        }
-                    )
+                    showDeletePandaDialog = true
                 }, modifier = Modifier.constrainAs(deleteButton) {
                     val linkTop = if (vm.user!!.isMod) {
                         mod
@@ -237,6 +187,78 @@ fun UserCard(
                         contentDescription = stringResource(R.string.user_card_delete_panda)
                     )
                 }
+            }
+            if (showModDialog) {
+                ConfirmDialog(
+                    stringResource(R.string.user_card_dialog_redact_mod_status_title),
+                    stringResource(R.string.user_card_dialog_redact_mod_status_text, user.displayName),
+                    stringResource(R.string.user_card_dialog_redact_mod_status_confirm),
+                    stringResource(R.string.user_card_dialog_redact_mod_status_dismiss),
+                    {
+                        coroutineScope.launch {
+                            vm.revokeUserModRights(
+                                onSuccess = {
+                                    onShowSnackBar(modStatusSuccess)
+                                },
+                                onError = {
+                                    onShowSnackBar(modStatusError)
+                                }
+                            )
+                            showModDialog = false
+                        }
+                    },
+                    {
+                        showModDialog = false
+                    }
+                )
+            }
+            if (showPasswordDialog) {
+                ConfirmDialog(
+                    stringResource(R.string.user_card_dialog_password_title),
+                    stringResource(R.string.user_card_dialog_password_text, user.displayName),
+                    stringResource(R.string.user_card_dialog_password_confirm),
+                    stringResource(R.string.user_card_dialog_password_dismiss),
+                    {
+                        coroutineScope.launch {
+                            vm.resetPassword(
+                                onSuccess = {
+                                    onShowSnackBar(passwordResetSuccess)
+                                },
+                                onError = {
+                                    onShowSnackBar(passwordResetError)
+                                }
+                            )
+                            showPasswordDialog = false
+                        }
+                    },
+                    {
+                        showPasswordDialog = false
+                    }
+                )
+            }
+            if (showDeletePandaDialog) {
+                ConfirmDialog(
+                    stringResource(R.string.user_card_dialog_delete_panda_title),
+                    stringResource(R.string.user_card_dialog_delete_panda_text, user.displayName),
+                    stringResource(R.string.user_card_dialog_delete_panda_confirm),
+                    stringResource(R.string.user_card_dialog_delete_panda_dismiss),
+                    {
+                        coroutineScope.launch {
+                            vm.deleteUser(
+                                onSuccess = {
+                                    onShowSnackBar(deletePandaSuccess)
+                                },
+                                onError = {
+                                    onShowSnackBar(deletePandaError)
+                                }
+                            )
+                            showDeletePandaDialog = false
+                        }
+                    },
+                    {
+                        showDeletePandaDialog = false
+                    }
+                )
             }
         }
     }

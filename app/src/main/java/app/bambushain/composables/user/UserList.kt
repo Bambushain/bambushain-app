@@ -1,24 +1,27 @@
 package app.bambushain.composables.user
 
 import android.content.Context
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.bambushain.R
 import app.bambushain.api.apis.UserApi
 import app.bambushain.api.auth.AuthenticationSettings
 import app.bambushain.api.models.User
+import app.bambushain.viewModels.user.PandaViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 enum class UserCardMessage {
@@ -29,6 +32,7 @@ enum class UserCardMessage {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserList(navController: NavController, userApi: UserApi = koinInject(), context: Context = koinInject()) {
+    val vm = koinViewModel<PandaViewModel>()
     val coroutineScope = rememberCoroutineScope()
     var userListState by remember { mutableStateOf<List<User>>(listOf()) }
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -80,10 +84,40 @@ fun UserList(navController: NavController, userApi: UserApi = koinInject(), cont
                     sheetState = sheetState,
                     onDismissRequest = { showBottomSheet = false }
                 ) {
-                    Text(
-                        "Test",
-                        modifier = Modifier.padding(16.dp)
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        value = vm.pandaName,
+                        label = { Text(stringResource( R.string.create_panda_name)) },
+                        placeholder = { Text(stringResource(R.string.create_panda_placeholder_name)) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                        enabled = true,
+                        onValueChange = { vm.pandaName = it }
                     )
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        value = vm.pandaEmail,
+                        label = { Text(stringResource( R.string.create_panda_email)) },
+                        placeholder = { Text(stringResource(R.string.create_panda_placeholder_email)) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                        enabled = true,
+                        onValueChange = { vm.pandaEmail = it }
+                    )
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        value = vm.pandaDiscord,
+                        placeholder = { Text(stringResource(R.string.create_panda_placeholder_discord)) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                        enabled = true,
+                        onValueChange = { vm.pandaDiscord = it }
+                    )
+                    Row(modifier = Modifier.padding(bottom = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,) {
+                        Switch(
+                            checked = vm.pandaMod,
+                            onCheckedChange = { vm.pandaMod = it }
+                        )
+                        Text(stringResource(R.string.create_panda_isMod), modifier = Modifier.padding(horizontal = 8.dp))
+                    }
                 }
             }
         }
