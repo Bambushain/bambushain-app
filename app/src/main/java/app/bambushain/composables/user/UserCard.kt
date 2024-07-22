@@ -1,17 +1,18 @@
 package app.bambushain.composables.user
 
 import android.content.Context
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import app.bambushain.R
@@ -31,6 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserCard(
     user: User,
@@ -45,6 +47,11 @@ fun UserCard(
     var showModDialog by remember { mutableStateOf(false) }
     var showPasswordDialog by remember { mutableStateOf(false) }
     var showDeletePandaDialog by remember { mutableStateOf(false) }
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = false,
+    )
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val modStatusSuccess = stringResource(R.string.user_card_dialog_redact_mod_status_success, user.displayName)
     val modStatusError = stringResource(R.string.user_card_dialog_redact_mod_status_error)
@@ -52,6 +59,9 @@ fun UserCard(
     val passwordResetError = stringResource(R.string.user_card_dialog_password_error)
     val deletePandaSuccess = stringResource(R.string.user_card_dialog_delete_panda_success, user.displayName)
     val deletePandaError = stringResource(R.string.user_card_dialog_delete_panda_error)
+    val updateUserSuccess = stringResource(R.string.user_card_edit_success)
+    val updateUserUserExists = stringResource(R.string.user_card_edit_user_exists)
+    val updateUserError = stringResource(R.string.user_card_edit_error)
 
     LaunchedEffect(model) {
         if (model == null) {
@@ -259,6 +269,62 @@ fun UserCard(
                         showDeletePandaDialog = false
                     }
                 )
+            }
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    modifier = Modifier.fillMaxHeight(),
+                    sheetState = sheetState,
+                    onDismissRequest = { showBottomSheet = false }
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        value = vm.user!!.displayName,
+                        label = { Text(stringResource(R.string.create_panda_name)) },
+                        placeholder = { Text(stringResource(R.string.create_panda_placeholder_name)) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                        enabled = true,
+                        onValueChange = { vm.user!!.displayName = it }
+                    )
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        value = vm.user!!.email,
+                        label = { Text(stringResource(R.string.create_panda_email)) },
+                        placeholder = { Text(stringResource(R.string.create_panda_placeholder_email)) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                        enabled = true,
+                        onValueChange = { vm.user!!.email = it }
+                    )
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        value = vm.user!!.discordName,
+                        placeholder = { Text(stringResource(R.string.create_panda_placeholder_discord)) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                        enabled = true,
+                        onValueChange = { vm.user!!.discordName = it }
+                    )
+                    Button(
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        enabled = vm.user!!.displayName.isNotEmpty() && vm.user!!.email.isNotEmpty(),
+                        onClick = {
+                            coroutineScope.launch {
+                                vm.updateUser(
+                                    onSuccess = {
+
+                                    },
+                                    onError = {
+                                        if(it == 409) {
+                                            snackbarHostState.showSnackbar(updateUserUserExists)
+                                        }
+                                        else {
+                                            snackbarHostState.showSnackbar(updateUserError)
+                                        }
+                                    }
+                                )
+                            }
+                        }) {
+                        Text(stringResource(R.string.create_panda_add_panda))
+                    }
+                }
             }
         }
     }

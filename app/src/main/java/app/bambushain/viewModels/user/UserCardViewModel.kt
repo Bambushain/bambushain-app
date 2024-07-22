@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import app.bambushain.api.apis.UserApi
+import app.bambushain.api.models.UpdateMyProfile
 import app.bambushain.api.models.User
 
 class UserCardViewModel(
@@ -37,6 +38,16 @@ class UserCardViewModel(
             onSuccess()
         } else {
             onError()
+        }
+    }
+
+    suspend fun updateUser(onSuccess: suspend () -> Unit, onError: suspend (error: Int) -> Unit) {
+        val updateUser = UpdateMyProfile(user!!.email, user!!.displayName, user!!.discordName)
+        val response = userApi.updateUserProfile(user!!.id!!, updateUser)
+        if (response.isSuccessful) {
+            onSuccess()
+        } else {
+            onError(response.code())
         }
     }
 

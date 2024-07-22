@@ -48,4 +48,11 @@
     <string name="create_panda_placeholder_name">Name</string>
     <string name="create_panda_placeholder_discord">Discord Name (optional)</string>
     <string name="create_panda_isMod">Moderator</string>
+    <string name="create_panda_add_panda">Panda hinzufügen</string>
+    <string name="create_panda_success">Der Panda wurde dem Hain hinzugefügt</string>
+    <string name="create_panda_error">Etwas ist schief gelaufen</string>
+    <string name="create_panda_panda_exists">Ein Panda mit diesem Namen oder dieser Email existiert bereits</string>
+    <string name="user_card_edit_success">Der Panda wurde aktualisiert</string>
+    <string name="user_card_edit_user_exists">Ein Panda mit diesem Namen oder dieser Email existiert bereits</string>
+    <string name="user_card_edit_error">Etwas ist schief gelaufen</string>
 </resources>

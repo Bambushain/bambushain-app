@@ -24,10 +24,6 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
-enum class UserCardMessage {
-    ResetPassword,
-    Error
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +35,10 @@ fun UserList(navController: NavController, userApi: UserApi = koinInject(), cont
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = false,
     )
+
+    val createPandaSuccess = stringResource(R.string.create_panda_success)
+    val createPandaPandaExists = stringResource(R.string.create_panda_panda_exists)
+    val createPandaError = stringResource(R.string.create_panda_error)
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -87,7 +87,7 @@ fun UserList(navController: NavController, userApi: UserApi = koinInject(), cont
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                         value = vm.pandaName,
-                        label = { Text(stringResource( R.string.create_panda_name)) },
+                        label = { Text(stringResource(R.string.create_panda_name)) },
                         placeholder = { Text(stringResource(R.string.create_panda_placeholder_name)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                         enabled = true,
@@ -96,7 +96,7 @@ fun UserList(navController: NavController, userApi: UserApi = koinInject(), cont
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                         value = vm.pandaEmail,
-                        label = { Text(stringResource( R.string.create_panda_email)) },
+                        label = { Text(stringResource(R.string.create_panda_email)) },
                         placeholder = { Text(stringResource(R.string.create_panda_placeholder_email)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                         enabled = true,
@@ -110,13 +110,45 @@ fun UserList(navController: NavController, userApi: UserApi = koinInject(), cont
                         enabled = true,
                         onValueChange = { vm.pandaDiscord = it }
                     )
-                    Row(modifier = Modifier.padding(bottom = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically,) {
+                    Row(
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
                         Switch(
                             checked = vm.pandaMod,
                             onCheckedChange = { vm.pandaMod = it }
                         )
-                        Text(stringResource(R.string.create_panda_isMod), modifier = Modifier.padding(horizontal = 8.dp))
+                        Text(
+                            stringResource(R.string.create_panda_isMod),
+                            modifier = Modifier.padding(horizontal = 8.dp)
+                        )
+                    }
+                    Button(
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        enabled = vm.pandaEmail.isNotEmpty() && vm.pandaName.isNotEmpty(),
+                        onClick = {
+                            coroutineScope.launch {
+                                vm.createPanda(
+                                    onSuccess = {
+                                        showBottomSheet = false
+                                        val response = userApi.getUsers()
+                                        snackbarHostState.showSnackbar(createPandaSuccess)
+                                        if (response.isSuccessful) {
+                                            userListState = response.body()!!
+                                        }
+                                    },
+                                    onError = {
+                                        if(it == 409) {
+                                            snackbarHostState.showSnackbar(createPandaPandaExists)
+                                        }
+                                        else {
+                                            snackbarHostState.showSnackbar(createPandaError)
+                                        }
+                                    }
+                                )
+                            }
+                        }) {
+                        Text(stringResource(R.string.create_panda_add_panda))
                     }
                 }
             }
