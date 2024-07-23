@@ -11,14 +11,17 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.bambushain.R
+import app.bambushain.Screens
 import app.bambushain.api.apis.UserApi
 import app.bambushain.api.auth.AuthenticationSettings
 import app.bambushain.api.models.User
+import app.bambushain.composables.utils.NavBar
 import app.bambushain.viewModels.user.PandaViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -35,6 +38,7 @@ fun UserList(navController: NavController, userApi: UserApi = koinInject(), cont
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = false,
     )
+
 
     val createPandaSuccess = stringResource(R.string.create_panda_success)
     val createPandaPandaExists = stringResource(R.string.create_panda_panda_exists)
@@ -68,14 +72,20 @@ fun UserList(navController: NavController, userApi: UserApi = koinInject(), cont
                 },
                 scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
             )
-        }
+        },
+        bottomBar = { NavBar(navController, 1) }
     ) { contentPadding ->
         Surface(modifier = Modifier.padding(contentPadding)) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(userListState) { user ->
-                    UserCard(user, isMod, userApi) {
-                        coroutineScope.launch { snackbarHostState.showSnackbar(it) }
-                    }
+                    UserCard(user, isMod, userApi, onUpdateUsers = {
+                        coroutineScope.launch {
+                            val response = userApi.getUsers()
+                            if (response.isSuccessful) {
+                                userListState = response.body()!!
+                            }
+                        }
+                    }, onShowSnackBar = { coroutineScope.launch { snackbarHostState.showSnackbar(it) } })
                 }
             }
             if (showBottomSheet) {
@@ -138,10 +148,9 @@ fun UserList(navController: NavController, userApi: UserApi = koinInject(), cont
                                         }
                                     },
                                     onError = {
-                                        if(it == 409) {
+                                        if (it == 409) {
                                             snackbarHostState.showSnackbar(createPandaPandaExists)
-                                        }
-                                        else {
+                                        } else {
                                             snackbarHostState.showSnackbar(createPandaError)
                                         }
                                     }

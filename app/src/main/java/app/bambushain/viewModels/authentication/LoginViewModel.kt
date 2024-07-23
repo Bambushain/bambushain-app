@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import app.bambushain.api.apis.AuthenticationApi
 import app.bambushain.api.models.LoginRequest
 import app.bambushain.api.auth.AuthenticationSettings
+import app.bambushain.api.models.ForgotPasswordRequest
 
 class LoginViewModel(
     private val authenticationApi: AuthenticationApi,
@@ -58,6 +59,12 @@ class LoginViewModel(
     }
 
     suspend fun requestPassword(onSuccess: suspend () -> kotlin.Unit,onError: suspend () -> Unit) {
-
+        val forgotPasswordRequest = ForgotPasswordRequest(userName)
+        val response = authenticationApi.forgotPassword(forgotPasswordRequest)
+        if (response.isSuccessful) {
+            onSuccess()
+        } else {
+            onError()
+        }
     }
 }

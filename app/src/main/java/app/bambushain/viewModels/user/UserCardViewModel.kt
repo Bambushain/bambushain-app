@@ -32,6 +32,15 @@ class UserCardViewModel(
         }
     }
 
+    suspend fun setUserModRights(onSuccess: suspend () -> Unit, onError: suspend () -> Unit) {
+        val response = userApi.makeUserMod(user?.id!!)
+        if (response.isSuccessful) {
+            onSuccess()
+        } else {
+            onError()
+        }
+    }
+
     suspend fun deleteUser(onSuccess: suspend () -> Unit, onError: suspend () -> Unit) {
         val response = userApi.deleteUser(user?.id!!)
         if (response.isSuccessful) {
