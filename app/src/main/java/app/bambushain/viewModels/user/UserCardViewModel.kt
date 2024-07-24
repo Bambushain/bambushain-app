@@ -26,6 +26,7 @@ class UserCardViewModel(
     suspend fun revokeUserModRights(onSuccess: suspend () -> Unit, onError: suspend () -> Unit) {
         val response = userApi.revokeUserModRights(user?.id!!)
         if (response.isSuccessful) {
+            user!!.isMod = false
             onSuccess()
         } else {
             onError()
@@ -35,6 +36,7 @@ class UserCardViewModel(
     suspend fun setUserModRights(onSuccess: suspend () -> Unit, onError: suspend () -> Unit) {
         val response = userApi.makeUserMod(user?.id!!)
         if (response.isSuccessful) {
+            user!!.isMod = true
             onSuccess()
         } else {
             onError()
@@ -53,7 +55,7 @@ class UserCardViewModel(
     suspend fun updateUser(onSuccess: suspend () -> Unit, onError: suspend (error: Int) -> Unit) {
         val updateUser = UpdateMyProfile(user!!.email, user!!.displayName, user!!.discordName)
         val response = userApi.updateUserProfile(user!!.id!!, updateUser)
-        if (response.isSuccessful) {
+        if (response.code() == 204) {
             onSuccess()
         } else {
             onError(response.code())

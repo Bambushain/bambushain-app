@@ -45,7 +45,7 @@ data class User (
     var email: kotlin.String,
 
     @SerialName(value = "isMod")
-    val isMod: kotlin.Boolean,
+    var isMod: kotlin.Boolean,
 
     @SerialName(value = "discordName")
     var discordName: kotlin.String,

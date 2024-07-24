@@ -1,11 +1,9 @@
 package app.bambushain.composables.user
 
 import android.content.Context
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -15,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import app.bambushain.R
@@ -24,6 +21,7 @@ import app.bambushain.api.auth.AuthenticationSettings
 import app.bambushain.api.infrastructure.ApiClient.Companion.defaultBasePath
 import app.bambushain.api.models.User
 import app.bambushain.composables.utils.ConfirmDialog
+import app.bambushain.composables.utils.EditUserBottomSheet
 import app.bambushain.ui.theme.BambooTypography
 import app.bambushain.viewModels.user.UserCardViewModel
 import coil.ImageLoader
@@ -42,7 +40,7 @@ fun UserCard(
     isMod: Boolean,
     userApi: UserApi,
     context: Context = koinInject(),
-    onUpdateUsers: () -> Unit,
+    onUpdateUsers: (User) -> Unit,
     onShowSnackBar: (String) -> Unit,
 ) {
     var model: ImageRequest? by remember { mutableStateOf(null) }
@@ -145,26 +143,30 @@ fun UserCard(
                 )
             }
             if (isMod) {
-                IconButton(onClick = { showPasswordDialog = true }, modifier = Modifier.padding(top = 8.dp).constrainAs(passwordButton) {
-                    val linkTop = if (vm.user!!.isMod) {
-                        mod
-                    } else if (vm.user!!.discordName.isNotEmpty()) {
-                        discord
-                    } else {
-                        email
-                    }
-                    start.linkTo(parent.start)
-                    top.linkTo(linkTop.bottom)
-                }) {
+                IconButton(
+                    onClick = { showPasswordDialog = true },
+                    modifier = Modifier.padding(top = 8.dp).constrainAs(passwordButton) {
+                        val linkTop = if (vm.user!!.isMod) {
+                            mod
+                        } else if (vm.user!!.discordName.isNotEmpty()) {
+                            discord
+                        } else {
+                            email
+                        }
+                        start.linkTo(parent.start)
+                        top.linkTo(linkTop.bottom)
+                    }) {
                     Icon(
                         painter = painterResource(R.drawable.lock_reset),
                         contentDescription = stringResource(R.string.user_card_reset_password)
                     )
                 }
-                IconButton(onClick = { showBottomSheet = true }, modifier = Modifier.padding(top = 8.dp).constrainAs(editButton) {
-                    start.linkTo(passwordButton.end)
-                    top.linkTo(passwordButton.top)
-                }) {
+                IconButton(
+                    onClick = { showBottomSheet = true },
+                    modifier = Modifier.padding(top = 8.dp).constrainAs(editButton) {
+                        start.linkTo(passwordButton.end)
+                        top.linkTo(passwordButton.top)
+                    }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
                         contentDescription = stringResource(R.string.user_card_edit)
@@ -182,10 +184,12 @@ fun UserCard(
                         contentDescription = stringResource(R.string.user_card_delete_panda)
                     )
                 }
-                IconButton(onClick = { expanded = !expanded }, modifier = Modifier.padding(top = 8.dp).constrainAs(menuButton) {
-                    top.linkTo(editButton.top)
-                    end.linkTo(parent.end)
-                }) {
+                IconButton(
+                    onClick = { expanded = !expanded },
+                    modifier = Modifier.padding(top = 8.dp).constrainAs(menuButton) {
+                        top.linkTo(editButton.top)
+                        end.linkTo(parent.end)
+                    }) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
                         contentDescription = null
@@ -228,7 +232,7 @@ fun UserCard(
                             vm.revokeUserModRights(
                                 onSuccess = {
                                     onShowSnackBar(modStatusRedactedSuccess)
-                                    onUpdateUsers()
+                                    onUpdateUsers(vm.user!!)
                                     showRedactModDialog = false
                                 },
                                 onError = {
@@ -254,7 +258,7 @@ fun UserCard(
                             vm.setUserModRights(
                                 onSuccess = {
                                     onShowSnackBar(modStatusSetSuccess)
-                                    onUpdateUsers()
+                                    onUpdateUsers(vm.user!!)
                                     showSetModDialog = false
                                 },
                                 onError = {
@@ -280,7 +284,7 @@ fun UserCard(
                             vm.resetPassword(
                                 onSuccess = {
                                     onShowSnackBar(passwordResetSuccess)
-                                    onUpdateUsers()
+                                    onUpdateUsers(vm.user!!)
                                 },
                                 onError = {
                                     onShowSnackBar(passwordResetError)
@@ -305,7 +309,7 @@ fun UserCard(
                             vm.deleteUser(
                                 onSuccess = {
                                     onShowSnackBar(deletePandaSuccess)
-                                    onUpdateUsers()
+                                    onUpdateUsers(vm.user!!)
                                 },
                                 onError = {
                                     onShowSnackBar(deletePandaError)
@@ -320,61 +324,32 @@ fun UserCard(
                 )
             }
             if (showBottomSheet) {
-                ModalBottomSheet(
-                    modifier = Modifier.fillMaxHeight(),
-                    sheetState = sheetState,
-                    onDismissRequest = { showBottomSheet = false }
-                ) {
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                        value = vm.user!!.displayName,
-                        label = { Text(stringResource(R.string.create_panda_name)) },
-                        placeholder = { Text(stringResource(R.string.create_panda_placeholder_name)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                        enabled = true,
-                        onValueChange = { vm.user!!.displayName = it }
-                    )
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                        value = vm.user!!.email,
-                        label = { Text(stringResource(R.string.create_panda_email)) },
-                        placeholder = { Text(stringResource(R.string.create_panda_placeholder_email)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        enabled = true,
-                        onValueChange = { vm.user!!.email = it }
-                    )
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                        value = vm.user!!.discordName,
-                        placeholder = { Text(stringResource(R.string.create_panda_placeholder_discord)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        enabled = true,
-                        onValueChange = { vm.user!!.discordName = it }
-                    )
-                    Button(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                        enabled = vm.user!!.displayName.isNotEmpty() && vm.user!!.email.isNotEmpty(),
-                        onClick = {
-                            coroutineScope.launch {
-                                snackbarHostState.showSnackbar(updateUserSuccess)
-                                vm.updateUser(
-                                    onSuccess = {
-                                        showBottomSheet = false
-                                        onUpdateUsers()
-                                    },
-                                    onError = {
-                                        if (it == 409) {
-                                            snackbarHostState.showSnackbar(updateUserUserExists)
-                                        } else {
-                                            snackbarHostState.showSnackbar(updateUserError)
-                                        }
+                EditUserBottomSheet(
+                    sheetState,
+                    user.displayName,
+                    user.email,
+                    user.discordName,
+                    onUpdateUser = { displayName, email, discordName ->
+                        vm.user!!.displayName = displayName
+                        vm.user!!.email = email
+                        vm.user!!.discordName = discordName
+                        coroutineScope.launch {
+                            vm.updateUser(
+                                onSuccess = {
+                                    showBottomSheet = false
+                                    onUpdateUsers(vm.user!!)
+                                    snackbarHostState.showSnackbar(updateUserSuccess)
+                                },
+                                onError = {
+                                    if (it == 409) {
+                                        snackbarHostState.showSnackbar(updateUserUserExists)
+                                    } else {
+                                        snackbarHostState.showSnackbar(updateUserError)
                                     }
-                                )
-                            }
-                        }) {
-                        Text(stringResource(R.string.create_panda_add_panda))
-                    }
-                }
+                                }
+                            )
+                        }
+                    })
             }
         }
     }

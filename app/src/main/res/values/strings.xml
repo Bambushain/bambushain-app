@@ -66,4 +66,5 @@
     <string name="navbar_pandas">Pandas</string>
     <string name="navbar_characters">Charaktere</string>
     <string name="navbar_profile">Mein Profil</string>
+    <string name="create_panda_edit_panda">Panda bearbeiten</string>
 </resources>
