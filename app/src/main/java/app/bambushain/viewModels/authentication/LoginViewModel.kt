@@ -34,17 +34,17 @@ class LoginViewModel(
         }
     }
 
-    suspend fun requestTwoFactor(onError: suspend () -> Unit) {
+    suspend fun requestTwoFactor(onError: suspend (error: Int) -> Unit) {
         val loginRequest = LoginRequest(userName, password)
         val response = authenticationApi.login(loginRequest)
         if (response.isSuccessful) {
             twoFactorRequested = true
         } else {
-            onError()
+            onError(response.code())
         }
     }
 
-    suspend fun login(onSuccess: suspend () -> Unit, onError: suspend () -> Unit) {
+    suspend fun login(onSuccess: suspend () -> Unit, onError: suspend (error: Int) -> Unit) {
         val loginRequest = LoginRequest(userName, password, twoFactor)
         val response = authenticationApi.login(loginRequest)
         if (response.isSuccessful) {
@@ -54,7 +54,7 @@ class LoginViewModel(
             }
             onSuccess()
         } else {
-            onError()
+            onError(response.code())
         }
     }
 

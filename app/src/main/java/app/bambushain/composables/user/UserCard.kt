@@ -339,16 +339,20 @@ fun UserCard(
                                     showBottomSheet = false
                                     onUpdateUsers(vm.user!!)
                                     snackbarHostState.showSnackbar(updateUserSuccess)
+                                    vm.conflict = false
                                 },
                                 onError = {
                                     if (it == 409) {
                                         snackbarHostState.showSnackbar(updateUserUserExists)
+                                        vm.conflict = true
                                     } else {
+                                        vm.conflict = false
                                         snackbarHostState.showSnackbar(updateUserError)
                                     }
                                 }
                             )
                         }
+                        return@EditUserBottomSheet vm.conflict
                     })
             }
         }

@@ -18,6 +18,7 @@ class PandaViewModel(
     var pandaName by mutableStateOf("")
     var pandaDiscord by mutableStateOf("")
     var pandaMod by mutableStateOf(false)
+    var conflict by mutableStateOf(false)
 
     suspend fun createPanda(onSuccess: suspend () -> Unit, onError: suspend (error : Int) -> Unit) {
         val panda = User(pandaName, pandaEmail, pandaMod, pandaDiscord, false)

@@ -67,4 +67,10 @@
     <string name="navbar_characters">Charaktere</string>
     <string name="navbar_profile">Mein Profil</string>
     <string name="create_panda_edit_panda">Panda bearbeiten</string>
+    <string name="login_error_username">Falscher Benutzername</string>
+    <string name="login_error_password">Falsches Passwort</string>
+    <string name="login_error_two_factor">Zwei Faktor Code Falsch</string>
+    <string name="login_error_unknown">Etwas ist schiefgelaufen</string>
+    <string name="create_panda_name_conflict">Existiert bereits</string>
+    <string name="create_panda_email_conflict">Existiert bereits</string>
 </resources>

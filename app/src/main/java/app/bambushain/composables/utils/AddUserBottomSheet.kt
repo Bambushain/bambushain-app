@@ -17,7 +17,7 @@ import app.bambushain.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddUserBottomSheet(
-    sheetState: SheetState, onCreateUser: (name: String, email: String, discord: String, isMod: Boolean) -> Unit
+    sheetState: SheetState, onCreateUser: (name: String, email: String, discord: String, isMod: Boolean) -> Boolean
 ) {
     var showBottomSheet = true
     val sheetState = rememberModalBottomSheetState(
@@ -27,6 +27,8 @@ fun AddUserBottomSheet(
     var editUserEmail by remember { mutableStateOf("") }
     var editUserDiscord by remember { mutableStateOf("") }
     var editUserIsMod by remember { mutableStateOf(false) }
+    var usernameConflict by remember { mutableStateOf(false) }
+    var emailConflict by remember { mutableStateOf(false) }
 
     ModalBottomSheet(
         modifier = Modifier.fillMaxHeight().padding(16.dp),
@@ -40,7 +42,9 @@ fun AddUserBottomSheet(
             placeholder = { Text(stringResource(R.string.create_panda_placeholder_name)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             enabled = true,
-            onValueChange = { editUserName = it }
+            onValueChange = { editUserName = it },
+            isError = usernameConflict,
+            supportingText = { if (usernameConflict) Text(stringResource(R.string.create_panda_name_conflict)) else null }
         )
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
@@ -49,7 +53,9 @@ fun AddUserBottomSheet(
             placeholder = { Text(stringResource(R.string.create_panda_placeholder_email)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             enabled = true,
-            onValueChange = { editUserEmail = it }
+            onValueChange = { editUserEmail = it },
+            isError = emailConflict,
+            supportingText = { if (emailConflict) Text(stringResource(R.string.create_panda_email_conflict)) else null }
         )
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
@@ -76,7 +82,12 @@ fun AddUserBottomSheet(
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
             enabled = editUserName.isNotEmpty() && editUserEmail.isNotEmpty(),
             onClick = {
-                onCreateUser(editUserName, editUserEmail, editUserDiscord, editUserIsMod)
+                usernameConflict = false
+                emailConflict = false
+                if(onCreateUser(editUserName, editUserEmail, editUserDiscord, editUserIsMod)){
+                    usernameConflict = true
+                    emailConflict = true
+                }
             }) {
             Text(stringResource(R.string.create_panda_edit_panda))
         }

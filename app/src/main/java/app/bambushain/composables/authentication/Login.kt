@@ -23,6 +23,9 @@ fun LoginScreen(navController: NavController) {
     val vm = koinViewModel<LoginViewModel>()
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    var usernameError by remember { mutableStateOf(false) }
+    var passwordError by remember { mutableStateOf(false) }
+    var twofactorError by remember { mutableStateOf(false) }
 
     val loginTopBar = stringResource(R.string.login_caption)
     val loginLabelName = stringResource(R.string.login_label_email_or_name)
@@ -30,9 +33,13 @@ fun LoginScreen(navController: NavController) {
     val loginLabelPassword = stringResource(R.string.login_label_password)
     val loginLabelTwoFactor = stringResource(R.string.login_label_two_factor_code)
     val loginErrorTwoFactorRequest = stringResource(R.string.login_error_two_factor_request)
+    val loginErrorUnknown= stringResource(R.string.login_error_unknown)
     val loginErrorLogin = stringResource(R.string.login_error_login)
     val loginErrorPasswordRequest = stringResource(R.string.login_error_password_request)
     val loginPasswordRequest = stringResource(R.string.login_password_request)
+    val usernameErrorText = stringResource(R.string.login_error_username)
+    val passwordErrorText = stringResource(R.string.login_error_password)
+    val twofactorErrorText = stringResource(R.string.login_error_two_factor)
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -54,7 +61,9 @@ fun LoginScreen(navController: NavController) {
                     placeholder = { Text(loginPlaceholderName) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     enabled = !vm.twoFactorRequested,
-                    onValueChange = { vm.userName = it }
+                    onValueChange = { vm.userName = it },
+                    isError = usernameError,
+                    supportingText = {if (usernameError) Text(usernameErrorText) else null }
                 )
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
@@ -63,7 +72,9 @@ fun LoginScreen(navController: NavController) {
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     enabled = !vm.twoFactorRequested,
-                    onValueChange = { vm.password = it }
+                    onValueChange = { vm.password = it },
+                    isError = passwordError,
+                    supportingText = {if (passwordError) Text(passwordErrorText) else null }
                 )
                 if (vm.twoFactorRequested) {
                     OutlinedTextField(
@@ -72,6 +83,8 @@ fun LoginScreen(navController: NavController) {
                         label = { Text(loginLabelTwoFactor) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         onValueChange = { vm.twoFactor = it },
+                        isError = twofactorError,
+                        supportingText = {if (twofactorError) Text(twofactorErrorText) else null }
                     )
                 }
                 Row(
@@ -104,6 +117,9 @@ fun LoginScreen(navController: NavController) {
                     Button(
                         enabled = vm.loginAllowed,
                         onClick = {
+                            usernameError = false
+                            passwordError = false
+                            twofactorError = false
                             coroutineScope.launch {
                                 if (vm.twoFactorRequested) {
                                     vm.login(
@@ -111,11 +127,23 @@ fun LoginScreen(navController: NavController) {
                                             navController.navigate(Screens.PandasScreen.name)
                                         },
                                         onError = {
-                                            snackbarHostState.showSnackbar(loginErrorLogin)
+                                            twofactorError = true
+                                            if(it == 401) {
+                                                snackbarHostState.showSnackbar(loginErrorLogin)
+                                            } else {
+                                                snackbarHostState.showSnackbar(loginErrorUnknown)
+                                            }
                                         })
                                 } else {
                                     vm.requestTwoFactor(onError = {
-                                        snackbarHostState.showSnackbar(loginErrorTwoFactorRequest)
+                                        usernameError = true
+                                        passwordError = true
+                                        if(it == 401) {
+                                            snackbarHostState.showSnackbar(loginErrorTwoFactorRequest)
+                                        } else {
+                                            snackbarHostState.showSnackbar(loginErrorUnknown)
+                                        }
+
                                     })
                                 }
                             }

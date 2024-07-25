@@ -13,6 +13,7 @@ class UserCardViewModel(
     private val userApi: UserApi,
 ) : ViewModel() {
     var user: User? by mutableStateOf(user)
+    var conflict by mutableStateOf(false)
 
     suspend fun resetPassword(onSuccess: suspend () -> Unit, onError: suspend () -> Unit) {
         val response = userApi.changePassword(user?.id!!)

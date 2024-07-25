@@ -103,16 +103,20 @@ fun UserList(navController: NavController, userApi: UserApi = koinInject(), cont
                                 if (response.isSuccessful) {
                                     myList = response.body()!!.toTypedArray()
                                 }
+                                vm.conflict = false
                             },
                             onError = {
                                 if (it == 409) {
                                     snackbarHostState.showSnackbar(createPandaPandaExists)
+                                    vm.conflict = true
                                 } else {
                                     snackbarHostState.showSnackbar(createPandaError)
+                                    vm.conflict = false
                                 }
                             }
                         )
                     }
+                    return@AddUserBottomSheet vm.conflict
                 })
             }
         }
