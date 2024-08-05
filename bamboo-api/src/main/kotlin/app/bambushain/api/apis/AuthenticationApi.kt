@@ -8,6 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 import app.bambushain.api.models.ErrorDetails
+import app.bambushain.api.models.ForgotPasswordRequest
 import app.bambushain.api.models.LoginRequest
 import app.bambushain.api.models.LoginResponse
 
@@ -25,6 +26,17 @@ interface AuthenticationApi {
      */
     @POST("api/login")
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResponse>
+
+    /**
+     * Performs a password forgot
+     * Requests a new password for the user
+     * Responses:
+     *  - 204: Always returned
+     *
+     * @return [Unit]
+     */
+    @POST("/api/forgot-password")
+    suspend fun forgotPassword(@Body forgotPasswordRequest: ForgotPasswordRequest): Response<Unit>
 
     /**
      * Performs a logout

@@ -267,7 +267,7 @@ fun BambushainTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = AppTypography,
+        typography = BambooTypography,
         content = content
     )
 }

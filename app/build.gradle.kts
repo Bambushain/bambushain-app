@@ -100,8 +100,13 @@ dependencies {
     implementation("io.insert-koin:koin-androidx-compose-navigation")
     implementation("io.insert-koin:koin-androidx-navigation")
 
+    implementation(platform("com.squareup.retrofit2:retrofit-bom:2.11.0"))
+    implementation("com.squareup.retrofit2:retrofit")
+
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.3")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.3")
@@ -113,8 +118,10 @@ dependencies {
     implementation("com.github.requery:sqlite-android:3.45.0")
     implementation("io.coil-kt:coil:2.6.0")
     implementation("io.coil-kt:coil-svg:2.6.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
 
-    annotationProcessor("androidx.databinding:databinding-compiler:8.5.0")
+    annotationProcessor("androidx.databinding:databinding-compiler:8.5.1")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
 
     debugImplementation("androidx.compose.ui:ui-tooling")

@@ -25,7 +25,7 @@ interface CrafterApi {
      * @return [Crafter]
      */
     @POST("api/final-fantasy/character/{character_id}/crafter")
-    suspend fun createCrafter(@Path("character_id") characterId: java.math.BigDecimal, @Body crafter: Crafter): Response<Crafter>
+    suspend fun createCrafter(@Path("character_id") characterId: Int, @Body crafter: Crafter): Response<Crafter>
 
     /**
      * Delete the given crafter
@@ -41,7 +41,7 @@ interface CrafterApi {
      * @return [Unit]
      */
     @DELETE("api/final-fantasy/character/{character_id}/crafter/{id}")
-    suspend fun deleteCrafter(@Path("character_id") characterId: java.math.BigDecimal, @Path("id") id: java.math.BigDecimal): Response<Unit>
+    suspend fun deleteCrafter(@Path("character_id") characterId: Int, @Path("id") id: Int): Response<Unit>
 
     /**
      * Get a crafter by job
@@ -57,7 +57,7 @@ interface CrafterApi {
      * @return [Crafter]
      */
     @GET("api/final-fantasy/character/{character_id}/crafter/{id}")
-    suspend fun getCrafter(@Path("character_id") characterId: java.math.BigDecimal, @Path("id") id: java.math.BigDecimal): Response<Crafter>
+    suspend fun getCrafter(@Path("character_id") characterId: Int, @Path("id") id: Int): Response<Crafter>
 
     /**
      * Get list of crafter
@@ -71,7 +71,7 @@ interface CrafterApi {
      * @return [kotlin.collections.List<Crafter>]
      */
     @GET("api/final-fantasy/character/{character_id}/crafter")
-    suspend fun getCrafters(@Path("character_id") characterId: java.math.BigDecimal): Response<kotlin.collections.List<Crafter>>
+    suspend fun getCrafters(@Path("character_id") characterId: Int): Response<kotlin.collections.List<Crafter>>
 
     /**
      * Updates the given crafter
@@ -90,6 +90,6 @@ interface CrafterApi {
      * @return [Unit]
      */
     @PUT("api/final-fantasy/character/{character_id}/crafter/{id}")
-    suspend fun updateCrafter(@Path("character_id") characterId: java.math.BigDecimal, @Path("id") id: java.math.BigDecimal, @Body crafter: Crafter): Response<Unit>
+    suspend fun updateCrafter(@Path("character_id") characterId: Int, @Path("id") id: Int, @Body crafter: Crafter): Response<Unit>
 
 }
