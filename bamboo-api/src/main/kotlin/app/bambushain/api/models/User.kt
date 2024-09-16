@@ -39,16 +39,16 @@ import kotlinx.serialization.Contextual
 data class User (
 
     @SerialName(value = "displayName")
-    val displayName: kotlin.String,
+    var displayName: kotlin.String,
 
     @SerialName(value = "email")
-    val email: kotlin.String,
+    var email: kotlin.String,
 
     @SerialName(value = "isMod")
-    val isMod: kotlin.Boolean,
+    var isMod: kotlin.Boolean,
 
     @SerialName(value = "discordName")
-    val discordName: kotlin.String,
+    var discordName: kotlin.String,
 
     @SerialName(value = "appTotpEnabled")
     val appTotpEnabled: kotlin.Boolean,

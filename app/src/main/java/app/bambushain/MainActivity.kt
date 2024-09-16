@@ -1,100 +1,54 @@
 package app.bambushain
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.Composable
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import app.bambushain.api.auth.AuthenticationSettings
+import app.bambushain.composables.authentication.LoginScreen
+import app.bambushain.composables.user.UserList
 import app.bambushain.ui.theme.BambushainTheme
+import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-            BambushainTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Login()
-                }
-            }
+            MainComposable()
         }
     }
 }
 
-@Composable
-fun Login() {
-    Column() {
-        var loginSuccess by remember { mutableStateOf(false) }
-        var isErrorCredentialsNeeded by remember { mutableStateOf(false) }
-        var isErrorCredentialsWrong by remember { mutableStateOf(false) }
-
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
-            Text(text = stringResource(R.string.login_caption))
-        }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            OutlinedTextField(
-                "",
-                label = { Text(text = stringResource(R.string.login_lable_email_or_name)) },
-                placeholder = { Text(text = stringResource(R.string.login_placeholder_email_or_name)) },
-                isError = isErrorCredentialsNeeded || isErrorCredentialsWrong,
-                supportingText = {
-                    if (isErrorCredentialsNeeded) {
-                        Text(text = stringResource(R.string.login_error_email_or_name))
-                    } else if (isErrorCredentialsWrong) {
-                        Text(text = stringResource(R.string.login_error_email_or_name_wrong))
-                    }
-                },
-                onValueChange = {},
-            )
-        }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            OutlinedTextField(
-                value = "",
-                label = { Text(text = stringResource(R.string.login_lable_password)) },
-                placeholder = { Text(text = stringResource(R.string.login_placeholder_password)) },
-                isError = isErrorCredentialsNeeded || isErrorCredentialsWrong,
-                supportingText = {
-                    if (isErrorCredentialsNeeded) {
-                        Text(text = stringResource(R.string.login_error_email_or_name))
-                    } else if (isErrorCredentialsWrong) {
-                        Text(text = stringResource(R.string.login_error_email_or_name_wrong))
-                    }
-                },
-                onValueChange = {},
-            )
-        }
-
-        if (loginSuccess) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                OutlinedTextField(
-                    value = "",
-                    label = {},
-                    placeholder = { Text(text = stringResource(R.string.login_placeholder_two_factor)) },
-                    onValueChange = {},
-                )
-            }
-        }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-
-        }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-            Button(onClick = {}) {
-                Text(text = stringResource(R.string.login_button))
-            }
-        }
-    }
+enum class Screens {
+    LoginScreen,
+    PandasScreen,
 }
 
-@Preview(showBackground = true)
 @Composable
-fun LoginPreview() {
-    BambushainTheme {
-        Login()
+fun MainComposable(context: Context = koinInject()) {
+    val navController = rememberNavController()
+
+    BambushainTheme(dynamicColor = false) {
+        NavHost(
+            navController = navController,
+            startDestination = if (AuthenticationSettings.get(context)?.token != null) {
+                Screens.PandasScreen.name
+            } else {
+                Screens.LoginScreen.name
+            }
+        ) {
+            composable(Screens.LoginScreen.name) {
+                LoginScreen(navController = navController)
+            }
+            composable(Screens.PandasScreen.name) {
+                UserList(navController = navController)
+            }
+        }
     }
 }

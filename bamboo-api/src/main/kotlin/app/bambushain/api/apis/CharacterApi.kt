@@ -62,7 +62,7 @@ interface CharacterApi {
      * @return [CustomCharacterFieldOption]
      */
     @POST("api/final-fantasy/character/custom-field/{field_id}/option")
-    suspend fun createCustomFieldOption(@Path("field_id") fieldId: java.math.BigDecimal, @Body body: kotlin.String? = null): Response<CustomCharacterFieldOption>
+    suspend fun createCustomFieldOption(@Path("field_id") fieldId: Int, @Body body: kotlin.String? = null): Response<CustomCharacterFieldOption>
 
     /**
      * Creates a new free company
@@ -91,7 +91,7 @@ interface CharacterApi {
      * @return [Unit]
      */
     @DELETE("api/final-fantasy/character/{id}")
-    suspend fun deleteCharacter(@Path("id") id: java.math.BigDecimal): Response<Unit>
+    suspend fun deleteCharacter(@Path("id") id: Int): Response<Unit>
 
     /**
      * Deletes the given custom field
@@ -106,7 +106,7 @@ interface CharacterApi {
      * @return [Unit]
      */
     @DELETE("api/final-fantasy/character/custom-field/{id}")
-    suspend fun deleteCustomField(@Path("id") id: java.math.BigDecimal): Response<Unit>
+    suspend fun deleteCustomField(@Path("id") id: Int): Response<Unit>
 
     /**
      * Deletes the given option
@@ -122,7 +122,7 @@ interface CharacterApi {
      * @return [Unit]
      */
     @DELETE("api/final-fantasy/character/custom-field/{field_id}/option/{id}")
-    suspend fun deleteCustomFieldOption(@Path("field_id") fieldId: java.math.BigDecimal, @Path("id") id: java.math.BigDecimal): Response<Unit>
+    suspend fun deleteCustomFieldOption(@Path("field_id") fieldId: Int, @Path("id") id: Int): Response<Unit>
 
     /**
      * Deletes the given free company
@@ -137,7 +137,7 @@ interface CharacterApi {
      * @return [Unit]
      */
     @DELETE("api/final-fantasy/free-company/{id}")
-    suspend fun deleteFreeCompany(@Path("id") id: java.math.BigDecimal): Response<Unit>
+    suspend fun deleteFreeCompany(@Path("id") id: Int): Response<Unit>
 
     /**
      * Gets the character by id
@@ -151,7 +151,7 @@ interface CharacterApi {
      * @return [Character]
      */
     @GET("api/final-fantasy/character/{id}")
-    suspend fun getCharacterById(@Path("id") id: java.math.BigDecimal): Response<Character>
+    suspend fun getCharacterById(@Path("id") id: Int): Response<Character>
 
     /**
      * Get a list of all characters for the current user
@@ -177,7 +177,7 @@ interface CharacterApi {
      * @return [ErrorDetails]
      */
     @GET("api/final-fantasy/character/custom-field/{id}")
-    suspend fun getCustomFieldById(@Path("id") id: java.math.BigDecimal): Response<ErrorDetails>
+    suspend fun getCustomFieldById(@Path("id") id: Int): Response<ErrorDetails>
 
     /**
      * Gets all options for the given custom field
@@ -192,7 +192,7 @@ interface CharacterApi {
      * @return [kotlin.collections.List<CustomCharacterFieldOption>]
      */
     @GET("api/final-fantasy/character/custom-field/{field_id}/option")
-    suspend fun getCustomFieldOptions(@Path("field_id") fieldId: java.math.BigDecimal): Response<kotlin.collections.List<CustomCharacterFieldOption>>
+    suspend fun getCustomFieldOptions(@Path("field_id") fieldId: Int): Response<kotlin.collections.List<CustomCharacterFieldOption>>
 
     /**
      * Gets a list of all character custom fields
@@ -231,7 +231,7 @@ interface CharacterApi {
      * @return [FreeCompany]
      */
     @GET("api/final-fantasy/free-company/{id}")
-    suspend fun getFreeCompanyById(@Path("id") id: java.math.BigDecimal): Response<FreeCompany>
+    suspend fun getFreeCompanyById(@Path("id") id: Int): Response<FreeCompany>
 
     /**
      * Moves the given custom field to the new position
@@ -247,7 +247,7 @@ interface CharacterApi {
      * @return [Unit]
      */
     @PUT("api/final-fantasy/character/custom-field/{id}/{position}")
-    suspend fun moveCustomField(@Path("id") id: java.math.BigDecimal, @Path("position") position: java.math.BigDecimal): Response<Unit>
+    suspend fun moveCustomField(@Path("id") id: Int, @Path("position") position: Int): Response<Unit>
 
     /**
      * Updates the given character
@@ -263,7 +263,7 @@ interface CharacterApi {
      * @return [Unit]
      */
     @PUT("api/final-fantasy/character/{id}")
-    suspend fun updateCharacter(@Path("id") id: java.math.BigDecimal, @Body character: Character? = null): Response<Unit>
+    suspend fun updateCharacter(@Path("id") id: Int, @Body character: Character? = null): Response<Unit>
 
     /**
      * Updates the given custom field
@@ -279,7 +279,7 @@ interface CharacterApi {
      * @return [Unit]
      */
     @PUT("api/final-fantasy/character/custom-field/{id}")
-    suspend fun updateCustomField(@Path("id") id: java.math.BigDecimal, @Body modifyCustomCharacterFieldRequest: ModifyCustomCharacterFieldRequest? = null): Response<Unit>
+    suspend fun updateCustomField(@Path("id") id: Int, @Body modifyCustomCharacterFieldRequest: ModifyCustomCharacterFieldRequest? = null): Response<Unit>
 
     /**
      * Updates the given option
@@ -297,7 +297,7 @@ interface CharacterApi {
      * @return [Unit]
      */
     @PUT("api/final-fantasy/character/custom-field/{field_id}/option/{id}")
-    suspend fun updateCustomFieldOption(@Path("field_id") fieldId: java.math.BigDecimal, @Path("id") id: java.math.BigDecimal, @Body body: kotlin.String? = null): Response<Unit>
+    suspend fun updateCustomFieldOption(@Path("field_id") fieldId: Int, @Path("id") id: Int, @Body body: kotlin.String? = null): Response<Unit>
 
     /**
      * Updates the given free company
@@ -314,6 +314,6 @@ interface CharacterApi {
      * @return [Unit]
      */
     @PUT("api/final-fantasy/free-company/{id}")
-    suspend fun updateFreeCompany(@Path("id") id: java.math.BigDecimal, @Body freeCompany: FreeCompany? = null): Response<Unit>
+    suspend fun updateFreeCompany(@Path("id") id: Int, @Body freeCompany: FreeCompany? = null): Response<Unit>
 
 }
