@@ -3,12 +3,14 @@ package app.bambushain.finalfantasy.crafter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import app.bambushain.models.finalfantasy.CrafterJob;
-import dagger.hilt.android.lifecycle.HiltViewModel;
 
 import javax.inject.Inject;
+
+import app.bambushain.models.finalfantasy.CrafterJob;
+import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
 public class CrafterViewModel extends ViewModel {

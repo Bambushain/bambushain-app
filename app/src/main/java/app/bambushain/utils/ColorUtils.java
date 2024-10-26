@@ -2,14 +2,16 @@ package app.bambushain.utils;
 
 import android.content.Context;
 import android.graphics.Color;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
-import app.bambushain.R;
-import lombok.val;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import app.bambushain.R;
+import lombok.val;
 
 public final class ColorUtils {
     private ColorUtils() {

@@ -2,10 +2,12 @@ package app.bambushain.my;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import dagger.hilt.android.lifecycle.HiltViewModel;
+
+import java.io.Serializable;
 
 import javax.inject.Inject;
-import java.io.Serializable;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
 public class ProfileViewModel extends ViewModel implements Serializable {

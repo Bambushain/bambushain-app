@@ -7,10 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Objects;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.api.ProfilePictureLoader;
@@ -19,14 +30,8 @@ import app.bambushain.databinding.FragmentPandasBinding;
 import app.bambushain.models.bamboo.User;
 import app.bambushain.models.exception.BambooException;
 import app.bambushain.models.exception.ErrorType;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
-import org.jetbrains.annotations.NotNull;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Objects;
 
 @AndroidEntryPoint
 public class PandasFragment extends BindingFragment<FragmentPandasBinding> {

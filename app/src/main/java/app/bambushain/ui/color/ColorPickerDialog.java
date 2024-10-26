@@ -4,15 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import app.bambushain.R;
-import app.bambushain.databinding.ColorPickerDialogBinding;
-import app.bambushain.utils.ColorUtils;
+
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import lombok.val;
 
 import java.util.Arrays;
 import java.util.List;
+
+import app.bambushain.R;
+import app.bambushain.databinding.ColorPickerDialogBinding;
+import app.bambushain.utils.ColorUtils;
+import lombok.val;
 
 public class ColorPickerDialog {
     private final Context context;

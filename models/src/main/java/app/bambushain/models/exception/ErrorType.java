@@ -4,11 +4,12 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import lombok.Getter;
-import lombok.val;
 
 import java.io.IOException;
 import java.io.Serializable;
+
+import lombok.Getter;
+import lombok.val;
 
 @Getter
 @JsonAdapter(ErrorType.Adapter.class)

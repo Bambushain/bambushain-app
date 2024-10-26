@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <variable name="viewModel" type="app.bambushain.finalfantasy.characters.CharacterViewModel"/>
+
+        <variable
+                name="viewModel"
+                type="app.bambushain.finalfantasy.characters.CharacterViewModel" />
     </data>
+
     <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin"
             android:id="@+id/character_card">
+
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -21,7 +27,8 @@
                     android:id="@+id/characterName"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -31,7 +38,8 @@
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary"
                     app:layout_constraintStart_toStartOf="@id/characterName"
-                    app:layout_constraintTop_toBottomOf="@id/characterName"/>
+                    app:layout_constraintTop_toBottomOf="@id/characterName" />
+
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -41,7 +49,8 @@
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="@id/characterRace"
-                    app:layout_constraintTop_toBottomOf="@id/characterRace"/>
+                    app:layout_constraintTop_toBottomOf="@id/characterRace" />
+
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -52,7 +61,8 @@
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toEndOf="@id/labelCharacterFreeCompany"
-                    app:layout_constraintTop_toBottomOf="@id/characterRace"/>
+                    app:layout_constraintTop_toBottomOf="@id/characterRace" />
+
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -62,7 +72,8 @@
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary"
                     app:layout_constraintStart_toStartOf="@id/characterName"
-                    app:layout_constraintTop_toBottomOf="@id/labelCharacterFreeCompany"/>
+                    app:layout_constraintTop_toBottomOf="@id/labelCharacterFreeCompany" />
+
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,7 +83,8 @@
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary"
                     app:layout_constraintStart_toEndOf="@id/labelCharacterWorld"
-                    app:layout_constraintTop_toBottomOf="@id/labelCharacterFreeCompany"/>
+                    app:layout_constraintTop_toBottomOf="@id/labelCharacterFreeCompany" />
+
             <com.google.android.material.button.MaterialButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -83,7 +95,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/characterWorld"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    style="@style/Widget.Material3.Button.IconButton"/>
+                    style="@style/Widget.Material3.Button.IconButton" />
+
             <com.google.android.material.button.MaterialButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -93,7 +106,8 @@
                     app:iconSize="@dimen/card_icon_size"
                     app:layout_constraintStart_toEndOf="@id/showDetails"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    style="@style/Widget.Material3.Button.IconButton"/>
+                    style="@style/Widget.Material3.Button.IconButton" />
+
             <com.google.android.material.button.MaterialButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -103,7 +117,8 @@
                     app:iconSize="@dimen/card_icon_size"
                     app:layout_constraintStart_toEndOf="@id/showFighter"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    style="@style/Widget.Material3.Button.IconButton"/>
+                    style="@style/Widget.Material3.Button.IconButton" />
+
             <com.google.android.material.button.MaterialButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -113,7 +128,8 @@
                     app:iconSize="@dimen/card_icon_size"
                     app:layout_constraintStart_toEndOf="@id/showCrafter"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    style="@style/Widget.Material3.Button.IconButton"/>
+                    style="@style/Widget.Material3.Button.IconButton" />
+
             <com.google.android.material.button.MaterialButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -123,7 +139,8 @@
                     app:iconSize="@dimen/card_icon_size"
                     app:layout_constraintEnd_toStartOf="@id/deleteCharacter"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    style="@style/Widget.Material3.Button.IconButton"/>
+                    style="@style/Widget.Material3.Button.IconButton" />
+
             <com.google.android.material.button.MaterialButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -133,7 +150,7 @@
                     app:iconSize="@dimen/card_icon_size"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    style="@style/Widget.Material3.Button.IconButton"/>
+                    style="@style/Widget.Material3.Button.IconButton" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

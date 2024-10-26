@@ -5,11 +5,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
@@ -19,11 +25,8 @@ import app.bambushain.models.authentication.LoginRequest;
 import app.bambushain.models.authentication.TwoFactorRequest;
 import app.bambushain.notification.calendar.EventNotificationService;
 import app.bambushain.notification.calendar.network.EventLoader;
-import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
-
-import javax.inject.Inject;
 
 @AndroidEntryPoint
 public class LoginFragment extends BindingFragment<FragmentLoginBinding> {

@@ -3,9 +3,9 @@
     <item
             android:id="@+id/actionEditEvent"
             android:tooltipText="@string/action_edit_calendar_event"
-            android:title="@string/action_edit_calendar_event"/>
+            android:title="@string/action_edit_calendar_event" />
     <item
             android:id="@+id/actionDeleteEvent"
             android:tooltipText="@string/action_delete_calendar_event"
-            android:title="@string/action_delete_calendar_event"/>
+            android:title="@string/action_delete_calendar_event" />
 </menu>

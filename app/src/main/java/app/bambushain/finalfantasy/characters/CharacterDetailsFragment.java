@@ -2,11 +2,17 @@ package app.bambushain.finalfantasy.characters;
 
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.google.android.material.tabs.TabLayoutMediator;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
@@ -16,12 +22,9 @@ import app.bambushain.finalfantasy.fighter.FightersFragment;
 import app.bambushain.finalfantasy.housing.HousingFragment;
 import app.bambushain.models.finalfantasy.Character;
 import app.bambushain.utils.BundleUtils;
-import com.google.android.material.tabs.TabLayoutMediator;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.Getter;
 import lombok.val;
-
-import javax.inject.Inject;
 
 @AndroidEntryPoint
 public class CharacterDetailsFragment extends BindingFragment<FragmentCharacterDetailsBinding> {
@@ -78,11 +81,11 @@ public class CharacterDetailsFragment extends BindingFragment<FragmentCharacterD
     @Getter
     public class CharacterDetailsFragmentTabsAdapter extends FragmentStateAdapter {
 
+        private Fragment currentFragment;
+
         public CharacterDetailsFragmentTabsAdapter(@NonNull Fragment fragment) {
             super(fragment);
         }
-
-        private Fragment currentFragment;
 
         @NonNull
         @Override

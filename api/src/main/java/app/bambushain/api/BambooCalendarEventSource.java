@@ -2,12 +2,17 @@ package app.bambushain.api;
 
 import android.content.Context;
 import android.util.Log;
-import app.bambushain.models.bamboo.Event;
+
 import com.google.gson.Gson;
 import com.launchdarkly.eventsource.ErrorStrategy;
 import com.launchdarkly.eventsource.EventSource;
 import com.launchdarkly.eventsource.HttpConnectStrategy;
 import com.launchdarkly.eventsource.StreamException;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import app.bambushain.models.bamboo.Event;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -18,9 +23,6 @@ import lombok.Data;
 import lombok.val;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 @Singleton
 public class BambooCalendarEventSource {

@@ -3,10 +3,16 @@ package app.bambushain.finalfantasy.housing;
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import app.bambushain.base.listener.OnDeleteListener;
 import app.bambushain.base.listener.OnEditListener;
 import app.bambushain.databinding.HousingCardBinding;
@@ -14,10 +20,6 @@ import app.bambushain.models.finalfantasy.CharacterHousing;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class HousingAdapter extends RecyclerView.Adapter<HousingAdapter.ViewHolder> {
     private final ViewModelProvider viewModelProvider;

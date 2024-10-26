@@ -2,15 +2,17 @@ package app.bambushain.models.finalfantasy;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import app.bambushain.models.R;
+
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import lombok.Getter;
 
 import java.io.IOException;
 import java.io.Serializable;
+
+import app.bambushain.models.R;
+import lombok.Getter;
 
 @Getter
 @JsonAdapter(FighterJob.Adapter.class)
@@ -73,11 +75,6 @@ public enum FighterJob implements Serializable {
         }
 
         throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    @Override
-    public String toString() {
-        return String.valueOf(value);
     }
 
     public static FighterJob getFromTranslated(Context context, String translated) {
@@ -149,6 +146,11 @@ public enum FighterJob implements Serializable {
         }
 
         throw new IllegalArgumentException("Unexpected value '" + translated + "'");
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
     }
 
     public String getTranslated(Context context) {

@@ -5,9 +5,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import app.bambushain.R;
 import app.bambushain.base.BindingDialogFragment;
 import app.bambushain.databinding.FragmentCharacterDetailsDialogBinding;
@@ -16,10 +23,6 @@ import app.bambushain.models.finalfantasy.CustomField;
 import app.bambushain.utils.BundleUtils;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @AndroidEntryPoint
 public class CharacterDetailsDialog extends BindingDialogFragment<FragmentCharacterDetailsDialogBinding> {

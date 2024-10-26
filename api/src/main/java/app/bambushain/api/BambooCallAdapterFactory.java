@@ -1,8 +1,18 @@
 package app.bambushain.api;
 
+import com.google.gson.Gson;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+
+import javax.inject.Singleton;
+
 import app.bambushain.models.exception.BambooException;
 import app.bambushain.models.exception.ErrorType;
-import com.google.gson.Gson;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -13,18 +23,11 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.AllArgsConstructor;
 import lombok.val;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.HttpException;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
-
-import javax.inject.Singleton;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 
 @Module
 @InstallIn(SingletonComponent.class)
@@ -35,15 +38,15 @@ public class BambooCallAdapterFactory extends CallAdapter.Factory {
         original = RxJava3CallAdapterFactory.create();
     }
 
+    static BambooCallAdapterFactory create() {
+        return new BambooCallAdapterFactory();
+    }
+
     @Nullable
     @Override
     public CallAdapter<?, ?> get(@NotNull Type returnType, @NotNull Annotation[] annotations, @NotNull Retrofit retrofit) {
         //noinspection rawtypes
         return new RxCallAdapterWrapper(original.get(returnType, annotations, retrofit));
-    }
-
-    static BambooCallAdapterFactory create() {
-        return new BambooCallAdapterFactory();
     }
 
     @Provides

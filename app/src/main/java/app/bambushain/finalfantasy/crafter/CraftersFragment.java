@@ -8,10 +8,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.divider.MaterialDividerItemDecoration;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
@@ -20,12 +32,7 @@ import app.bambushain.finalfantasy.characters.CharacterDetailsFragment;
 import app.bambushain.models.finalfantasy.Character;
 import app.bambushain.models.finalfantasy.Crafter;
 import app.bambushain.models.finalfantasy.CrafterJob;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.divider.MaterialDividerItemDecoration;
 import lombok.val;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class CraftersFragment extends BindingFragment<FragmentCraftersBinding> {
     private final static String TAG = CraftersFragment.class.getName();

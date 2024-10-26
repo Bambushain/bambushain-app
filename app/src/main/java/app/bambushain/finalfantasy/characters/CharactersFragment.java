@@ -8,21 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.Objects;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentCharactersBinding;
 import app.bambushain.models.finalfantasy.Character;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
-
-import javax.inject.Inject;
-import java.util.Objects;
 
 @AndroidEntryPoint
 public class CharactersFragment extends BindingFragment<FragmentCharactersBinding> {

@@ -1,15 +1,17 @@
 package app.bambushain.notification.calendar.database;
 
 import android.content.Context;
+
 import androidx.room.Room;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 import io.requery.android.database.sqlite.RequerySQLiteOpenHelperFactory;
-
-import javax.inject.Singleton;
 
 @Module
 @InstallIn(SingletonComponent.class)

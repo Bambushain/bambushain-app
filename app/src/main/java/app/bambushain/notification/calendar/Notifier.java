@@ -7,18 +7,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
 import androidx.core.app.NotificationCompat;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import app.bambushain.MainActivity;
 import app.bambushain.R;
 import app.bambushain.notification.calendar.database.Event;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.val;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Singleton
 public class Notifier {

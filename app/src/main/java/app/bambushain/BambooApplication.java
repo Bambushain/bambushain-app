@@ -3,13 +3,15 @@ package app.bambushain;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import javax.inject.Inject;
+
 import app.bambushain.notification.calendar.network.EventLoader;
 import dagger.hilt.android.HiltAndroidApp;
 import lombok.Getter;
-
-import javax.inject.Inject;
 
 @HiltAndroidApp
 public class BambooApplication extends Application implements Application.ActivityLifecycleCallbacks {

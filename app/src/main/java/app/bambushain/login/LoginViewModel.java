@@ -2,9 +2,10 @@ package app.bambushain.login;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import dagger.hilt.android.lifecycle.HiltViewModel;
 
 import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
 public final class LoginViewModel extends ViewModel {

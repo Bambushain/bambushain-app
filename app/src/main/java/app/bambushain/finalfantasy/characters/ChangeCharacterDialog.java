@@ -7,8 +7,26 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingDialogFragment;
@@ -16,16 +34,13 @@ import app.bambushain.databinding.FragmentChangeCharacterDialogBinding;
 import app.bambushain.models.exception.BambooException;
 import app.bambushain.models.exception.ErrorType;
 import app.bambushain.models.finalfantasy.Character;
-import app.bambushain.models.finalfantasy.*;
+import app.bambushain.models.finalfantasy.CharacterRace;
+import app.bambushain.models.finalfantasy.CustomCharacterField;
+import app.bambushain.models.finalfantasy.CustomField;
+import app.bambushain.models.finalfantasy.FreeCompany;
 import app.bambushain.utils.BundleUtils;
-import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
-
-import javax.inject.Inject;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @AndroidEntryPoint
 public class ChangeCharacterDialog extends BindingDialogFragment<FragmentChangeCharacterDialogBinding> {

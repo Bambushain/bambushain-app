@@ -6,17 +6,20 @@ import android.content.pm.ServiceInfo;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
+
+import com.launchdarkly.eventsource.StreamException;
+
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.notification.calendar.database.EventDao;
 import app.bambushain.notification.calendar.network.EventSubscriber;
-import com.launchdarkly.eventsource.StreamException;
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.val;
-
-import javax.inject.Inject;
-import java.util.concurrent.TimeUnit;
 
 @AndroidEntryPoint
 public class EventNotificationService extends Service {

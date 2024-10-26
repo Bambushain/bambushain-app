@@ -8,12 +8,24 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Objects;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingDialogFragment;
@@ -22,18 +34,11 @@ import app.bambushain.models.exception.BambooException;
 import app.bambushain.models.exception.ErrorType;
 import app.bambushain.models.my.UpdateMyProfile;
 import app.bambushain.utils.BundleUtils;
-import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.core.Completable;
 import lombok.val;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import org.jetbrains.annotations.NotNull;
-
-import javax.inject.Inject;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Objects;
 
 @AndroidEntryPoint
 public class EditProfileDialog extends BindingDialogFragment<FragmentEditMyProfileBinding> {
@@ -46,12 +51,11 @@ public class EditProfileDialog extends BindingDialogFragment<FragmentEditMyProfi
 
     ProfileViewModel viewModel;
     Snackbar snackbar;
+    ActivityResultLauncher<PickVisualMediaRequest> launcher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), o -> profilePicture = o);
 
     @Inject
     public EditProfileDialog() {
     }
-
-    ActivityResultLauncher<PickVisualMediaRequest> launcher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), o -> profilePicture = o);
 
     @Override
     protected FragmentEditMyProfileBinding getViewBinding() {

@@ -2,9 +2,17 @@ package app.bambushain.my;
 
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import org.jetbrains.annotations.NotNull;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingDialogFragment;
@@ -12,12 +20,8 @@ import app.bambushain.databinding.FragmentChangeMyPasswordBinding;
 import app.bambushain.models.exception.BambooException;
 import app.bambushain.models.exception.ErrorType;
 import app.bambushain.models.my.ChangeMyPassword;
-import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
-import org.jetbrains.annotations.NotNull;
-
-import javax.inject.Inject;
 
 @AndroidEntryPoint
 public class ChangePasswordDialog extends BindingDialogFragment<FragmentChangeMyPasswordBinding> {

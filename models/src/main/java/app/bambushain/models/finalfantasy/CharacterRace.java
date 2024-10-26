@@ -1,16 +1,18 @@
 package app.bambushain.models.finalfantasy;
 
 import android.content.Context;
-import app.bambushain.models.R;
+
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import lombok.Getter;
-import lombok.val;
 
 import java.io.IOException;
 import java.io.Serializable;
+
+import app.bambushain.models.R;
+import lombok.Getter;
+import lombok.val;
 
 @JsonAdapter(CharacterRace.Adapter.class)
 @Getter
@@ -47,11 +49,6 @@ public enum CharacterRace implements Serializable {
         throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
 
-    @Override
-    public String toString() {
-        return String.valueOf(value);
-    }
-
     public static CharacterRace getFromTranslated(Context context, String translated) {
         if (translated.equals(context.getString(R.string.character_race_hyur))) {
             return CharacterRace.HYUR;
@@ -73,6 +70,11 @@ public enum CharacterRace implements Serializable {
 
 
         throw new IllegalArgumentException("Unexpected value '" + translated + "'");
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
     }
 
     public String getTranslated(Context context) {

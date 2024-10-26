@@ -2,6 +2,16 @@ package app.bambushain.base.api;
 
 import android.content.Context;
 import android.content.Intent;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import app.bambushain.BambooApplication;
 import app.bambushain.MainActivity;
 import app.bambushain.api.BambooCallAdapterFactory;
@@ -17,17 +27,10 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import lombok.AllArgsConstructor;
 import lombok.val;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.HttpException;
 import retrofit2.Retrofit;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 
 @Module
 @InstallIn(SingletonComponent.class)

@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <variable name="viewModel" type="app.bambushain.bamboo.calendar.CalendarEventViewModel"/>
+
+        <variable
+                name="viewModel"
+                type="app.bambushain.bamboo.calendar.CalendarEventViewModel" />
     </data>
+
     <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/margin"
             android:id="@+id/eventCard"
             style="?attr/materialCardViewElevatedStyle">
+
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
             <com.google.android.material.button.MaterialButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -21,7 +27,8 @@
                     app:icon="@drawable/ic_dots_vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    style="?attr/materialIconButtonStyle"/>
+                    style="?attr/materialIconButtonStyle" />
+
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -32,19 +39,21 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent">
+
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/eventTitle"
                         android:text="@{viewModel.title}"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"/>
+                        android:textAppearance="?attr/textAppearanceTitleMedium" />
+
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/eventDescription"
                         android:text="@{viewModel.description}"
                         android:textAppearance="?attr/textAppearanceBodyMedium"
-                        android:visibility="@{viewModel.description.empty ? android.view.View.GONE : android.view.View.VISIBLE}"/>
+                        android:visibility="@{viewModel.description.empty ? android.view.View.GONE : android.view.View.VISIBLE}" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

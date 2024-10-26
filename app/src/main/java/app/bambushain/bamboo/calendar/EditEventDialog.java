@@ -3,9 +3,15 @@ package app.bambushain.bamboo.calendar;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+
+import java.util.Objects;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.databinding.FragmentEditEventBinding;
@@ -13,9 +19,6 @@ import app.bambushain.models.bamboo.Event;
 import app.bambushain.utils.BundleUtils;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
-
-import javax.inject.Inject;
-import java.util.Objects;
 
 @AndroidEntryPoint
 public class EditEventDialog extends ChangeEventDialog<FragmentEditEventBinding> {

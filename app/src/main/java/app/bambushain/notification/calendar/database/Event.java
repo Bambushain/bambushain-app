@@ -2,6 +2,7 @@ package app.bambushain.notification.calendar.database;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
 import lombok.NoArgsConstructor;
 import lombok.val;
 

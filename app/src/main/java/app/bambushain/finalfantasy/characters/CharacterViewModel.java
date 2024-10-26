@@ -1,13 +1,15 @@
 package app.bambushain.finalfantasy.characters;
 
 import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import javax.inject.Inject;
+
 import app.bambushain.models.finalfantasy.CharacterRace;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import dagger.hilt.android.qualifiers.ApplicationContext;
-
-import javax.inject.Inject;
 
 @HiltViewModel
 public class CharacterViewModel extends ViewModel {

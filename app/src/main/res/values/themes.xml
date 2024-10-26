@@ -32,7 +32,8 @@
         <item name="android:colorBackground">@color/md_theme_background</item>
         <item name="android:statusBarColor">@color/md_theme_primary</item>
 
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog
+        </item>
 
         <item name="textAppearanceTitleLarge">@style/TextAppearance.Bambushain.TitleLarge</item>
         <item name="textAppearanceTitleMedium">@style/TextAppearance.Bambushain.TitleMedium</item>
@@ -43,7 +44,7 @@
         <item name="textAppearanceLabelSmall">@style/TextAppearance.Bambushain.LabelSmall</item>
     </style>
 
-    <style name="Theme.Bambushain" parent="Base.Theme.Bambushain"/>
+    <style name="Theme.Bambushain" parent="Base.Theme.Bambushain" />
 
     <style name="Theme.Bambushain.BottomSheetButton" parent="Widget.Material3.Button">
         <item name="android:layout_marginVertical">@dimen/margin</item>

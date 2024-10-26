@@ -2,9 +2,10 @@ package app.bambushain.navigation;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import dagger.hilt.android.lifecycle.HiltViewModel;
 
 import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
 public class NavigationViewModel extends ViewModel {

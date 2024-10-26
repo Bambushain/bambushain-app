@@ -1,5 +1,8 @@
 package app.bambushain.api;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import app.bambushain.models.authentication.ForgotPasswordRequest;
 import app.bambushain.models.authentication.LoginRequest;
 import app.bambushain.models.authentication.LoginResponse;
@@ -7,17 +10,23 @@ import app.bambushain.models.authentication.TwoFactorRequest;
 import app.bambushain.models.bamboo.Event;
 import app.bambushain.models.bamboo.User;
 import app.bambushain.models.finalfantasy.Character;
-import app.bambushain.models.finalfantasy.*;
+import app.bambushain.models.finalfantasy.CharacterHousing;
+import app.bambushain.models.finalfantasy.Crafter;
+import app.bambushain.models.finalfantasy.CustomCharacterField;
+import app.bambushain.models.finalfantasy.Fighter;
+import app.bambushain.models.finalfantasy.FreeCompany;
 import app.bambushain.models.my.ChangeMyPassword;
 import app.bambushain.models.my.UpdateMyProfile;
 import app.bambushain.models.pandas.UpdateUserProfile;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.RequestBody;
-import retrofit2.http.*;
-
-import java.time.LocalDate;
-import java.util.List;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.HEAD;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface BambooApi {
     /**

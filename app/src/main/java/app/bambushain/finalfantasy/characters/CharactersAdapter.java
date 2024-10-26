@@ -4,10 +4,18 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import app.bambushain.base.listener.OnDeleteListener;
 import app.bambushain.base.listener.OnEditListener;
 import app.bambushain.databinding.CharacterCardBinding;
@@ -15,11 +23,6 @@ import app.bambushain.models.finalfantasy.Character;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.ViewHolder> {
     private static final String TAG = CharactersAdapter.class.getName();

@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewTreeObserver;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
+
+import java.util.Objects;
+
+import javax.inject.Inject;
+
 import app.bambushain.api.BambooApi;
 import app.bambushain.databinding.ActivityMainBinding;
 import app.bambushain.databinding.HeaderNavigationDrawerBinding;
@@ -26,9 +32,6 @@ import app.bambushain.notification.calendar.database.EventDao;
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.val;
-
-import javax.inject.Inject;
-import java.util.Objects;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {

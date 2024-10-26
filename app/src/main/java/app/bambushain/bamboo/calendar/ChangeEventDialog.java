@@ -2,14 +2,16 @@ package app.bambushain.bamboo.calendar;
 
 import androidx.core.util.Pair;
 import androidx.viewbinding.ViewBinding;
-import app.bambushain.R;
-import app.bambushain.base.BindingDialogFragment;
-import app.bambushain.ui.color.ColorPickerDialog;
+
 import com.google.android.material.datepicker.MaterialDatePicker;
-import lombok.val;
 
 import java.time.LocalDate;
 import java.util.Objects;
+
+import app.bambushain.R;
+import app.bambushain.base.BindingDialogFragment;
+import app.bambushain.ui.color.ColorPickerDialog;
+import lombok.val;
 
 public abstract class ChangeEventDialog<T extends ViewBinding> extends BindingDialogFragment<T> {
 

@@ -1,17 +1,20 @@
 package app.bambushain.notification.calendar.network;
 
 import android.util.Log;
+
+import com.launchdarkly.eventsource.StreamException;
+
+import java.time.LocalDate;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import app.bambushain.api.BambooCalendarEventSource;
 import app.bambushain.notification.calendar.Notifier;
 import app.bambushain.notification.calendar.database.Event;
 import app.bambushain.notification.calendar.database.EventDao;
-import com.launchdarkly.eventsource.StreamException;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.val;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.time.LocalDate;
 
 @Singleton
 public class EventSubscriber {

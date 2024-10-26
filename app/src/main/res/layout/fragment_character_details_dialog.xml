@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <variable name="viewModel" type="app.bambushain.finalfantasy.characters.CharacterViewModel"/>
+
+        <variable
+                name="viewModel"
+                type="app.bambushain.finalfantasy.characters.CharacterViewModel" />
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/layout">
+
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/standard_bottom_sheet"
                 android:orientation="vertical"
                 style="@style/Theme.Bambushain.BottomSheet">
+
             <com.google.android.material.bottomsheet.BottomSheetDragHandleView
                     android:id="@+id/drag_handle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/scrollView">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
+
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -35,7 +44,8 @@
                             android:id="@+id/characterName"
                             android:textAppearance="?attr/textAppearanceTitleMedium"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -45,7 +55,8 @@
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?android:attr/textColorSecondary"
                             app:layout_constraintStart_toStartOf="@id/characterName"
-                            app:layout_constraintTop_toBottomOf="@id/characterName"/>
+                            app:layout_constraintTop_toBottomOf="@id/characterName" />
+
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -55,7 +66,8 @@
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?android:attr/textColorPrimary"
                             app:layout_constraintStart_toStartOf="@id/characterRace"
-                            app:layout_constraintTop_toBottomOf="@id/characterRace"/>
+                            app:layout_constraintTop_toBottomOf="@id/characterRace" />
+
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -66,7 +78,8 @@
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?android:attr/textColorPrimary"
                             app:layout_constraintStart_toEndOf="@id/labelCharacterFreeCompany"
-                            app:layout_constraintTop_toBottomOf="@id/characterRace"/>
+                            app:layout_constraintTop_toBottomOf="@id/characterRace" />
+
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -76,7 +89,8 @@
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?android:attr/textColorSecondary"
                             app:layout_constraintStart_toStartOf="@id/characterName"
-                            app:layout_constraintTop_toBottomOf="@id/characterFreeCompany"/>
+                            app:layout_constraintTop_toBottomOf="@id/characterFreeCompany" />
+
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -86,7 +100,8 @@
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?android:attr/textColorSecondary"
                             app:layout_constraintStart_toEndOf="@id/labelCharacterWorld"
-                            app:layout_constraintTop_toBottomOf="@id/labelCharacterFreeCompany"/>
+                            app:layout_constraintTop_toBottomOf="@id/labelCharacterFreeCompany" />
+
                     <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -95,7 +110,7 @@
                             android:orientation="vertical"
                             app:layout_constraintTop_toBottomOf="@id/characterWorld"
                             app:layout_constraintStart_toStartOf="@id/labelCharacterWorld"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
+                            app:layout_constraintBottom_toBottomOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.core.widget.NestedScrollView>
         </LinearLayout>

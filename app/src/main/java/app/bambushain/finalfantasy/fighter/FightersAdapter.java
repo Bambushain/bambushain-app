@@ -3,10 +3,16 @@ package app.bambushain.finalfantasy.fighter;
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import app.bambushain.base.listener.OnDeleteListener;
 import app.bambushain.base.listener.OnEditListener;
 import app.bambushain.databinding.FighterCardBinding;
@@ -14,10 +20,6 @@ import app.bambushain.models.finalfantasy.Fighter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class FightersAdapter extends RecyclerView.Adapter<FightersAdapter.ViewHolder> {
     private final ViewModelProvider viewModelProvider;

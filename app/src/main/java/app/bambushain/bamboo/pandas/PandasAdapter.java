@@ -5,9 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Comparator;
+import java.util.List;
+
 import app.bambushain.R;
 import app.bambushain.api.ProfilePictureLoader;
 import app.bambushain.base.listener.OnDeleteListener;
@@ -17,17 +24,13 @@ import app.bambushain.models.bamboo.User;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Comparator;
-import java.util.List;
 
 public class PandasAdapter extends RecyclerView.Adapter<PandasAdapter.ViewHolder> {
+    private static ProfilePictureLoader profilePictureLoader;
     private final ViewModelProvider viewModelProvider;
     private final LifecycleOwner lifecycleOwner;
     private final boolean iAmMod;
     private final int myId;
-    private static ProfilePictureLoader profilePictureLoader;
     @Setter
     private List<User> pandas;
     @Setter

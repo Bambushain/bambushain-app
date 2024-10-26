@@ -3,18 +3,21 @@ package app.bambushain.bamboo.calendar;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+
+import java.util.Objects;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.databinding.FragmentAddEventBinding;
 import app.bambushain.utils.ColorUtils;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
-
-import javax.inject.Inject;
-import java.util.Objects;
 
 @AndroidEntryPoint
 public class AddEventDialog extends ChangeEventDialog<FragmentAddEventBinding> {

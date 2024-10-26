@@ -1,13 +1,21 @@
 package app.bambushain.api;
 
 import android.content.Context;
+
 import androidx.preference.PreferenceManager;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.time.LocalDate;
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Singleton;
+
 import coil.ComponentRegistry;
 import coil.ImageLoader;
 import coil.decode.SvgDecoder;
 import coil.request.CachePolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -18,10 +26,6 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
-
-import javax.inject.Singleton;
-import java.time.LocalDate;
-import java.util.concurrent.TimeUnit;
 
 @Module
 @InstallIn(SingletonComponent.class)

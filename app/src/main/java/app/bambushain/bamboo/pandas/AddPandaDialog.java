@@ -5,9 +5,17 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Objects;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingDialogFragment;
@@ -15,12 +23,8 @@ import app.bambushain.databinding.FragmentAddPandaDialogBinding;
 import app.bambushain.models.bamboo.User;
 import app.bambushain.models.exception.BambooException;
 import app.bambushain.models.exception.ErrorType;
-import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
-
-import javax.inject.Inject;
-import java.util.Objects;
 
 @AndroidEntryPoint
 public class AddPandaDialog extends BindingDialogFragment<FragmentAddPandaDialogBinding> {

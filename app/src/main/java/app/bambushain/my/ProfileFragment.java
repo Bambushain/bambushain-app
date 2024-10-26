@@ -2,18 +2,21 @@ package app.bambushain.my;
 
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+
+import java.util.Objects;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.ProfilePictureLoader;
 import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentProfileBinding;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
-
-import javax.inject.Inject;
-import java.util.Objects;
 
 @AndroidEntryPoint
 public class ProfileFragment extends BindingFragment<FragmentProfileBinding> {

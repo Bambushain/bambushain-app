@@ -4,7 +4,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+
 import androidx.annotation.NonNull;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingDialogFragment;
@@ -16,15 +27,8 @@ import app.bambushain.models.finalfantasy.CharacterHousing;
 import app.bambushain.models.finalfantasy.HousingDistrict;
 import app.bambushain.models.finalfantasy.HousingType;
 import app.bambushain.utils.BundleUtils;
-import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
-
-import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @AndroidEntryPoint
 public class ChangeHousingDialog extends BindingDialogFragment<FragmentChangeHousingDialogBinding> {

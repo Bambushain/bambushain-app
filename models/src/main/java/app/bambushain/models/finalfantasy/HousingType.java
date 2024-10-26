@@ -1,15 +1,17 @@
 package app.bambushain.models.finalfantasy;
 
 import android.content.Context;
-import app.bambushain.models.R;
+
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import lombok.Getter;
 
 import java.io.IOException;
 import java.io.Serializable;
+
+import app.bambushain.models.R;
+import lombok.Getter;
 
 @Getter
 @JsonAdapter(HousingType.Adapter.class)

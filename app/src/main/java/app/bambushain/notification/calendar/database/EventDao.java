@@ -4,10 +4,11 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Query;
 import androidx.room.Upsert;
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Observable;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
 
 @Dao
 public interface EventDao {

@@ -1,16 +1,18 @@
 package app.bambushain.notification.calendar.network;
 
 import android.util.Log;
+
+import java.time.LocalDate;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import app.bambushain.api.BambooApi;
 import app.bambushain.notification.calendar.database.Event;
 import app.bambushain.notification.calendar.database.EventDao;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.val;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.time.LocalDate;
-import java.util.stream.Collectors;
 
 @Singleton
 public class EventLoader {

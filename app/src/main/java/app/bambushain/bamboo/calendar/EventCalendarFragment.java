@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,6 +14,19 @@ import androidx.navigation.NavDestination;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
+import com.launchdarkly.eventsource.StreamException;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Objects;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.api.BambooCalendarEventSource;
@@ -20,19 +34,10 @@ import app.bambushain.base.BindingFragment;
 import app.bambushain.databinding.FragmentEventCalendarBinding;
 import app.bambushain.models.bamboo.Event;
 import app.bambushain.utils.SwipeDetector;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
-import com.launchdarkly.eventsource.StreamException;
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.val;
-import org.jetbrains.annotations.NotNull;
-
-import javax.inject.Inject;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Objects;
 
 @AndroidEntryPoint
 public class EventCalendarFragment extends BindingFragment<FragmentEventCalendarBinding> {

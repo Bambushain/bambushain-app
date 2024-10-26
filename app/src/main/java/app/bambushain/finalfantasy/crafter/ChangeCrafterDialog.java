@@ -4,8 +4,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
 import app.bambushain.R;
 import app.bambushain.api.BambooApi;
 import app.bambushain.base.BindingDialogFragment;
@@ -16,13 +25,8 @@ import app.bambushain.models.finalfantasy.Character;
 import app.bambushain.models.finalfantasy.Crafter;
 import app.bambushain.models.finalfantasy.CrafterJob;
 import app.bambushain.utils.BundleUtils;
-import com.google.android.material.snackbar.Snackbar;
 import dagger.hilt.android.AndroidEntryPoint;
 import lombok.val;
-
-import javax.inject.Inject;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @AndroidEntryPoint
 public class ChangeCrafterDialog extends BindingDialogFragment<FragmentChangeCrafterDialogBinding> {

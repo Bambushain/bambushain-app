@@ -4,20 +4,20 @@
             android:id="@+id/my_profile_navigation"
             android:title="@string/label_my_profile"
             android:icon="@drawable/ic_profile"
-            android:checkable="true"/>
+            android:checkable="true" />
     <item
             android:id="@+id/calendar_navigation"
             android:title="@string/label_event_calendar"
             android:icon="@drawable/ic_calendar"
-            android:checkable="true"/>
+            android:checkable="true" />
     <item
             android:id="@+id/pandas_navigation"
             android:title="@string/label_pandas"
             android:icon="@drawable/ic_pandas"
-            android:checkable="true"/>
+            android:checkable="true" />
     <item
             android:id="@+id/characters_navigation"
             android:title="@string/label_characters"
             android:icon="@drawable/ic_characters"
-            android:checkable="true"/>
+            android:checkable="true" />
 </menu>

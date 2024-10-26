@@ -1,22 +1,27 @@
 package app.bambushain.bamboo.calendar;
 
+import static java.time.temporal.ChronoField.DAY_OF_MONTH;
+import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
+import static java.time.temporal.ChronoField.YEAR;
+
 import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.TextStyle;
+
+import javax.inject.Inject;
+
 import app.bambushain.models.bamboo.Event;
 import app.bambushain.utils.ColorUtils;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import lombok.val;
-
-import javax.inject.Inject;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.TextStyle;
-
-import static java.time.temporal.ChronoField.*;
 
 @HiltViewModel
 public class CalendarEventViewModel extends ViewModel {
