@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    implementation( project(":models"))
+    implementation(project(":models"))
 
     implementation("androidx.preference:preference:1.2.1")
     implementation("com.google.code.gson:gson:2.11.0")
