@@ -83,8 +83,8 @@ dependencies {
     implementation("androidx.fragment:fragment:1.8.5")
     implementation("androidx.lifecycle:lifecycle-livedata:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.8.7")
-    implementation("androidx.navigation:navigation-fragment:2.8.4")
-    implementation("androidx.navigation:navigation-ui:2.8.4")
+    implementation("androidx.navigation:navigation-fragment:2.8.5")
+    implementation("androidx.navigation:navigation-ui:2.8.5")
     implementation("androidx.preference:preference:1.2.1")
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-rxjava3:2.6.1")
@@ -102,7 +102,7 @@ dependencies {
     //noinspection AnnotationProcessorOnCompilePath
     implementation("org.projectlombok:lombok:1.18.34")
 
-    annotationProcessor("androidx.databinding:databinding-compiler:8.7.2")
+    annotationProcessor("androidx.databinding:databinding-compiler:8.7.3")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     annotationProcessor("com.google.dagger:hilt-compiler:2.51.1")
     annotationProcessor("org.projectlombok:lombok:1.18.34")
