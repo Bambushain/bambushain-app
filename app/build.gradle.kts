@@ -74,7 +74,7 @@ dependencies {
     implementation(project(":api"))
     implementation(project(":models"))
 
-    implementation("androidx.activity:activity:1.9.3")
+    implementation("androidx.activity:activity:1.10.0")
     implementation("androidx.annotation:annotation:1.9.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
@@ -93,17 +93,17 @@ dependencies {
     implementation("com.github.requery:sqlite-android:3.45.0")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     implementation("com.google.android.material:material:1.12.0")
-    implementation("com.google.dagger:hilt-android:2.51.1")
+    implementation("com.google.dagger:hilt-android:2.55.0")
     implementation("com.launchdarkly:okhttp-eventsource:4.1.1")
     implementation("com.squareup.retrofit2:adapter-rxjava3:2.11.0")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
     implementation("io.reactivex.rxjava3:rxjava:3.1.8")
     //noinspection AnnotationProcessorOnCompilePath
-    implementation("org.projectlombok:lombok:1.18.34")
+    implementation("org.projectlombok:lombok:1.18.36")
 
-    annotationProcessor("androidx.databinding:databinding-compiler:8.7.3")
+    annotationProcessor("androidx.databinding:databinding-compiler:8.8.0")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
-    annotationProcessor("com.google.dagger:hilt-compiler:2.51.1")
-    annotationProcessor("org.projectlombok:lombok:1.18.34")
+    annotationProcessor("com.google.dagger:hilt-compiler:2.54.0")
+    annotationProcessor("org.projectlombok:lombok:1.18.36")
 }
